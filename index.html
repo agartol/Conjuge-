@@ -175,12 +175,16 @@ select { background: var(--panel); border: 1px solid var(--line); border-radius:
 .feedback.bad { background: var(--err-soft); color: var(--err); }
 .feedback .why { color: var(--ink); display: block; margin-top: 4px; }
 .box-dots { display: inline-flex; gap: 3px; vertical-align: middle; }
-#k-card { position: relative; min-height: 320px; align-content: start; }
+#k-card { position: relative; min-height: 190px; align-content: start; }
 /* Tamaño fijo del conjugador: no cambia al pasar de un verbo o de un tiempo a otro */
-#c-sheet .conj-head { min-height: 74px; align-content: flex-start; }
+#c-sheet .conj-head { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 22px; align-items: center; gap: 6px 14px; }
+#c-sheet .conj-head h2 { grid-column: 1; white-space: nowrap; }
+#c-sheet .conj-head .chip { grid-column: 2; justify-self: start; white-space: nowrap; }
+#c-sheet .conj-head #c-aux { grid-column: 1 / -1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 1150px) { .card #c-rule { min-height: 92px; } }
+@media (max-width: 1000px) { .card #c-rule { min-height: 114px; } }
 #c-grid { min-height: 313px; align-content: start; }
 #c-rule { min-height: 70px; box-sizing: border-box; }
-@media (max-width: 1250px) { #c-sheet .conj-head { min-height: 94px; } }
 .k-corner { position: absolute; top: 12px; right: 22px; display: flex; align-items: center; gap: 8px; }
 .tr-es { color: var(--muted); font-style: italic; font-size: 15px; }
 .box-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); display: block; }
@@ -479,7 +483,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 
   <!-- 1 · Conjugador -->
   <section class="view" id="v-conjugar" hidden>
-    <p class="intro">Choisis un verbe et un temps, puis écris les formes (le pronom sujet est déjà là ; avec un verbe pronominal, écris aussi le pronom réfléchi : <i>me suis levée</i>). Aux temps composés avec être, accorde le participe selon le genre indiqué : <b>m.</b> masculin, <b>f.</b> féminin. <b>Intro</b> passe à la case suivante. <b>Corriger</b> t’indique seulement ce qui est juste (✓), ce qui a une erreur mineure comme un accent (~) et ce qui a une erreur grave (✗) ; la réponse s’affiche avec <b>Voir la solution</b>.</p>
+    <p class="intro">Choisis un verbe et un temps, puis écris les formes (le pronom sujet est déjà là ; avec un verbe pronominal, écris aussi le pronom réfléchi : <i>me suis levée</i>). Aux temps composés avec être, <b>m.</b> et <b>f.</b> indiquent le genre demandé. <b>Intro</b> passe à la case suivante. <b>Corriger</b> t’indique seulement ce qui est juste (✓), ce qui a une erreur mineure comme un accent (~) et ce qui a une erreur grave (✗) ; la réponse s’affiche avec <b>Voir la solution</b>.</p>
     <div class="conj-layout">
       <aside class="card card-pad side">
         <label class="field" for="c-verb"><span>Verbe</span><select id="c-verb"></select></label>
@@ -2747,7 +2751,7 @@ BANK3.topics.forEach(t => t.ex.forEach((x, i) => { x.id = t.id + '-' + (i + 1); 
     $('#c-title').textContent = C.verb;
     const ch = $('#c-chip'); ch.className = 'chip tense'; setTense(ch, C.tense); ch.textContent = T[C.tense].name;
     const comp = ['pc', 'pqp', 'futa', 'condp'].includes(C.tense);
-    $('#c-aux').textContent = comp ? 'auxiliaire : ' + E.V[C.verb].aux + (E.V[C.verb].aux === 'être' ? ' · accorde le participe selon le genre indiqué (m. = masculin, f. = féminin)' : '') : '';
+    $('#c-aux').textContent = comp ? 'auxiliaire : ' + E.V[C.verb].aux : '';
     C.g = {};
     $('#c-rule').replaceChildren(h('b', {}, 'Règle : '), B.rules[C.tense]);
     $('#c-score').textContent = '';
@@ -2891,8 +2895,7 @@ BANK3.topics.forEach(t => t.ex.forEach((x, i) => { x.id = t.id + '-' + (i + 1); 
       h('div', { class: 'k-corner' }, dots, h('span', { class: 'note' }, s ? 'révision' : 'nouvelle')),
       h('div', { class: 'row' }, chip(t), LEX.verbes[v] ? h('span', { class: 'tr-es', lang: 'es' }, LEX.verbes[v]) : ''),
       h('p', { class: 'verb' }, v),
-      h('div', { class: 'who' }, h('label', { class: 'plabel', for: 'k-in' }, t === 'ger' ? 'gérondif' : plab(c)), inp),
-      c.g ? h('p', { class: 'note', style: 'margin:0' }, 'Accorde le participe au ' + (c.g[0] === 'f' ? 'féminin' : 'masculin') + (c.g.includes('pl') ? ' pluriel' : '') + '.') : '');
+      h('div', { class: 'who' }, h('label', { class: 'plabel', for: 'k-in' }, t === 'ger' ? 'gérondif' : plab(c)), inp));
     card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
     inp.focus({ preventScroll: true });
   }
@@ -3593,13 +3596,15 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   }
   function renderGTopics() {
     const ts = BANK3.topics.filter(t => t.g === G.group);
-    const btn = (id, name, cls, stat, total) => h('button', { type: 'button', class: 'g-topic' + cls, 'aria-pressed': String(G.topic === id), onclick: () => gOpenTopic(id) },
+    // Ejercicios acertados al menos una vez / total del tema.
+    const doneOf = exs => exs.filter(x => (P.gseen[x.id] || [0])[0] > 0).length;
+    const btn = (id, name, cls, stat, exs) => { const d = doneOf(exs), tot = exs.length; return h('button', { type: 'button', class: 'g-topic' + cls, 'aria-pressed': String(G.topic === id), onclick: () => gOpenTopic(id) },
       h('b', {}, name),
-      h('span', { class: 'g-bar', 'aria-hidden': 'true' }, h('i', { style: `width:${stat.n ? Math.round(stat.ok / stat.n * 100) : 0}%` })),
-      h('small', {}, stat.n ? `${Math.round(stat.ok / stat.n * 100)} % de réussite · ${stat.n} réponses` : `${total} exercices · pas encore commencé`));
+      h('span', { class: 'g-bar', 'aria-hidden': 'true' }, h('i', { style: `width:${Math.round(d / tot * 100)}%` })),
+      h('small', {}, `${d} / ${tot} exercices` + (stat.n ? ` · ${Math.round(stat.ok / stat.n * 100)} % de réussite` : ''))); };
     const all = ts.reduce((a, t) => { const s = gStat(t.id); a.ok += s.ok; a.n += s.n; return a; }, { ok: 0, n: 0 });
-    $('#g-topics').replaceChildren(...ts.map(t => btn(t.id, t.name, '', gStat(t.id), t.ex.length)),
-      btn('mix', 'Tous les thèmes mélangés', ' mix', all, ts.reduce((a, t) => a + t.ex.length, 0)));
+    $('#g-topics').replaceChildren(...ts.map(t => btn(t.id, t.name, '', gStat(t.id), t.ex)),
+      btn('mix', 'Tous les thèmes mélangés', ' mix', all, ts.flatMap(t => t.ex)));
   }
   function gOpenTopic(id) {
     G.topic = id; G.order = []; G.done = G.right = 0;
@@ -3722,11 +3727,13 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   }
   const voStat = id => { const s = (P.voc || {})[id]; return s || { ok: 0, n: 0 }; };
   function voRender() {
-    const btn = (id, name, stat, n, cls = '') => h('button', { type: 'button', class: 'g-topic' + cls, 'aria-pressed': String(VO.theme === id), onclick: () => voOpen(id) },
-      h('b', {}, name), h('span', { class: 'g-bar', 'aria-hidden': 'true' }, h('i', { style: `width:${stat.n ? Math.round(stat.ok / stat.n * 100) : 0}%` })),
-      h('small', {}, stat.n ? `${Math.round(stat.ok / stat.n * 100)} % de réussite · ${n} mots` : `${n} mots · pas encore commencé`));
+    // Palabras acertadas al menos una vez / total del tema.
+    const doneOf = ts => ts.reduce((a, t) => a + t.words.filter(w => (P.vseen[t.id + '|' + w[0]] || [0])[0] > 0).length, 0);
+    const btn = (id, name, stat, ts, cls = '') => { const d = doneOf(ts), tot = ts.reduce((a, t) => a + t.words.length, 0); return h('button', { type: 'button', class: 'g-topic' + cls, 'aria-pressed': String(VO.theme === id), onclick: () => voOpen(id) },
+      h('b', {}, name), h('span', { class: 'g-bar', 'aria-hidden': 'true' }, h('i', { style: `width:${Math.round(d / tot * 100)}%` })),
+      h('small', {}, `${d} / ${tot} mots` + (stat.n ? ` · ${Math.round(stat.ok / stat.n * 100)} % de réussite` : ''))); };
     const all = LEX.themes.reduce((a, t) => { const s = voStat(t.id); a.ok += s.ok; a.n += s.n; return a; }, { ok: 0, n: 0 });
-    $('#vo-themes').replaceChildren(...LEX.themes.map(t => btn(t.id, t.name, voStat(t.id), t.words.length)), btn('mix', 'Tous les thèmes mélangés', all, LEX.themes.reduce((a, t) => a + t.words.length, 0), ' mix'));
+    $('#vo-themes').replaceChildren(...LEX.themes.map(t => btn(t.id, t.name, voStat(t.id), [t])), btn('mix', 'Tous les thèmes mélangés', all, LEX.themes, ' mix'));
     $('#vo-main').hidden = !VO.theme;
   }
   function voOpen(id) {
