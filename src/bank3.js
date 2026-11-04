@@ -45,6 +45,35 @@ const BANK3 = {
       ]
     },
     {
+      id: 'relcomposes', g: 'pronoms', name: 'Les pronoms relatifs composés',
+      tip: 'Après une préposition : lequel, laquelle, lesquels, lesquelles. À + lequel → auquel ; de + lequel → duquel. Pour une personne, on dit souvent préposition + qui.',
+      fiche: [
+        ['Préposition + lequel', 'S’accorde avec le nom : lequel, laquelle, lesquels, lesquelles.', ['Le stylo avec lequel j’écris est neuf.', 'La table sur laquelle tu as posé tes clés.']],
+        ['à + lequel', 'auquel, à laquelle, auxquels, auxquelles (penser à, s’intéresser à, répondre à…).', ['Le projet auquel je pense.', 'Les questions auxquelles tu as répondu.']],
+        ['de + lequel', 'duquel, de laquelle, desquels, desquelles, après une locution (près de, à côté de, au milieu de, en face de).', ['Le parc près duquel j’habite.']],
+        ['Préposition + qui', 'Pour les personnes (lequel est aussi possible).', ['La collègue avec qui je travaille.', 'Les amis chez qui nous dormons.']]
+      ],
+      note: 'Dont ou duquel ? Dont remplace « de » seul (parler de → dont) ; duquel s’utilise après une locution avec de (près de, à côté de → près duquel).',
+      links: [],
+      ex: [
+        { k: 'q', s: 'Voici le stylo avec ___ j’ai signé le contrat.', o: ['lequel', 'laquelle', 'que'], c: 0, w: 'Préposition + chose masculine → lequel.' },
+        { k: 'q', s: 'La table sur ___ tu as posé tes clés est sale.', o: ['laquelle', 'lequel', 'que'], c: 0, w: 'Table est féminin → sur laquelle.' },
+        { k: 'q', s: 'C’est le projet ___ je pense depuis des mois.', o: ['auquel', 'à lequel', 'dont'], c: 0, w: 'Penser à + lequel → auquel.' },
+        { k: 'q', s: 'Les questions ___ tu as répondu étaient difficiles.', o: ['auxquelles', 'auxquels', 'desquelles'], c: 0, w: 'Répondre à + questions (f. pl.) → auxquelles.' },
+        { k: 'q', s: 'Le parc près ___ j’habite est immense.', o: ['duquel', 'dont', 'auquel'], c: 0, w: 'Près de + lequel → duquel.' },
+        { k: 'q', s: 'La collègue avec ___ je travaille est très sympa.', o: ['qui', 'que', 'dont'], c: 0, w: 'Préposition + personne → qui (ou laquelle).' },
+        { k: 'g', s: 'Voici la raison pour ___ je suis venu.', a: ['laquelle'], w: 'Raison est féminin → pour laquelle.' },
+        { k: 'g', s: 'Ce sont des sujets ___ je m’intéresse beaucoup.', a: ['auxquels'], w: 'S’intéresser à + sujets (m. pl.) → auxquels.' },
+        { k: 'g', s: 'Le jardin au milieu ___ il y a une fontaine est magnifique.', a: ['duquel'], w: 'Au milieu de + lequel → duquel.' },
+        { k: 'g', s: 'Les amis chez ___ nous dormons habitent à Lyon.', a: ['qui', 'lesquels'], w: 'Préposition + personnes → qui.' },
+        { k: 'g', s: 'C’est une entreprise pour ___ j’aimerais travailler.', a: ['laquelle'], w: 'Entreprise est féminin → pour laquelle.' },
+        { k: 'g', s: 'L’ami à ___ j’ai prêté mon vélo ne me l’a pas rendu.', a: ['qui', 'auquel'], w: 'À + personne → à qui (auquel est possible mais rare).' },
+        { k: 't', i: 'Relie les deux phrases avec un pronom relatif composé.', f: 'Voici l’ordinateur. Je travaille avec cet ordinateur.', a: ['Voici l’ordinateur avec lequel je travaille.'], w: 'Avec + lequel.' },
+        { k: 't', i: 'Relie les deux phrases avec un pronom relatif composé.', f: 'C’est une question. Je n’ai pas pensé à cette question.', a: ['C’est une question à laquelle je n’ai pas pensé.'], w: 'Penser à → à laquelle.' },
+        { k: 't', i: 'Relie les deux phrases avec un pronom relatif.', f: 'La femme est architecte. Je parle avec cette femme.', a: ['La femme avec qui je parle est architecte.', 'La femme avec laquelle je parle est architecte.'], w: 'Avec + qui (ou laquelle) ; la relative suit le nom.' }
+      ]
+    },
+    {
       id: 'relief', g: 'pronoms', name: 'La mise en relief : ce qui, ce que, ce dont… c’est',
       tip: 'Ce qui + verbe ; ce que + sujet + verbe ; ce dont + verbe construit avec « de ». Puis c’est (ou ce sont devant un pluriel).',
       fiche: [
@@ -471,7 +500,8 @@ const BANK3 = {
         ['Les temps', 'présent : est construit · passé composé : a été construit · imparfait : était construit · futur : sera construit.', ['Ce pont a été construit en 1990.', 'Les résultats seront publiés demain.']],
         ['Accord', 'Le participe s’accorde avec le sujet.', ['Les lettres ont été envoyées.']],
         ['par ou de', 'par pour une action ; de pour un sentiment ou un état (aimé de, respecté de, couvert de, entouré de).', ['La Joconde a été peinte par Léonard de Vinci.', 'La montagne est couverte de neige.']],
-        ['Sans agent', 'Quand l’agent est inconnu ou évident, on ne le dit pas. On peut aussi utiliser on.', ['Mon vélo a été volé. = On a volé mon vélo.']]
+        ['Sans agent', 'Quand l’agent est inconnu ou évident, on ne le dit pas. On peut aussi utiliser on.', ['Mon vélo a été volé. = On a volé mon vélo.']],
+        ['Avec un verbe modal ou au futur proche', 'devoir / pouvoir + être + participe ; aller + être + participe.', ['Ce document doit être signé.', 'Les travaux vont être terminés en juin.']]
       ],
       note: 'Seuls les verbes avec un COD peuvent se mettre au passif : on ne peut pas dire « il a été parlé ».',
       links: [],
@@ -490,7 +520,44 @@ const BANK3 = {
         { k: 't', i: 'Mets la phrase à la voix passive.', f: 'Un architecte célèbre a dessiné ce pont.', a: ['Ce pont a été dessiné par un architecte célèbre.'], w: 'Passé composé → a été dessiné.' },
         { k: 't', i: 'Mets la phrase à la voix passive.', f: 'La mairie fermera la piscine en août.', a: ['La piscine sera fermée par la mairie en août.', 'En août, la piscine sera fermée par la mairie.'], w: 'Futur → sera fermée ; accord au féminin.' },
         { k: 't', i: 'Mets la phrase à la voix active.', f: 'Le gâteau a été préparé par ma grand-mère.', a: ['Ma grand-mère a préparé le gâteau.'], w: 'L’agent devient sujet ; a été préparé → a préparé.' },
-        { k: 't', i: 'Mets la phrase à la voix passive, sans agent.', f: 'On a volé mon vélo.', a: ['Mon vélo a été volé.'], w: 'On = agent inconnu : on ne le dit pas.' }
+        { k: 't', i: 'Mets la phrase à la voix passive, sans agent.', f: 'On a volé mon vélo.', a: ['Mon vélo a été volé.'], w: 'On = agent inconnu : on ne le dit pas.' },
+        { k: 'g', s: 'Ce document doit ___ (signer) avant lundi.', a: ['être signé'], w: 'Devoir + être + participe.' },
+        { k: 'g', s: 'Les travaux ___ (terminer, futur proche) en juin.', a: ['vont être terminés'], w: 'Futur proche passif : vont être + participe accordé.' },
+        { k: 'g', s: 'La réunion ___ (annuler, plus-que-parfait) à cause de la grève.', a: ['avait été annulée'], w: 'Plus-que-parfait passif : avait été + participe accordé.' },
+        { k: 'q', s: 'Hier, le voleur ___ par la police.', o: ['a été arrêté', 'est arrêté', 'était arrêté'], c: 0, w: 'Action ponctuelle passée → passé composé passif.' },
+        { k: 't', i: 'Mets la phrase à la voix passive, sans agent.', f: 'On répare la route.', a: ['La route est réparée.'], w: 'Présent passif ; on ne dit pas l’agent.' },
+        { k: 't', i: 'Mets la phrase à la voix passive.', f: 'Les élèves respectent ce professeur.', a: ['Ce professeur est respecté par les élèves.', 'Ce professeur est respecté des élèves.', 'Ce professeur est respecté de ses élèves.'], w: 'Respecter (sentiment) → de ou par.' }
+      ]
+    },
+    {
+      id: 'accord', g: 'phrase', name: 'L’accord du participe passé',
+      tip: 'Avec être : accord avec le sujet. Avec avoir : pas d’accord avec le sujet, mais accord avec le COD s’il est placé avant. Verbes pronominaux : accord avec le sujet, sauf si le COD vient après ou si « se » est un COI.',
+      fiche: [
+        ['Avec être', 'Le participe s’accorde avec le sujet.', ['Elle est partie.', 'Ils sont arrivés en retard.']],
+        ['Avec avoir', 'Pas d’accord avec le sujet. Accord avec le COD seulement s’il est placé avant le verbe (pronom la, les, l’ ; que ; quel + nom).', ['Elles ont mangé.', 'Les photos que j’ai prises.', 'Ces fleurs, je les ai achetées.', 'Quelles villes as-tu visitées ?']],
+        ['Verbes pronominaux', 'En général, accord avec le sujet. Pas d’accord si le COD est après le verbe, ni si se est un COI (se parler, se téléphoner, s’écrire, se dire…).', ['Elle s’est levée.', 'Elle s’est lavé les mains.', 'Ils se sont téléphoné.']],
+        ['Avec en', 'Pas d’accord.', ['Des cerises ? J’en ai mangé.']]
+      ],
+      note: '',
+      links: [['L’accord du participe passé avec être (ortholud.com)', 'https://www.ortholud.com/conjugaison/participe/etre.php']],
+      ex: [
+        { k: 'g', s: 'Marie est ___ (partir) à huit heures.', a: ['partie'], w: 'Être → accord avec le sujet (Marie).' },
+        { k: 'g', s: 'Mes amis sont ___ (arriver) en retard.', a: ['arrivés'], w: 'Être → accord au masculin pluriel.' },
+        { k: 'g', s: 'Elles ont ___ (manger) au restaurant.', a: ['mangé'], w: 'Avoir → pas d’accord avec le sujet.' },
+        { k: 'g', s: 'Les lettres que j’ai ___ (écrire) sont sur la table.', a: ['écrites'], w: 'Que (= les lettres) est un COD placé avant → écrites.' },
+        { k: 'g', s: 'Cette robe ? Je l’ai ___ (acheter) en soldes.', a: ['achetée'], w: 'L’ (= cette robe) placé avant → achetée.' },
+        { k: 'g', s: 'Quelles villes as-tu ___ (visiter) cet été ?', a: ['visitées'], w: 'Quelles villes, COD placé avant → visitées.' },
+        { k: 'g', s: 'Elle s’est ___ (lever) tôt ce matin.', a: ['levée'], w: 'Pronominal : accord avec le sujet.' },
+        { k: 'g', s: 'Elle s’est ___ (laver) les mains.', a: ['lavé'], w: 'Le COD (les mains) est après le verbe → pas d’accord.' },
+        { k: 'g', s: 'Ils se sont ___ (téléphoner) hier soir.', a: ['téléphoné'], w: 'Téléphoner à quelqu’un : se est un COI → pas d’accord.' },
+        { k: 'g', s: 'Paul et moi, nous nous sommes ___ (promener) au bord de la mer.', a: ['promenés'], w: 'Pronominal : accord avec nous (masculin pluriel).' },
+        { k: 'g', s: 'Des cerises ? J’en ai ___ (cueillir) deux kilos.', a: ['cueilli'], w: 'Avec en, pas d’accord.' },
+        { k: 'q', s: 'Les fleurs qu’il m’a ___ sont magnifiques.', o: ['offertes', 'offert', 'offerts'], c: 0, w: 'Que (= les fleurs) est placé avant → offertes.' },
+        { k: 'q', s: 'Ma sœur a ___ un nouvel appartement.', o: ['acheté', 'achetée'], c: 0, w: 'Avoir, COD après le verbe → pas d’accord.' },
+        { k: 'q', s: 'Elles se sont ___ des cadeaux.', o: ['offert', 'offertes'], c: 0, w: 'Le COD (des cadeaux) est après le verbe → pas d’accord.' },
+        { k: 'q', s: 'Les filles sont ___ au cinéma.', o: ['allées', 'allé', 'allés'], c: 0, w: 'Être → accord avec les filles.' },
+        { k: 't', i: 'Remplace « les clés » par un pronom.', f: 'J’ai perdu les clés.', a: ['Je les ai perdues.'], w: 'Les placé avant → perdues.' },
+        { k: 't', i: 'Mets la phrase au passé composé.', f: 'Elles se maquillent.', a: ['Elles se sont maquillées.'], w: 'Pronominal → être, accord avec le sujet.' }
       ]
     },
     {
@@ -656,6 +723,38 @@ const BANK3 = {
         { k: 'q', s: '« Il ne faut pas fumer ici » veut dire :', o: ['c’est interdit de fumer ici', 'ce n’est pas nécessaire de fumer ici'], c: 0, w: 'Il ne faut pas = interdiction.' },
         { k: 't', i: 'Exprime la même obligation avec « il faut que ».', f: 'Tu dois être patient.', a: ['Il faut que tu sois patient.'], w: 'Il faut que + subjonctif : que tu sois.' },
         { k: 't', i: 'Exprime la même obligation avec « devoir ».', f: 'Il faut que nous prenions le métro.', a: ['Nous devons prendre le métro.'], w: 'Nous devons + infinitif.' }
+      ]
+    },
+    {
+      id: 'subjind', g: 'idees', name: 'Subjonctif ou indicatif ?',
+      tip: 'Subjonctif après la volonté, l’obligation, les sentiments, le doute et l’opinion négative. Indicatif après la certitude, l’opinion affirmative (je pense que, je crois que) et espérer que.',
+      fiche: [
+        ['Subjonctif', 'volonté (vouloir que, souhaiter que) ; obligation (il faut que) ; sentiments (être content / triste / désolé que, avoir peur que, regretter que) ; doute et possibilité (douter que, il est possible que) ; opinion négative ou question (je ne pense pas que, penses-tu que… ?).', ['Je suis content que tu viennes.', 'J’ai peur qu’il pleuve.', 'Je ne pense pas qu’il ait raison.']],
+        ['Indicatif', 'certitude (je suis sûr que, il est certain que, il est évident que) ; opinion affirmative (je pense que, je crois que, je trouve que, il me semble que) ; espérer que ; il est probable que.', ['Je pense qu’il a raison.', 'Je suis sûr que tu réussiras.', 'J’espère que tu vas bien.']],
+        ['Même sujet', 'On utilise l’infinitif : être content de, avoir peur de.', ['Je suis heureux d’être ici.', 'J’ai peur de rater le train.']]
+      ],
+      note: 'Astuce : je pense que + indicatif, mais je ne pense pas que + subjonctif.',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Je suis content que tu ___ (venir) ce soir.', a: ['viennes'], w: 'Sentiment → subjonctif : que tu viennes.' },
+        { k: 'g', s: 'J’ai peur qu’il ___ (pleuvoir) demain.', a: ['pleuve'], w: 'Avoir peur que + subjonctif.' },
+        { k: 'g', s: 'Je pense qu’il ___ (avoir) raison.', a: ['a'], w: 'Opinion affirmative → indicatif.' },
+        { k: 'g', s: 'Je ne pense pas qu’il ___ (avoir) raison.', a: ['ait'], w: 'Opinion négative → subjonctif : qu’il ait.' },
+        { k: 'g', s: 'Il est possible que nous ___ (être) en retard.', a: ['soyons'], w: 'Possibilité → subjonctif.' },
+        { k: 'g', s: 'Je suis sûr que tu ___ (réussir) ton examen.', a: ['réussiras', 'réussis', 'vas réussir'], w: 'Certitude → indicatif.' },
+        { k: 'g', s: 'Il est probable qu’elle ___ (venir, futur).', a: ['viendra'], w: 'Il est probable que → indicatif.' },
+        { k: 'g', s: 'Je doute qu’il ___ (savoir) la réponse.', a: ['sache'], w: 'Doute → subjonctif : qu’il sache.' },
+        { k: 'g', s: 'Elle regrette que vous ___ (partir) si tôt.', a: ['partiez'], w: 'Regretter que + subjonctif.' },
+        { k: 'g', s: 'Il est évident que tu ___ (faire, présent) des progrès.', a: ['fais'], w: 'Il est évident que → indicatif.' },
+        { k: 'q', s: 'Je crois qu’elle ___ malade.', o: ['est', 'soit', 'être'], c: 0, w: 'Croire que (affirmatif) → indicatif.' },
+        { k: 'q', s: 'Je ne crois pas qu’elle ___ malade.', o: ['soit', 'est', 'sera'], c: 0, w: 'Ne pas croire que → subjonctif.' },
+        { k: 'q', s: 'Nous sommes désolés que vous ___ attendre.', o: ['deviez', 'devez', 'devrez'], c: 0, w: 'Sentiment → subjonctif : que vous deviez.' },
+        { k: 'q', s: 'J’espère que tu ___ bien.', o: ['vas', 'ailles', 'aller'], c: 0, w: 'Espérer que → indicatif.' },
+        { k: 'q', s: 'Je suis heureux ___ ici avec vous.', o: ['d’être', 'que je sois', 'que je suis'], c: 0, w: 'Même sujet → de + infinitif.' },
+        { k: 'q', s: 'Il est certain qu’il ___ demain.', o: ['viendra', 'vienne', 'venir'], c: 0, w: 'Certitude → indicatif.' },
+        { k: 't', i: 'Commence la phrase par « Je ne pense pas que ».', f: 'Il fera beau demain.', a: ['Je ne pense pas qu’il fasse beau demain.'], w: 'Opinion négative → subjonctif : qu’il fasse.' },
+        { k: 't', i: 'Commence la phrase par « Je suis triste que ».', f: 'Tu pars en Erasmus.', a: ['Je suis triste que tu partes en Erasmus.'], w: 'Sentiment → subjonctif : que tu partes.' },
+        { k: 't', i: 'Commence la phrase par « Je suis sûr que ».', f: 'Vous allez aimer ce film.', a: ['Je suis sûr que vous allez aimer ce film.', 'Je suis sûre que vous allez aimer ce film.'], w: 'Certitude → indicatif : la phrase ne change pas.' }
       ]
     },
 
