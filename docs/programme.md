@@ -27,3 +27,7 @@ Décrire une personne · les professions · le bénévolat · les droits des fem
 ## Production écrite
 1. Sujet libre (~100 mots) · 2. Égalité femmes-hommes (~110) · 3. Les loisirs · 4. L'intelligence artificielle (120-130) · 5. Que vois-tu de la fenêtre de ta chambre ? (130)
 Projet: podcast avec l'IA sur les 60 ans de l'ETSA (fin novembre).
+
+## Estado en la web (4/11/2026)
+- Hecho: todos los tiempos verbales; Grammaire → Pronoms (relatifs, mise en relief, COD/COI, EN/Y, toniques, ON, démonstratifs, possessifs) y Connecteurs (cause, conséquence, opposition, concession, marqueurs temporels).
+- Pendiente: La phrase (interrogation, négation, voix passive, adverbes en -ment y su lugar, place des adjectifs, comparatif/superlatif); Exprimer une idée (conseil, souhait, obligation); Révision A1-A2; Vocabulaire con traducción; Programme por fechas; passé récent y présent continu (estaban en el examen 1).

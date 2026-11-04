@@ -167,6 +167,9 @@ select { background: var(--panel); border: 1px solid var(--line); border-radius:
 .feedback.bad { background: var(--err-soft); color: var(--err); }
 .feedback .why { color: var(--ink); display: block; margin-top: 4px; }
 .box-dots { display: inline-flex; gap: 3px; vertical-align: middle; }
+#k-card { position: relative; }
+.k-corner { position: absolute; top: 12px; right: 22px; display: flex; align-items: center; gap: 8px; }
+.tr-es { color: var(--muted); font-style: italic; font-size: 15px; }
 .box-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); display: block; }
 .box-dots i.on { background: var(--accent); }
 
@@ -347,6 +350,28 @@ select { background: var(--panel); border: 1px solid var(--line); border-radius:
 .field-l { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
 /* ---- Transformar / hipótesis ---- */
 .consigna { font-weight: 700; font-size: 17px; margin: 0; }
+/* Grammaire */
+.g-topics { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.g-topic { text-align: left; border: 1.5px solid var(--line); background: var(--panel); border-radius: 12px; padding: 12px 14px; cursor: pointer; display: grid; gap: 8px; font: inherit; color: var(--ink); }
+.g-topic b { font-size: 15px; line-height: 1.3; }
+.g-topic[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent); }
+.g-topic .g-bar { height: 5px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.g-topic .g-bar i { display: block; height: 100%; background: var(--ok, #2E7D32); }
+.g-topic small { color: var(--muted); font-size: 12.5px; }
+.g-topic.mix { border-style: dashed; }
+.g-main { display: grid; gap: 16px; margin-top: 18px; }
+.fiche > summary { cursor: pointer; font-weight: 700; font-size: 17px; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.fiche > summary::-webkit-details-marker { display: none; }
+.fiche > summary::after { content: 'Masquer la fiche'; font-weight: 600; font-size: 13px; color: var(--accent); }
+.fiche:not([open]) > summary::after { content: 'Voir la fiche'; }
+.fiche-body { display: grid; gap: 14px; border-top: 1px solid var(--line); }
+.f-tip { margin: 0; padding: 10px 14px; border-radius: 8px; background: var(--accent-soft); font-weight: 600; }
+.f-rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 22px; }
+.f-rule h4 { margin: 0 0 2px; font-size: 16px; color: var(--accent); }
+.f-rule p { margin: 0 0 4px; }
+.f-rule ul { margin: 0; padding-left: 18px; font-style: italic; }
+.f-rule li { margin: 2px 0; }
+.sentence .ans.g-blank { width: 10ch; min-width: 0; }
 .from { font-family: var(--f-display); font-size: 26px; line-height: 1.3; margin: 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .chip.kind { background: var(--accent-soft); color: var(--accent); }
 button.chip.kind[aria-pressed="false"] { background: transparent; color: var(--muted); border-color: var(--line); }
@@ -394,19 +419,22 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 <nav class="sidenav" aria-label="Exercices">
   <div class="brand"><h1>Conjugue <em>!</em></h1></div>
   <button class="tab" data-view="hoy">Aujourd’hui</button>
-  <p class="navsec">Formes</p>
+  <p class="navsec">Verbes · formes</p>
   <button class="tab" data-view="conjugar">Conjugueur</button>
   <button class="tab" data-view="tarjetas">Cartes</button>
   <button class="tab" data-view="irregulares">Irréguliers</button>
   <button class="tab" data-view="dictado">Dictée</button>
-  <p class="navsec">Emploi</p>
+  <p class="navsec">Verbes · emploi</p>
   <button class="tab" data-view="frases">Phrases</button>
   <button class="tab" data-view="tiempo">Quel temps ?</button>
   <button class="tab" data-view="textos">Textes à trous</button>
   <button class="tab" data-view="transformar">Transformer</button>
   <button class="tab" data-view="hipotesis">Hypothèses avec si</button>
   <button class="tab" data-view="trampas">Pièges</button>
-  <p class="navsec">Avec Claude</p>
+  <p class="navsec">Grammaire</p>
+  <button class="tab" data-view="pronoms">Pronoms</button>
+  <button class="tab" data-view="connecteurs">Connecteurs logiques</button>
+  <p class="navsec">Expression écrite</p>
   <button class="tab" data-view="escribir">Écrire</button>
   <p class="navsec">Évaluation</p>
   <button class="tab" data-view="examen">Examen</button>
@@ -527,7 +555,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   <section class="view" id="v-examen" hidden>
     <div id="e-start" class="card card-pad" style="display:grid;gap:14px;justify-items:start">
       <h2 style="font-family:var(--f-display);font-weight:400;font-size:28px;margin:0">Examen blanc chronométré</h2>
-      <p class="intro" style="margin:0"><b>20 questions</b> (12 formes isolées et 8 phrases) en <b>10 minutes</b>. Pas de correction avant la fin, comme à l’examen.</p>
+      <p class="intro" style="margin:0"><b>20 questions</b> (10 formes isolées, 6 phrases et 4 questions de grammaire) en <b>10 minutes</b>. Pas de correction avant la fin, comme à l’examen.</p>
       <button class="btn primary" id="e-begin" type="button">Commencer</button>
     </div>
     <div id="e-run" hidden style="display:grid;gap:16px">
@@ -679,6 +707,22 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     </div>
   </section>
 
+
+  <!-- Grammaire (pronoms, connecteurs…) -->
+  <section class="view" id="v-grammaire" hidden>
+    <p class="intro" id="g-intro"></p>
+    <div class="g-topics" id="g-topics"></div>
+    <div id="g-main" class="g-main" hidden>
+      <details class="card fiche" id="g-fiche" open><summary class="card-pad"><span id="g-fiche-title"></span></summary><div class="card-pad fiche-body" id="g-fiche-body"></div></details>
+      <div class="card">
+        <div class="sheet"><div class="flash" id="g-card"></div></div>
+        <div class="card-pad" style="display:grid;gap:12px;border-top:1px solid var(--line)">
+          <div class="accents" data-accents></div>
+          <div class="row between"><div class="actions"><button class="btn primary" id="g-go" type="button">Vérifier</button><button class="btn ghost" id="g-skip" type="button">Passer</button></div><span class="stats-line" id="g-stats"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 </main>
 </div>
@@ -1239,6 +1283,446 @@ const BANK2 = {
 };
 
 
+// Traducciones al español (tarjetas de verbos y, más adelante, vocabulario).
+const LEX = {
+  verbes: {
+    'être': 'ser, estar', 'avoir': 'tener, haber', 'aller': 'ir', 'venir': 'venir', 'faire': 'hacer', 'dire': 'decir',
+    'pouvoir': 'poder', 'vouloir': 'querer', 'devoir': 'deber, tener que', 'savoir': 'saber', 'prendre': 'tomar, coger',
+    'mettre': 'poner', 'voir': 'ver', 'parler': 'hablar', 'aimer': 'querer, gustar', 'travailler': 'trabajar',
+    'habiter': 'vivir, habitar', 'regarder': 'mirar', 'écouter': 'escuchar', 'chercher': 'buscar', 'trouver': 'encontrar',
+    'donner': 'dar', 'demander': 'preguntar, pedir', 'penser': 'pensar', 'jouer': 'jugar, tocar', 'arriver': 'llegar',
+    'entrer': 'entrar', 'rester': 'quedarse', 'tomber': 'caer(se)', 'rentrer': 'volver (a casa)', 'monter': 'subir',
+    'oublier': 'olvidar', 'étudier': 'estudiar', 'montrer': 'mostrar, enseñar', 'porter': 'llevar (puesto)',
+    'laisser': 'dejar', 'gagner': 'ganar', 'aider': 'ayudar', 'utiliser': 'utilizar', 'raconter': 'contar, relatar',
+    'préparer': 'preparar', 'visiter': 'visitar', 'fermer': 'cerrar', 'expliquer': 'explicar', 'décider': 'decidir',
+    'continuer': 'continuar', 'danser': 'bailar', 'chanter': 'cantar', 'apporter': 'traer', 'marcher': 'andar, caminar',
+    'rencontrer': 'conocer, encontrarse con', 'accepter': 'aceptar', 'refuser': 'rechazar, negarse', 'inviter': 'invitar',
+    'rêver': 'soñar', 'créer': 'crear', 'manger': 'comer', 'voyager': 'viajar', 'nager': 'nadar', 'changer': 'cambiar',
+    'commencer': 'empezar', 'avancer': 'avanzar', 'acheter': 'comprar', 'amener': 'traer (a alguien)',
+    'emmener': 'llevar (a alguien)', 'préférer': 'preferir', 'espérer': 'esperar (desear)', 'répéter': 'repetir',
+    'appeler': 'llamar', 'rappeler': 'volver a llamar, recordar', 'jeter': 'tirar', 'payer': 'pagar', 'essayer': 'intentar, probar',
+    'envoyer': 'enviar', 'nettoyer': 'limpiar', 'employer': 'emplear, usar', 'finir': 'terminar', 'choisir': 'elegir',
+    'réussir': 'aprobar, tener éxito', 'grandir': 'crecer', 'maigrir': 'adelgazar', 'réfléchir': 'reflexionar',
+    'remplir': 'llenar, rellenar', 'obéir': 'obedecer', 'agir': 'actuar', 'partir': 'irse, marcharse', 'sortir': 'salir',
+    'dormir': 'dormir', 'sentir': 'oler, sentir', 'servir': 'servir', 'mentir': 'mentir', 'ouvrir': 'abrir', 'offrir': 'regalar, ofrecer',
+    'découvrir': 'descubrir', 'souffrir': 'sufrir', 'courir': 'correr', 'mourir': 'morir', 'tenir': 'sujetar, sostener',
+    'obtenir': 'obtener', 'devenir': 'convertirse en, llegar a ser', 'revenir': 'volver', 'apprendre': 'aprender',
+    'comprendre': 'entender, comprender', 'promettre': 'prometer', 'permettre': 'permitir', 'attendre': 'esperar (aguardar)',
+    'entendre': 'oír', 'répondre': 'responder', 'vendre': 'vender', 'perdre': 'perder', 'descendre': 'bajar',
+    'rendre': 'devolver', 'croire': 'creer', 'recevoir': 'recibir', 'apercevoir': 'divisar, percibir', 'boire': 'beber',
+    'lire': 'leer', 'écrire': 'escribir', 'décrire': 'describir', 'conduire': 'conducir', 'construire': 'construir',
+    'traduire': 'traducir', 'produire': 'producir', 'connaître': 'conocer', 'reconnaître': 'reconocer',
+    'paraître': 'parecer', 'disparaître': 'desaparecer', 'naître': 'nacer', 'vivre': 'vivir', 'suivre': 'seguir',
+    'plaire': 'gustar, agradar', 'rire': 'reír', 'sourire': 'sonreír', 'craindre': 'temer', 'peindre': 'pintar',
+    'éteindre': 'apagar', 'rejoindre': 'reunirse con, alcanzar', 'battre': 'golpear, vencer', 'convaincre': 'convencer',
+    'interdire': 'prohibir', 'se lever': 'levantarse', 'se coucher': 'acostarse', 'se réveiller': 'despertarse',
+    's’habiller': 'vestirse', 'se promener': 'pasear', 'se dépêcher': 'darse prisa', 's’amuser': 'divertirse',
+    'se reposer': 'descansar', 'se laver': 'lavarse', 'se marier': 'casarse', 'se souvenir': 'acordarse',
+    's’asseoir': 'sentarse', 'se sentir': 'sentirse', 's’appeler': 'llamarse', 's’inquiéter': 'preocuparse',
+    's’occuper': 'ocuparse', 'se taire': 'callarse', 's’ennuyer': 'aburrirse'
+  }
+};
+
+
+// Grammaire : fiches et exercices (contenu original, d'après le programme du cours).
+// Types d'exercice :
+//   { k: 'g', s, a, w }      trou(s) à compléter : « ___ » dans s ; a = réponses acceptées (un tableau par trou s'il y en a plusieurs)
+//   { k: 'q', s, o, c, w }   choix : o = options, c = index de la bonne réponse (les options sont mélangées à l'affichage)
+//   { k: 't', i, f, a, w }   transformation : consigne i, phrase de départ f, phrases acceptées a
+const BANK3 = {
+  groups: [
+    { id: 'pronoms', name: 'Pronoms', intro: 'Choisis un thème : lis la fiche, puis entraîne-toi. Les exercices que tu rates reviennent plus souvent.' },
+    { id: 'connecteurs', name: 'Connecteurs logiques', intro: 'Cause, conséquence, opposition, concession et temps : les mots qui relient les idées, indispensables pour la production écrite du DELF B1.' }
+  ],
+  topics: [
+    /* ======================= PRONOMS ======================= */
+    {
+      id: 'relatifs', g: 'pronoms', name: 'Pronoms relatifs : qui, que, où, dont',
+      tip: 'Regarde le verbe qui suit : sans sujet → qui ; avec un sujet mais sans COD → que ; construit avec « de » → dont ; un lieu ou un moment → où.',
+      fiche: [
+        ['qui', 'Sujet du verbe qui suit.', ['J’ai un ami qui habite à Lyon.', 'Prends le bus qui s’arrête devant la fac.']],
+        ['que (qu’)', 'COD du verbe qui suit : après que, il y a toujours un sujet.', ['Le livre que je lis est passionnant.', 'La maison qu’ils ont achetée est ancienne.']],
+        ['où', 'Complément de lieu ou de temps.', ['La ville où je suis né est au bord de la mer.', 'Je me souviens du jour où on s’est rencontrés.']],
+        ['dont', 'Remplace « de + nom » : parler de, avoir besoin de, être fier de, se souvenir de, le nom de…', ['Le film dont je t’ai parlé sort demain.', 'J’ai une collègue dont le mari est pilote.']]
+      ],
+      note: 'Avec que + passé composé, le participe s’accorde avec le nom remplacé : les photos que j’ai prises.',
+      links: [['Pronoms relatifs (francaisfacile.com)', 'https://www.francaisfacile.com/exercices/exercice-francais-2/exercice-francais-12937.php']],
+      ex: [
+        { k: 'q', s: 'C’est une région ___ il fait beau toute l’année.', o: ['où', 'qui', 'que', 'dont'], c: 0, w: 'Lieu → où.' },
+        { k: 'q', s: 'L’architecte ___ a dessiné ce musée est japonais.', o: ['qui', 'que', 'où', 'dont'], c: 0, w: 'Le verbe « a dessiné » n’a pas de sujet : qui est le sujet.' },
+        { k: 'q', s: 'Voici le dictionnaire ___ j’ai besoin pour mon cours.', o: ['dont', 'que', 'qui', 'où'], c: 0, w: 'Avoir besoin de quelque chose → dont.' },
+        { k: 'q', s: 'La série ___ tu regardes est très populaire.', o: ['que', 'qui', 'dont', 'où'], c: 0, w: '« tu » est le sujet ; la série est le COD de regardes → que.' },
+        { k: 'q', s: 'Je n’oublierai jamais l’année ___ j’ai vécu à Montréal.', o: ['où', 'que', 'dont', 'qui'], c: 0, w: 'Où s’emploie aussi pour un moment : l’année où, le jour où.' },
+        { k: 'q', s: 'C’est un chanteur ___ tout le monde connaît.', o: ['que', 'qui', 'dont', 'où'], c: 0, w: '« tout le monde » est le sujet ; le chanteur est le COD de connaît → que.' },
+        { k: 'q', s: 'J’ai un voisin ___ la fille joue au basket en équipe nationale.', o: ['dont', 'que', 'qui', 'où'], c: 0, w: 'La fille de mon voisin → dont.' },
+        { k: 'q', s: 'C’est le projet ___ nous sommes le plus fiers.', o: ['dont', 'que', 'où', 'qui'], c: 0, w: 'Être fier de quelque chose → dont.' },
+        { k: 'g', s: 'Les étudiants ___ arrivent en retard attendent la pause.', a: ['qui'], w: 'Arrivent n’a pas d’autre sujet → qui.' },
+        { k: 'g', s: 'Le quartier ___ nous habitons est très calme.', a: ['où'], w: 'Lieu → où.' },
+        { k: 'g', s: 'L’appartement ___ nous avons visité hier est trop cher.', a: ['que'], w: 'Nous est le sujet, l’appartement est le COD de « avons visité » → que.' },
+        { k: 'g', s: 'C’est un roman ___ on parle beaucoup en ce moment.', a: ['dont'], w: 'Parler de quelque chose → dont.' },
+        { k: 'g', s: 'Le film ___ on a vu samedi était un peu long.', a: ['qu’'], w: 'Devant une voyelle, que devient qu’ (qu’on, qu’il, qu’elle). Qui ne s’élide jamais.' },
+        { k: 't', i: 'Relie les deux phrases avec un pronom relatif.', f: 'J’ai lu un article. Cet article parle des drones.', a: ['J’ai lu un article qui parle des drones.'], w: 'Cet article est sujet de « parle » → qui.' },
+        { k: 't', i: 'Relie les deux phrases avec un pronom relatif.', f: 'Le musée est fermé. Nous voulions visiter ce musée.', a: ['Le musée que nous voulions visiter est fermé.'], w: 'Ce musée est COD de « visiter » → que, placé juste après le nom.' },
+        { k: 't', i: 'Relie les deux phrases avec un pronom relatif.', f: 'Voici le lycée. J’ai fait mes études dans ce lycée.', a: ['Voici le lycée où j’ai fait mes études.'], w: 'Dans ce lycée = lieu → où.' },
+        { k: 't', i: 'Relie les deux phrases avec un pronom relatif.', f: 'C’est une exposition. Tout le monde parle de cette exposition.', a: ['C’est une exposition dont tout le monde parle.'], w: 'Parler de cette exposition → dont.' }
+      ]
+    },
+    {
+      id: 'relief', g: 'pronoms', name: 'La mise en relief : ce qui, ce que, ce dont… c’est',
+      tip: 'Ce qui + verbe ; ce que + sujet + verbe ; ce dont + verbe construit avec « de ». Puis c’est (ou ce sont devant un pluriel).',
+      fiche: [
+        ['Ce qui… c’est', 'Ce qui est le sujet du verbe.', ['Ce qui me plaît, c’est la musique.', 'Ce qui m’inquiète, c’est le prix.']],
+        ['Ce que… c’est', 'Ce que est le COD : il est suivi d’un sujet.', ['Ce que j’aime, c’est voyager.', 'Ce qu’elle préfère, c’est le cinéma.']],
+        ['Ce dont… c’est', 'Pour les verbes construits avec de (avoir besoin de, rêver de, parler de…).', ['Ce dont j’ai besoin, c’est de repos.', 'Ce dont il rêve, c’est d’un voyage au Japon.']],
+        ['C’est… qui / C’est… que', 'Pour insister sur un sujet (qui) ou sur un complément (que).', ['C’est Marie qui a gagné.', 'C’est à Lyon que je l’ai rencontré.']]
+      ],
+      note: 'Devant un nom pluriel, on écrit ce sont (registre soutenu) ; à l’oral, c’est est aussi accepté : Ce que je préfère, ce sont les petits cafés.',
+      links: [['La mise en relief (lepointdufle.net)', 'https://www.lepointdufle.net/ressources_fle/pronoms_relatifs.htm']],
+      ex: [
+        { k: 'g', s: '___ m’énerve, ___ le bruit des motos.', a: [['ce qui'], ['c’est']], w: 'M’énerve n’a pas de sujet → ce qui.' },
+        { k: 'g', s: '___ je rêve, ___ d’une maison à la campagne.', a: [['ce dont'], ['c’est']], w: 'Rêver de quelque chose → ce dont. On garde le de après c’est.' },
+        { k: 'g', s: '___ elle cherche, ___ un appartement près de la fac.', a: [['ce qu’'], ['c’est']], w: 'Elle est le sujet → ce que, qui devient ce qu’ devant une voyelle.' },
+        { k: 'g', s: '___ me fait peur, ___ les orages.', a: [['ce qui'], ['ce sont', 'c’est']], w: 'Ce qui + verbe ; devant un pluriel, ce sont (ou c’est à l’oral).' },
+        { k: 'g', s: '___ nous avons besoin, ___ de temps.', a: [['ce dont'], ['c’est']], w: 'Avoir besoin de → ce dont.' },
+        { k: 'g', s: '___ je préfère à Valence, ___ la plage de la Malvarrosa.', a: [['ce que'], ['c’est']], w: 'Je est le sujet de préfère → ce que.' },
+        { k: 'g', s: '___ intéresse les jeunes, ___ les réseaux sociaux.', a: [['ce qui'], ['ce sont', 'c’est']], w: 'Intéresse n’a pas de sujet → ce qui.' },
+        { k: 'g', s: '___ il se plaint, ___ du bruit des voisins.', a: [['ce dont'], ['c’est']], w: 'Se plaindre de quelque chose → ce dont.' },
+        { k: 'q', s: 'C’est Paul ___ a préparé ce délicieux gâteau.', o: ['qui', 'que', 'dont'], c: 0, w: 'On insiste sur le sujet → c’est… qui.' },
+        { k: 'q', s: 'C’est à Lyon ___ j’ai fait mes études.', o: ['que', 'où', 'qui'], c: 0, w: 'On insiste sur un complément → c’est… que (même pour un lieu).' },
+        { k: 'q', s: 'C’est toi ___ as raison.', o: ['qui', 'que', 'ce qui'], c: 0, w: 'C’est toi qui as : le verbe s’accorde avec toi.' },
+        { k: 't', i: 'Mets en relief le complément avec « ce que… c’est ».', f: 'J’adore la cuisine italienne.', a: ['Ce que j’adore, c’est la cuisine italienne.'], w: 'La cuisine italienne est le COD → ce que.' },
+        { k: 't', i: 'Mets en relief le sujet avec « ce qui… c’est ».', f: 'Le mensonge m’énerve.', a: ['Ce qui m’énerve, c’est le mensonge.'], w: 'Le mensonge est le sujet → ce qui.' },
+        { k: 't', i: 'Mets en relief avec « ce dont… c’est ».', f: 'J’ai besoin d’une semaine de vacances.', a: ['Ce dont j’ai besoin, c’est d’une semaine de vacances.'], w: 'Avoir besoin de → ce dont ; on garde de (d’) après c’est.' },
+        { k: 't', i: 'Insiste sur le sujet avec « c’est… qui ».', f: 'Mercedes a créé ce blog.', a: ['C’est Mercedes qui a créé ce blog.'], w: 'C’est + sujet + qui + verbe.' }
+      ]
+    },
+    {
+      id: 'codcoi', g: 'pronoms', name: 'Pronoms COD et COI',
+      tip: 'Verbe + quelqu’un / quelque chose sans préposition → le, la, les. Verbe + à + personne → lui, leur. Le pronom se place devant le verbe conjugué, devant l’auxiliaire ou devant l’infinitif.',
+      fiche: [
+        ['COD', 'me, te, le / la (l’), nous, vous, les : le verbe se construit sans préposition.', ['Je regarde la télé. → Je la regarde.', 'Tu connais mes parents ? → Tu les connais ?']],
+        ['COI', 'me, te, lui, nous, vous, leur : verbe + à + personne (parler, téléphoner, répondre, écrire, donner, dire, offrir, demander…).', ['Je parle à Marie. → Je lui parle.', 'Il téléphone à ses parents. → Il leur téléphone.']],
+        ['Place', 'Devant le verbe conjugué ; au passé composé, devant l’auxiliaire ; avec un infinitif, devant l’infinitif.', ['Je l’ai vu hier.', 'Je vais l’appeler ce soir.', 'Je ne lui ai pas répondu.']],
+        ['Impératif', 'Affirmatif : après le verbe, avec un trait d’union (me → moi). Négatif : devant le verbe.', ['Regarde-la ! Donne-moi ton numéro.', 'Ne la regarde pas !']],
+        ['Accord', 'Au passé composé avec avoir, le participe s’accorde avec un COD placé avant.', ['Ces photos ? Je les ai prises à Paris.']]
+      ],
+      note: 'Attention : leur (pronom) ne prend jamais de -s. Je leur parle ≠ leurs livres.',
+      links: [['Le, la, les, lui, leur (avosplumes.org)', 'https://www.avosplumes.org/students/exercises/le-la-les-lui-leur/']],
+      ex: [
+        { k: 'g', s: 'Tu connais Julie ? — Oui, je ___ connais depuis le lycée.', a: ['la'], w: 'Connaître quelqu’un (sans préposition), féminin → la.' },
+        { k: 'g', s: 'Tu as écrit à tes grands-parents ? — Oui, je ___ ai écrit hier.', a: ['leur'], w: 'Écrire à + personnes au pluriel → leur.' },
+        { k: 'g', s: 'Tu téléphones à Marc ce soir ? — Oui, je ___ téléphone à 20 heures.', a: ['lui'], w: 'Téléphoner à + une personne → lui.' },
+        { k: 'g', s: 'Ces baskets ? Je ___ ai achetées en soldes.', a: ['les'], w: 'Acheter quelque chose → COD les ; le participe s’accorde : achetées.' },
+        { k: 'g', s: 'Tu me prêtes ton vélo ? — Oui, je ___ le prête.', a: ['te'], w: 'Prêter quelque chose à quelqu’un : à toi → te.' },
+        { k: 'g', s: 'Mon chef ? Je ___ ai demandé deux jours de congé.', a: ['lui'], w: 'Demander quelque chose à quelqu’un → lui.' },
+        { k: 'g', s: 'Ce documentaire, tu ___ as vu ?', a: ['l’'], w: 'Le devient l’ devant une voyelle (l’as).' },
+        { k: 'g', s: 'Les enfants ? Je ___ attends devant l’école.', a: ['les'], w: 'Attendre quelqu’un (sans préposition) → les.' },
+        { k: 'q', s: 'Tu parles à tes voisins ? — Non, je ne ___ parle jamais.', o: ['leur', 'les', 'lui'], c: 0, w: 'Parler à + plusieurs personnes → leur.' },
+        { k: 'q', s: 'La lettre ? Je ___ ai envoyée lundi.', o: ['l’', 'la', 'lui'], c: 0, w: 'La devient l’ devant une voyelle ; envoyée s’accorde avec la lettre.' },
+        { k: 'q', s: 'Tes clés ? Je les ai ___ dans ton sac.', o: ['mises', 'mis', 'mise'], c: 0, w: 'Les (= les clés, féminin pluriel) est placé avant → mises.' },
+        { k: 'q', s: 'Ta sœur ? Je vais ___ inviter à mon anniversaire.', o: ['l’', 'lui', 'la'], c: 0, w: 'Inviter quelqu’un → COD ; la devient l’ devant une voyelle, et le pronom se place devant l’infinitif : l’inviter.' },
+        { k: 't', i: 'Remplace « le gâteau » par un pronom.', f: 'Je vais préparer le gâteau.', a: ['Je vais le préparer.'], w: 'Avec un infinitif, le pronom se place devant l’infinitif.' },
+        { k: 't', i: 'Remplace « à Sophie » par un pronom.', f: 'Nous avons offert un livre à Sophie.', a: ['Nous lui avons offert un livre.'], w: 'Offrir à quelqu’un → lui, devant l’auxiliaire. Pas d’accord avec un COI.' },
+        { k: 't', i: 'Mets à l’impératif affirmatif et remplace « ta mère » par un pronom.', f: 'Tu appelles ta mère.', a: ['Appelle-la !', 'Appelle-la.'], w: 'Impératif affirmatif : verbe-trait d’union-pronom ; appelle sans -s.' },
+        { k: 't', i: 'Mets la phrase à la forme négative.', f: 'Je l’ai vu au concert.', a: ['Je ne l’ai pas vu au concert.'], w: 'La négation encadre le pronom et l’auxiliaire : ne l’ai pas.' }
+      ]
+    },
+    {
+      id: 'eny', g: 'pronoms', name: 'Les pronoms EN et Y',
+      tip: 'Y remplace un lieu ou « à + chose ». EN remplace « de + nom », un partitif (du, de la, des) ou une quantité (le nombre reste).',
+      fiche: [
+        ['Y : un lieu', 'Avec à, en, dans, chez, sur…', ['Tu vas à Paris ? — Oui, j’y vais demain.', 'Il est chez lui ? — Oui, il y est.']],
+        ['Y : à + chose', 'Penser à, s’intéresser à, répondre à, participer à… (pour une personne : à lui, à elle).', ['Tu penses à ton examen ? — Oui, j’y pense.', 'Tu penses à ta sœur ? — Oui, je pense à elle.']],
+        ['EN : de + nom', 'Venir de, parler de, avoir besoin de, s’occuper de…', ['Tu reviens de la plage ? — Oui, j’en reviens.', 'Il a besoin de son ordinateur ? — Oui, il en a besoin.']],
+        ['EN : quantité', 'Avec du, de la, des, ou un nombre / une quantité (le nombre reste à la fin).', ['Tu veux du café ? — Oui, j’en veux.', 'Tu as des frères ? — Oui, j’en ai deux.', 'Il y a beaucoup de monde ? — Oui, il y en a beaucoup.']],
+        ['Place', 'Comme les autres pronoms. À l’impératif affirmatif, le -s revient devant y et en.', ['Je n’y vais pas.', 'Vas-y ! Manges-en !']]
+      ],
+      note: 'Avec en, le participe passé ne s’accorde pas : Des pommes ? J’en ai acheté.',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Tu vas souvent au théâtre ? — Oui, j’___ vais une fois par mois.', a: ['y'], w: 'Au théâtre = lieu → y.' },
+        { k: 'g', s: 'Tu bois du thé le matin ? — Oui, j’___ bois une tasse.', a: ['en'], w: 'Du thé = partitif → en ; la quantité (une tasse) reste.' },
+        { k: 'g', s: 'Combien de cousins as-tu ? — J’___ ai six.', a: ['en'], w: 'Quantité → en + le nombre à la fin.' },
+        { k: 'g', s: 'Tu penses à tes vacances ? — Oui, j’___ pense tout le temps.', a: ['y'], w: 'Penser à + chose → y.' },
+        { k: 'g', s: 'Elle revient de Madrid ? — Oui, elle ___ revient ce soir.', a: ['en'], w: 'Revenir de + lieu → en.' },
+        { k: 'g', s: 'Vous habitez à Valence depuis longtemps ? — Oui, nous ___ habitons depuis 2019.', a: ['y'], w: 'À Valence = lieu → y.' },
+        { k: 'g', s: 'Tu as besoin de ton dictionnaire ? — Non, je n’___ ai pas besoin.', a: ['en'], w: 'Avoir besoin de → en.' },
+        { k: 'g', s: 'Il s’intéresse à l’architecture ? — Oui, il s’___ intéresse beaucoup.', a: ['y'], w: 'S’intéresser à + chose → y.' },
+        { k: 'q', s: 'Tu as parlé du projet à la prof ? — Oui, je lui ___ ai parlé.', o: ['en', 'y', 'le'], c: 0, w: 'Parler de quelque chose → en (et lui pour « à la prof »).' },
+        { k: 'q', s: 'Tu penses à ta grand-mère ? — Oui, je pense souvent ___.', o: ['à elle', 'y', 'lui'], c: 0, w: 'Penser à + personne → à lui / à elle, pas y.' },
+        { k: 'q', s: 'Il reste du pain ? — Non, il n’y ___ a plus.', o: ['en', 'y', 'le'], c: 0, w: 'Du pain = partitif → en ; il n’y en a plus.' },
+        { k: 'q', s: 'Va à la pharmacie ! → ___ !', o: ['Vas-y', 'Va-y', 'Y va'], c: 0, w: 'À l’impératif, le -s revient devant y : vas-y.' },
+        { k: 'q', s: 'Des cerises ? J’en ai ___ deux kilos.', o: ['acheté', 'achetées', 'achetés'], c: 0, w: 'Avec en, pas d’accord du participe.' },
+        { k: 't', i: 'Remplace « des pommes » par un pronom.', f: 'J’ai acheté des pommes au marché.', a: ['J’en ai acheté au marché.'], w: 'Des + nom → en, devant l’auxiliaire, sans accord.' },
+        { k: 't', i: 'Remplace « à la bibliothèque » par un pronom.', f: 'Je vais à la bibliothèque cet après-midi.', a: ['J’y vais cet après-midi.'], w: 'Lieu → y ; je devient j’ devant y.' },
+        { k: 't', i: 'Réponds à la forme négative avec « en ».', f: 'Vous avez des animaux ?', a: ['Non, nous n’en avons pas.', 'Non, je n’en ai pas.', 'Non, on n’en a pas.'], w: 'Ne + en + verbe + pas.' }
+      ]
+    },
+    {
+      id: 'toniques', g: 'pronoms', name: 'Les pronoms toniques',
+      tip: 'moi, toi, lui, elle, nous, vous, eux, elles : pour insister, après c’est, après une préposition, dans les réponses courtes et après que dans une comparaison.',
+      fiche: [
+        ['Formes', 'moi, toi, lui, elle, nous, vous, eux, elles.', []],
+        ['Pour insister', 'Devant ou après le sujet.', ['Moi, je préfère le thé.', 'Lui, il ne vient jamais.']],
+        ['Après c’est', '', ['Qui a appelé ? — C’est elle.', 'C’est nous qui avons gagné.']],
+        ['Après une préposition', 'avec, pour, chez, sans, avant, après, à côté de…', ['Je dîne chez eux.', 'Ce cadeau est pour toi.', 'Je pense à lui.']],
+        ['Réponses courtes, aussi, non plus', '', ['Qui veut un café ? — Moi !', 'J’aime le jazz. — Moi aussi.', 'Je n’aime pas le froid. — Moi non plus.']],
+        ['Comparaison et double sujet', '', ['Il est plus grand que moi.', 'Paul et moi, nous partons demain.']]
+      ],
+      note: '',
+      links: [['Pronoms toniques (wordwall.net)', 'https://wordwall.net/fr/resource/3221529/pronoms-toniques-et-langues-a11']],
+      ex: [
+        { k: 'g', s: '___, je m’appelle Lucas. Et toi ?', a: ['moi'], w: 'Pour insister sur je → moi.' },
+        { k: 'g', s: 'Ce bouquet est pour ___, maman !', a: ['toi'], w: 'Après une préposition (pour) → pronom tonique.' },
+        { k: 'g', s: 'Mes cousins ? Je passe Noël chez ___.', a: ['eux'], w: 'Chez + pronom tonique ; masculin pluriel → eux.' },
+        { k: 'g', s: 'Qui a peint ce tableau ? C’est ___ (Annick) !', a: ['elle'], w: 'Après c’est → pronom tonique.' },
+        { k: 'g', s: 'Mon frère est plus âgé que ___ (je).', a: ['moi'], w: 'Après que dans une comparaison → pronom tonique.' },
+        { k: 'g', s: 'J’adore le chocolat. — ___ aussi ! (nous)', a: ['nous'], w: 'Réponse courte avec aussi → pronom tonique.' },
+        { k: 'g', s: 'Je ne mange pas de viande. — ___ non plus. (je)', a: ['moi'], w: 'Accord avec une phrase négative → moi non plus.' },
+        { k: 'g', s: 'Mes amies ? Je pense souvent à ___.', a: ['elles'], w: 'Penser à + personne → à + pronom tonique.' },
+        { k: 'g', s: 'Paul et ___ (je), nous allons au concert samedi.', a: ['moi'], w: 'Dans un sujet double, on utilise le pronom tonique.' },
+        { k: 'q', s: 'Tu viens au cinéma avec ___ ?', o: ['nous', 'on', 'notre'], c: 0, w: 'Après une préposition → nous (jamais on).' },
+        { k: 'q', s: 'C’est ___ qui avez gagné le concours !', o: ['vous', 'nous', 'eux'], c: 0, w: 'Le verbe « avez » s’accorde avec vous.' },
+        { k: 'q', s: 'Mon grand-père ? Je pense beaucoup à ___.', o: ['lui', 'le', 'y'], c: 0, w: 'Penser à + personne → à lui.' },
+        { k: 'q', s: 'Ils sont partis sans ___ (Julie et Marie).', o: ['elles', 'eux', 'les'], c: 0, w: 'Julie et Marie = féminin pluriel → elles.' },
+        { k: 't', i: 'Insiste sur le sujet avec un pronom tonique en début de phrase.', f: 'Je préfère la montagne.', a: ['Moi, je préfère la montagne.'], w: 'Pronom tonique + virgule + sujet.' }
+      ]
+    },
+    {
+      id: 'on', g: 'pronoms', name: 'Le pronom ON',
+      tip: 'On se conjugue toujours à la 3e personne du singulier. Il peut vouloir dire « nous », « les gens » ou « quelqu’un ».',
+      fiche: [
+        ['On = nous', 'Très fréquent à l’oral. Possessif : notre / nos ; pronom tonique : nous.', ['On va au cinéma ce soir ?', 'On a pris notre voiture.']],
+        ['On = les gens', 'Une vérité générale.', ['En France, on dîne vers 20 heures.']],
+        ['On = quelqu’un', 'Une personne inconnue.', ['On a volé mon vélo !', 'On frappe à la porte.']],
+        ['Accord', 'Le verbe est au singulier, mais quand on = nous, le participe et l’adjectif peuvent s’accorder.', ['On est arrivés en retard.', 'On est fatiguées (nous, les filles).']]
+      ],
+      note: 'À la forme négative, n’oublie pas le n’ devant une voyelle : on n’a pas faim (on entend la liaison).',
+      links: [['Le pronom ON (allofle.com)', 'https://allofle.com/le-pronom-personnel-on-grammaire-du-niveau-debutant/']],
+      ex: [
+        { k: 'g', s: 'On ___ (aller) à la piscine demain ?', a: ['va'], w: 'On → 3e personne du singulier : on va.' },
+        { k: 'g', s: 'Au Japon, on ___ (manger) avec des baguettes.', a: ['mange'], w: 'On = les gens ; verbe au singulier.' },
+        { k: 'g', s: 'Après le match, on ___ (être) très fatigués.', a: ['est'], w: 'On est ; l’adjectif s’accorde avec le sens (nous).' },
+        { k: 'g', s: 'Ce soir, on ___ (faire) une fête chez nous.', a: ['fait'], w: 'Faire → on fait.' },
+        { k: 'g', s: 'On ___ (pouvoir) entrer, s’il vous plaît ?', a: ['peut'], w: 'Pouvoir → on peut.' },
+        { k: 'q', s: 'Nous, on ___ souvent au restaurant le dimanche.', o: ['va', 'allons', 'vont'], c: 0, w: 'Le sujet du verbe est on → va.' },
+        { k: 'q', s: 'On a oublié ___ parapluies dans le train.', o: ['nos', 'leurs', 'ses'], c: 0, w: 'On = nous → nos.' },
+        { k: 'q', s: 'On ___ a pas compris la question.', o: ['n’', 'ne', '—'], c: 0, w: 'La négation est obligatoire à l’écrit : on n’a pas.' },
+        { k: 'q', s: '« On parle français au Québec. » Ici, on veut dire :', o: ['les gens en général', 'nous', 'quelqu’un d’inconnu'], c: 0, w: 'Vérité générale → les gens.' },
+        { k: 'q', s: '« On a frappé à la porte. » Ici, on veut dire :', o: ['quelqu’un d’inconnu', 'nous', 'les gens en général'], c: 0, w: 'Une personne qu’on ne connaît pas → quelqu’un.' },
+        { k: 't', i: 'Remplace « nous » par « on ».', f: 'Nous partons demain matin.', a: ['On part demain matin.'], w: 'On part (3e personne du singulier).' },
+        { k: 't', i: 'Remplace « nous » par « on ».', f: 'Nous sommes allés à la plage.', a: ['On est allés à la plage.', 'On est allé à la plage.'], w: 'On est allés : l’auxiliaire est au singulier ; le participe peut s’accorder au pluriel.' },
+        { k: 't', i: 'Remplace « nous » par « on ».', f: 'Nous avons fini nos devoirs.', a: ['On a fini nos devoirs.'], w: 'On a fini ; le possessif reste nos.' }
+      ]
+    },
+    {
+      id: 'demonstratifs', g: 'pronoms', name: 'Adjectifs et pronoms démonstratifs',
+      tip: 'Adjectif : ce / cet / cette / ces + nom. Pronom : celui, celle, ceux, celles, jamais seul : + -ci / -là, + de, + qui / que / dont.',
+      fiche: [
+        ['Adjectifs', 'ce (masculin), cet (masculin devant voyelle ou h muet), cette (féminin), ces (pluriel).', ['ce livre, cet hôtel, cette ville, ces enfants']],
+        ['Pronoms', 'celui (m. s.), celle (f. s.), ceux (m. pl.), celles (f. pl.).', []],
+        ['+ -ci / -là', 'Pour choisir entre deux choses.', ['Quelle robe ? Celle-ci ou celle-là ?']],
+        ['+ de', 'Pour indiquer à qui appartient quelque chose.', ['Ce n’est pas ma voiture, c’est celle de mon frère.']],
+        ['+ qui / que / dont', 'Avec une proposition relative.', ['Ceux qui ont fini peuvent sortir.', 'Le gâteau que je préfère, c’est celui que fait ma grand-mère.']],
+        ['Neutres', 'ceci, cela, ça (oral) : pour une idée ou une chose non nommée.', ['Je n’aime pas ça.', 'Cela me paraît difficile.']]
+      ],
+      note: '',
+      links: [],
+      ex: [
+        { k: 'g', s: 'J’aime beaucoup ___ hôtel.', a: ['cet'], w: 'Hôtel commence par un h muet → cet.' },
+        { k: 'g', s: '___ chaussures sont trop chères pour moi.', a: ['ces'], w: 'Pluriel → ces.' },
+        { k: 'g', s: '___ université est l’une des plus anciennes d’Europe.', a: ['cette'], w: 'Université est féminin → cette.' },
+        { k: 'g', s: 'Quel stylo veux-tu ? ___-ci ou celui-là ?', a: ['celui'], w: 'Stylo, masculin singulier → celui.' },
+        { k: 'g', s: 'Ce n’est pas mon portable, c’est ___ de ma sœur.', a: ['celui'], w: 'Le portable (m. s.) → celui de.' },
+        { k: 'g', s: 'Mes photos sont belles, mais ___ de Julien sont magnifiques.', a: ['celles'], w: 'Les photos (f. pl.) → celles de.' },
+        { k: 'g', s: '___ qui veulent participer doivent s’inscrire avant vendredi.', a: ['ceux'], w: 'Les personnes en général (m. pl.) → ceux qui.' },
+        { k: 'g', s: 'Tu préfères quelle maison ? — ___ qui a un grand jardin.', a: ['celle'], w: 'La maison (f. s.) → celle qui.' },
+        { k: 'q', s: 'Ces exercices sont faciles, mais ___ de demain seront plus difficiles.', o: ['ceux', 'celles', 'ces'], c: 0, w: 'Les exercices (m. pl.) → ceux.' },
+        { k: 'q', s: 'Parmi tous ces gâteaux, ___ au chocolat est le meilleur.', o: ['celui', 'celle', 'ce'], c: 0, w: 'Le gâteau (m. s.) → celui.' },
+        { k: 'q', s: 'Je n’ai jamais dit ___ !', o: ['ça', 'celui', 'ce'], c: 0, w: 'Une idée non nommée → pronom neutre ça (cela).' },
+        { k: 'q', s: 'De toutes les villes que j’ai visitées, ___ que je préfère, c’est Lyon.', o: ['celle', 'celui', 'ce'], c: 0, w: 'La ville (f. s.) → celle que.' }
+      ]
+    },
+    {
+      id: 'possessifs', g: 'pronoms', name: 'Adjectifs et pronoms possessifs',
+      tip: 'Le possessif s’accorde avec la chose possédée, pas avec le possesseur. Pronoms : le mien, la mienne, les miens, les miennes… le nôtre, le leur.',
+      fiche: [
+        ['Adjectifs', 'mon, ton, son (m.) · ma, ta, sa (f.) · mes, tes, ses (pl.) · notre, votre, leur · nos, vos, leurs.', ['mon amie (devant une voyelle, ma → mon)']],
+        ['Pronoms (un possesseur)', 'le mien / la mienne / les miens / les miennes ; le tien… ; le sien…', ['C’est ta voiture ? — Oui, c’est la mienne.']],
+        ['Pronoms (plusieurs possesseurs)', 'le nôtre / la nôtre / les nôtres ; le vôtre… ; le leur / la leur / les leurs.', ['Leur maison est grande, la nôtre est petite.']],
+        ['Avec à et de', 'à + le → au, de + le → du.', ['Je pense au mien.', 'Il parle du sien.']]
+      ],
+      note: 'Son / sa / ses dépendent du nom qui suit : Paul aime sa mère ; Marie aime son père.',
+      links: [],
+      ex: [
+        { k: 'g', s: 'C’est ta voiture ? — Oui, c’est la ___.', a: ['mienne'], w: 'La voiture (f. s.), à moi → la mienne.' },
+        { k: 'g', s: 'Ce sont les clés de Paul ? — Oui, ce sont les ___.', a: ['siennes'], w: 'Les clés (f. pl.), à lui → les siennes.' },
+        { k: 'g', s: 'Notre appartement est petit. Et le ___ ? (vous)', a: ['vôtre'], w: 'L’appartement (m. s.), à vous → le vôtre (avec accent).' },
+        { k: 'g', s: 'J’ai oublié mon parapluie. Tu peux me prêter le ___ ?', a: ['tien'], w: 'Le parapluie (m. s.), à toi → le tien.' },
+        { k: 'g', s: 'Leurs enfants sont à l’école, et les ___ ? (nous)', a: ['nôtres'], w: 'Les enfants (pl.), à nous → les nôtres.' },
+        { k: 'g', s: 'Ma sœur s’appelle Ana. Et la ___, comment elle s’appelle ? (tu)', a: ['tienne'], w: 'La sœur (f. s.), à toi → la tienne.' },
+        { k: 'g', s: 'Ces livres sont à Marie et à Paul ? — Oui, ce sont les ___.', a: ['leurs'], w: 'Plusieurs possesseurs, pluriel → les leurs.' },
+        { k: 'g', s: 'C’est ___ école préférée. (je)', a: ['mon'], w: 'Devant un nom féminin qui commence par une voyelle, ma → mon.' },
+        { k: 'g', s: 'Les étudiants ont rendu ___ rédactions au professeur.', a: ['leurs'], w: 'Plusieurs possesseurs et plusieurs rédactions → leurs.' },
+        { k: 'q', s: 'Pierre et Julie adorent ___ maison.', o: ['leur', 'leurs', 'sa'], c: 0, w: 'Plusieurs possesseurs, une seule maison → leur.' },
+        { k: 'q', s: 'Ma voiture est rouge ; ___ est bleue. (Marc)', o: ['la sienne', 'le sien', 'la leur'], c: 0, w: 'La voiture (f. s.), à lui → la sienne.' },
+        { k: 'q', s: 'Votre fils et ___ jouent ensemble tous les jours. (nous)', o: ['le nôtre', 'notre', 'les nôtres'], c: 0, w: 'Le fils (m. s.), à nous → le nôtre.' },
+        { k: 'q', s: 'Paul téléphone à ___ mère tous les soirs.', o: ['sa', 'son', 'leur'], c: 0, w: 'Mère est féminin → sa (même si Paul est un homme).' }
+      ]
+    },
+
+    /* ======================= CONNECTEURS ======================= */
+    {
+      id: 'cause', g: 'connecteurs', name: 'Exprimer la cause',
+      tip: 'parce que, car, comme, puisque + phrase ; grâce à (positif), à cause de (négatif), en raison de + nom.',
+      fiche: [
+        ['parce que', 'La plus courante ; répond à « pourquoi ? ».', ['Je ne viens pas parce que je suis malade.']],
+        ['car', 'Surtout à l’écrit ; jamais en début de phrase.', ['Le magasin est fermé, car c’est un jour férié.']],
+        ['comme', 'Toujours en début de phrase.', ['Comme il pleuvait, nous sommes restés à la maison.']],
+        ['puisque', 'Cause évidente ou déjà connue.', ['Puisque tu as faim, mange quelque chose !']],
+        ['grâce à + nom', 'Cause positive.', ['J’ai réussi grâce à tes conseils.']],
+        ['à cause de + nom', 'Cause négative.', ['Le vol est annulé à cause de la tempête.']],
+        ['en raison de + nom', 'Registre formel (annonces, administration).', ['Le musée est fermé en raison de travaux.']]
+      ],
+      note: 'À cause de + le → à cause du ; grâce à + le → grâce au.',
+      links: [['La cause et la conséquence (francaisfacile.com)', 'https://www.francaisfacile.com/exercices/exercice-francais-2/exercice-francais-84696.php']],
+      ex: [
+        { k: 'q', s: '___ il neigeait, les cours ont été annulés.', o: ['Comme', 'Car', 'Grâce à'], c: 0, w: 'En début de phrase + phrase → comme.' },
+        { k: 'q', s: 'J’ai trouvé ce stage ___ mon professeur.', o: ['grâce à', 'à cause de', 'parce que'], c: 0, w: 'Cause positive + nom → grâce à.' },
+        { k: 'q', s: 'Le train a deux heures de retard ___ la grève.', o: ['à cause de', 'grâce à', 'car'], c: 0, w: 'Cause négative + nom → à cause de.' },
+        { k: 'q', s: 'Je n’ai pas répondu ___ je n’avais plus de batterie.', o: ['parce que', 'à cause de', 'comme'], c: 0, w: 'Au milieu de la phrase + phrase → parce que.' },
+        { k: 'q', s: '___ tu connais bien la ville, c’est toi qui nous guides !', o: ['Puisque', 'Car', 'À cause de'], c: 0, w: 'Cause évidente, connue de tous → puisque.' },
+        { k: 'q', s: 'Il a été embauché, ___ il parle quatre langues.', o: ['car', 'comme', 'grâce à'], c: 0, w: 'Car relie deux phrases ; il ne commence jamais la phrase.' },
+        { k: 'q', s: 'La piscine est fermée ___ des travaux de rénovation.', o: ['en raison de', 'grâce à', 'puisque'], c: 0, w: 'Cause négative, registre formel + nom → en raison de. Puisque est suivi d’une phrase.' },
+        { k: 'g', s: 'Nous sommes restés à l’intérieur ___ mauvais temps.', a: ['à cause du'], w: 'Cause négative ; à cause de + le → à cause du.' },
+        { k: 'g', s: 'Elle a progressé très vite ___ cours particuliers.', a: ['grâce aux'], w: 'Cause positive ; grâce à + les → grâce aux.' },
+        { k: 'g', s: 'Je prends un taxi ___ je suis en retard.', a: ['parce que', 'car', 'puisque'], w: 'Une phrase complète suit → parce que (ou car, puisque).' },
+        { k: 't', i: 'Relie les deux phrases avec « comme ».', f: 'Il était très fatigué. Il s’est couché tôt.', a: ['Comme il était très fatigué, il s’est couché tôt.'], w: 'Comme + cause, en début de phrase, puis la conséquence.' },
+        { k: 't', i: 'Relie les deux phrases avec « car ».', f: 'Je fais du yoga. Je veux être moins stressé.', a: ['Je fais du yoga car je veux être moins stressé.', 'Je fais du yoga, car je veux être moins stressé.'], w: 'Car se place entre les deux phrases.' },
+        { k: 't', i: 'Relie les deux phrases avec « grâce à ».', f: 'Elle a réussi son examen. Son travail régulier l’a aidée.', a: ['Elle a réussi son examen grâce à son travail régulier.'], w: 'Grâce à + nom.' }
+      ]
+    },
+    {
+      id: 'consequence', g: 'connecteurs', name: 'Exprimer la conséquence',
+      tip: 'donc, alors, du coup (oral), c’est pourquoi, c’est pour ça que, par conséquent (formel) ; si / tellement + adjectif + que.',
+      fiche: [
+        ['donc, alors', 'Les plus courants.', ['Il pleut, donc je prends mon parapluie.', 'Le bus ne passait pas, alors j’ai marché.']],
+        ['du coup', 'Registre familier, surtout à l’oral.', ['J’ai raté le train, du coup je suis arrivé en retard.']],
+        ['c’est pourquoi, c’est pour ça que', 'En début de proposition.', ['Je suis malade, c’est pourquoi je reste au lit.']],
+        ['par conséquent', 'Registre formel, à l’écrit.', ['Les températures baissent ; par conséquent, la consommation d’énergie augmente.']],
+        ['si / tellement + adjectif ou adverbe + que', 'La conséquence vient d’une intensité.', ['Il fait si chaud que je ne dors pas.', 'Elle parle tellement vite que je ne comprends rien.']],
+        ['tellement de + nom + que', '', ['Il y avait tellement de monde que nous sommes partis.']]
+      ],
+      note: '',
+      links: [['La cause et la conséquence (francaisfacile.com)', 'https://www.francaisfacile.com/exercices/exercice-francais-2/exercice-francais-84696.php']],
+      ex: [
+        { k: 'q', s: 'J’avais très faim, ___ j’ai mangé deux sandwichs.', o: ['donc', 'car', 'parce que'], c: 0, w: 'J’ai mangé est le résultat → donc.' },
+        { k: 'q', s: 'Le musée était fermé, ___ nous sommes allés au parc.', o: ['alors', 'puisque', 'grâce à'], c: 0, w: 'Conséquence → alors.' },
+        { k: 'q', s: 'Il fait ___ froid que le lac est gelé.', o: ['si', 'tellement de', 'donc'], c: 0, w: 'Si + adjectif + que.' },
+        { k: 'q', s: 'Elle a ___ travail qu’elle ne sort plus le soir.', o: ['tellement de', 'si', 'très'], c: 0, w: 'Tellement de + nom + que.' },
+        { k: 'q', s: 'Les transports sont en grève ; ___, de nombreux salariés travaillent à distance.', o: ['par conséquent', 'parce que', 'comme'], c: 0, w: 'Registre formel → par conséquent.' },
+        { k: 'q', s: 'Mon téléphone était déchargé, ___ je ne t’ai pas appelé.', o: ['c’est pour ça que', 'car', 'à cause de'], c: 0, w: 'Conséquence → c’est pour ça que.' },
+        { k: 'q', s: 'À l’oral, entre amis : « J’ai oublié mes clés, ___ j’ai dormi chez Paul. »', o: ['du coup', 'par conséquent', 'en raison de'], c: 0, w: 'Registre familier → du coup.' },
+        { k: 'g', s: 'Il pleut beaucoup, c’est ___ nous restons à la maison.', a: ['pourquoi'], w: 'C’est pourquoi + conséquence.' },
+        { k: 'g', s: 'Le professeur parle ___ vite que personne ne prend de notes.', a: ['si', 'tellement'], w: 'Si / tellement + adverbe + que.' },
+        { k: 'g', s: 'Il y avait ___ de bruit que je n’ai pas pu dormir.', a: ['tellement'], w: 'Tellement de + nom + que.' },
+        { k: 't', i: 'Relie les deux phrases avec « donc ».', f: 'Je suis fatigué. Je vais me coucher.', a: ['Je suis fatigué, donc je vais me coucher.', 'Je suis fatigué donc je vais me coucher.'], w: 'Cause, donc conséquence.' },
+        { k: 't', i: 'Relie les deux phrases avec « si… que ».', f: 'Le film était long. Je me suis endormi.', a: ['Le film était si long que je me suis endormi.'], w: 'Si se place devant l’adjectif, que introduit la conséquence.' },
+        { k: 't', i: 'Exprime la même idée avec « c’est pourquoi ».', f: 'Je reste à la maison parce que je suis malade.', a: ['Je suis malade, c’est pourquoi je reste à la maison.'], w: 'On commence par la cause, puis c’est pourquoi + conséquence.' }
+      ]
+    },
+    {
+      id: 'opposition', g: 'connecteurs', name: 'Exprimer l’opposition',
+      tip: 'mais ; alors que / tandis que + phrase (deux faits différents) ; par contre (familier) ; en revanche (soutenu) ; au contraire.',
+      fiche: [
+        ['mais', 'Le plus courant.', ['Je comprends l’italien, mais je ne le parle pas.']],
+        ['alors que, tandis que', 'Comparent deux faits qui s’opposent.', ['J’adore la mer alors que mon mari préfère la montagne.']],
+        ['par contre', 'Registre familier.', ['L’appart est petit ; par contre, il est très bien situé.']],
+        ['en revanche', 'Registre soutenu (à l’écrit, à l’examen).', ['Cette ville est bruyante le jour ; en revanche, les nuits sont calmes.']],
+        ['au contraire', 'Dit le contraire de ce qui précède.', ['Il n’est pas timide, au contraire : il parle à tout le monde.']]
+      ],
+      note: 'Opposition ou concession ? L’opposition compare deux faits (moi / toi, hier / aujourd’hui). La concession présente un résultat inattendu (il a étudié, pourtant il a échoué).',
+      links: [],
+      ex: [
+        { k: 'q', s: 'J’adore le café ___ ma sœur ne boit que du thé.', o: ['alors que', 'puisque', 'donc'], c: 0, w: 'Deux faits qui s’opposent → alors que.' },
+        { k: 'q', s: 'Mon studio est petit ; ___, il est très lumineux. (registre familier)', o: ['par contre', 'en revanche', 'car'], c: 0, w: 'Registre familier → par contre.' },
+        { k: 'q', s: 'Le centre-ville est animé ; ___, les quartiers du nord sont très calmes. (registre soutenu)', o: ['en revanche', 'par contre', 'donc'], c: 0, w: 'Registre soutenu → en revanche.' },
+        { k: 'q', s: 'Je lis bien l’allemand ___ je ne le parle pas.', o: ['mais', 'car', 'donc'], c: 0, w: 'Opposition simple → mais.' },
+        { k: 'q', s: 'Ma sœur est très sportive, ___ moi, je déteste courir.', o: ['tandis que', 'parce que', 'grâce à'], c: 0, w: 'Comparaison de deux personnes → tandis que.' },
+        { k: 'q', s: 'Les loyers sont très chers à Paris ; ___, ils restent abordables en province.', o: ['en revanche', 'donc', 'puisque'], c: 0, w: 'Opposition entre deux situations → en revanche.' },
+        { k: 'q', s: 'Il n’est pas paresseux ; ___, il travaille tout le week-end.', o: ['au contraire', 'alors que', 'grâce à'], c: 0, w: 'On dit le contraire de ce qui précède → au contraire.' },
+        { k: 'g', s: 'Hier, il a plu toute la journée ___ aujourd’hui il fait un soleil magnifique.', a: ['alors que', 'tandis que', 'mais'], w: 'Deux moments comparés → alors que (ou tandis que, mais).' },
+        { k: 'g', s: 'Thomas est très calme, ___ son frère jumeau ne tient pas en place.', a: ['alors que', 'tandis que', 'mais'], w: 'Deux personnes comparées → alors que / tandis que.' },
+        { k: 't', i: 'Relie les deux phrases avec « alors que ».', f: 'Paul travaille beaucoup. Son frère ne fait rien.', a: ['Paul travaille beaucoup alors que son frère ne fait rien.', 'Paul travaille beaucoup, alors que son frère ne fait rien.'], w: 'Alors que relie les deux faits.' },
+        { k: 't', i: 'Relie les deux phrases avec « en revanche ».', f: 'Cet hôtel est cher. Il est très confortable.', a: ['Cet hôtel est cher ; en revanche, il est très confortable.', 'Cet hôtel est cher, en revanche il est très confortable.', 'Cet hôtel est cher. En revanche, il est très confortable.', 'Cet hôtel est cher, en revanche, il est très confortable.'], w: 'En revanche se place au début de la deuxième idée, souvent après un point-virgule.' }
+      ]
+    },
+    {
+      id: 'concession', g: 'connecteurs', name: 'Exprimer la concession',
+      tip: 'bien que + subjonctif ; même si + indicatif ; malgré + nom ; pourtant, cependant, toutefois + phrase ; quand même (oral).',
+      fiche: [
+        ['bien que + subjonctif', '', ['Bien qu’il pleuve, je sors.', 'Bien qu’elle soit fatiguée, elle continue.']],
+        ['même si + indicatif', 'Jamais de subjonctif après même si. Si devient s’ devant il / ils.', ['Même s’il pleut, je sors.']],
+        ['malgré + nom', '', ['Malgré la pluie, je sors.']],
+        ['pourtant, cependant, toutefois', 'Le résultat n’est pas celui qu’on attendait.', ['Il a beaucoup étudié ; pourtant, il a échoué.']],
+        ['quand même', 'À l’oral, après le verbe.', ['Il pleut, mais je sors quand même.']]
+      ],
+      note: 'Bien que (+ subjonctif) et même si (+ indicatif) ont presque le même sens : seul le mode change.',
+      links: [],
+      ex: [
+        { k: 'q', s: '___ elle soit malade, elle est venue au cours.', o: ['Bien qu’', 'Même si', 'Malgré'], c: 0, w: 'Soit est un subjonctif → bien que.' },
+        { k: 'q', s: '___ il fait froid, nous allons nous baigner.', o: ['Même s’', 'Bien qu’', 'Malgré'], c: 0, w: 'Fait est un indicatif → même si (s’il).' },
+        { k: 'q', s: '___ la neige, le train est arrivé à l’heure.', o: ['Malgré', 'Bien que', 'Pourtant'], c: 0, w: 'Suivi d’un nom → malgré.' },
+        { k: 'q', s: 'Il a révisé toute la nuit ; ___, il a raté l’examen.', o: ['pourtant', 'donc', 'car'], c: 0, w: 'Résultat inattendu → pourtant.' },
+        { k: 'q', s: 'Bien que tu ___ raison, je ne suis pas d’accord.', o: ['aies', 'as', 'auras'], c: 0, w: 'Bien que + subjonctif : que tu aies.' },
+        { k: 'q', s: 'Même si tu ___ raison, je ne suis pas d’accord.', o: ['as', 'aies', 'aurais'], c: 0, w: 'Même si + indicatif : tu as.' },
+        { k: 'q', s: 'La situation est difficile ; ___, des solutions existent.', o: ['cependant', 'grâce à', 'puisque'], c: 0, w: 'Cependant = pourtant, registre plus soutenu.' },
+        { k: 'g', s: 'Nous sommes partis en randonnée ___ la tempête.', a: ['malgré'], w: 'Devant un nom → malgré.' },
+        { k: 'g', s: 'Bien qu’il ___ (être) très occupé, il m’aide toujours.', a: ['soit'], w: 'Bien que + subjonctif : qu’il soit.' },
+        { k: 'g', s: 'Bien que nous ___ (avoir) peu de temps, nous allons visiter le Louvre.', a: ['ayons'], w: 'Bien que + subjonctif : que nous ayons.' },
+        { k: 'g', s: 'Il fait beau, mais il prend son parapluie ___.', a: ['quand même'], w: 'À l’oral, après le verbe → quand même.' },
+        { k: 't', i: 'Exprime la même idée avec « malgré ».', f: 'Bien qu’il pleuve, nous partons en randonnée.', a: ['Malgré la pluie, nous partons en randonnée.'], w: 'Malgré + nom : il pleut → la pluie.' },
+        { k: 't', i: 'Exprime la même idée avec « bien que ».', f: 'Il est riche ; pourtant, il n’est pas heureux.', a: ['Bien qu’il soit riche, il n’est pas heureux.'], w: 'Bien que + subjonctif : qu’il soit.' },
+        { k: 't', i: 'Relie les deux phrases avec « même si ».', f: 'Je suis fatigué. Je vais finir ce travail.', a: ['Même si je suis fatigué, je vais finir ce travail.'], w: 'Même si + indicatif.' }
+      ]
+    },
+    {
+      id: 'temps', g: 'connecteurs', name: 'Les marqueurs temporels',
+      tip: 'il y a (un moment passé) · depuis (ça continue, + présent) · pendant (durée fermée) · en (temps nécessaire) · dans (dans le futur) · pour (durée prévue).',
+      fiche: [
+        ['il y a + durée', 'Un moment dans le passé.', ['Je suis arrivé à Valence il y a deux ans.']],
+        ['depuis + durée / date', 'L’action a commencé dans le passé et continue : verbe au présent.', ['J’habite ici depuis 2021.', 'J’apprends le français depuis trois ans.']],
+        ['ça fait / il y a… que + présent', 'Même sens que depuis, en début de phrase.', ['Ça fait une heure que je t’attends !']],
+        ['pendant + durée', 'Une durée fermée, terminée.', ['J’ai vécu à Paris pendant cinq ans.']],
+        ['en + durée', 'Le temps nécessaire pour faire quelque chose.', ['J’ai lu ce roman en un week-end.']],
+        ['dans + durée', 'Un moment dans le futur.', ['Le train part dans dix minutes.']],
+        ['pour + durée', 'Une durée prévue.', ['Je pars en Erasmus pour six mois.']]
+      ],
+      note: '',
+      links: [],
+      ex: [
+        { k: 'g', s: 'J’apprends le piano ___ quatre ans.', a: ['depuis'], w: 'L’action continue (j’apprends, présent) → depuis.' },
+        { k: 'g', s: 'Nous sommes arrivés à Lyon ___ deux semaines.', a: ['il y a'], w: 'Un moment passé → il y a.' },
+        { k: 'g', s: 'Il a travaillé à Londres ___ cinq ans, puis il est rentré en Espagne.', a: ['pendant'], w: 'Durée terminée → pendant.' },
+        { k: 'g', s: 'Le concert commence ___ une heure : dépêche-toi !', a: ['dans'], w: 'Dans le futur → dans.' },
+        { k: 'g', s: 'J’ai fait ce puzzle de mille pièces ___ une seule journée.', a: ['en'], w: 'Temps nécessaire → en.' },
+        { k: 'g', s: 'Ça fait une heure ___ je t’attends devant le cinéma !', a: ['que'], w: 'Ça fait + durée + que + présent.' },
+        { k: 'g', s: 'Elle part au Canada ___ un an.', a: ['pour'], w: 'Durée prévue → pour.' },
+        { k: 'g', s: 'Je n’ai pas vu mes cousins ___ Noël.', a: ['depuis'], w: 'Depuis + date ; la situation continue.' },
+        { k: 'q', s: 'Il a plu ___ toute la nuit.', o: ['pendant', 'depuis', 'il y a'], c: 0, w: 'Durée terminée → pendant.' },
+        { k: 'q', s: 'Mon cousin s’est marié ___ un mois.', o: ['il y a', 'depuis', 'dans'], c: 0, w: 'Action ponctuelle passée → il y a.' },
+        { k: 'q', s: 'Je reviens ___ cinq minutes, attends-moi !', o: ['dans', 'en', 'il y a'], c: 0, w: 'Futur → dans.' },
+        { k: 'q', s: 'Ils ont construit leur maison ___ six mois seulement.', o: ['en', 'dans', 'depuis'], c: 0, w: 'Temps nécessaire → en.' },
+        { k: 't', i: 'Exprime la même idée avec « depuis ».', f: 'J’ai commencé à travailler ici il y a trois ans et je travaille encore ici.', a: ['Je travaille ici depuis trois ans.'], w: 'Depuis + présent pour une situation qui continue.' },
+        { k: 't', i: 'Exprime la même idée avec « ça fait… que ».', f: 'J’habite à Valence depuis dix ans.', a: ['Ça fait dix ans que j’habite à Valence.'], w: 'Ça fait + durée + que + présent.' }
+      ]
+    }
+  ]
+};
+// Identifiants des exercices : <thème>-<numéro>
+BANK3.topics.forEach(t => t.ex.forEach((x, i) => { x.id = t.id + '-' + (i + 1); x.topic = t.id; }));
+
+
 (() => {
   const E = ENGINE, B = BANK;
   const T = Object.fromEntries(E.TENSES.map(t => [t.id, t]));
@@ -1305,7 +1789,7 @@ const BANK2 = {
 
   /* ---------- Progreso (cuenta → db; navegador como respaldo) ---------- */
   const LS = 'atelier-conj-v1';
-  const blank = () => ({ v: 1, updated: 0, forms: {}, uso: {}, trap: { ok: 0, n: 0 }, tr: { ok: 0, n: 0 }, hip: { ok: 0, n: 0 }, dict: { ok: 0, n: 0 }, wr: { n: 0 }, srs: {}, seen: {}, days: {}, err: {}, errEx: {}, conf: {}, text: {}, gen: [], exam: '', goal: 40 });
+  const blank = () => ({ v: 1, updated: 0, forms: {}, uso: {}, trap: { ok: 0, n: 0 }, tr: { ok: 0, n: 0 }, hip: { ok: 0, n: 0 }, dict: { ok: 0, n: 0 }, wr: { n: 0 }, srs: {}, seen: {}, days: {}, err: {}, errEx: {}, conf: {}, text: {}, gen: [], exam: '', goal: 40, gram: {}, gseen: {} });
   let P = blank();
   try { const raw = localStorage.getItem(LS); if (raw) P = Object.assign(blank(), JSON.parse(raw)); } catch (e) {}
   const fixP = () => { const b = blank(); for (const k of Object.keys(b)) if (P[k] == null) P[k] = b[k]; };
@@ -1368,7 +1852,7 @@ const BANK2 = {
   document.addEventListener('focusin', e => { if (e.target.classList && e.target.classList.contains('ans')) lastInput = e.target; });
   document.querySelectorAll('[data-accents]').forEach(bar => {
     bar.setAttribute('aria-label', 'Insérer un accent');
-    ACC.forEach(c => bar.append(h('button', { type: 'button', 'aria-label': 'Insertar ' + c,
+    ACC.forEach(c => bar.append(h('button', { type: 'button', 'aria-label': 'Insérer ' + c,
       onpointerdown: e => e.preventDefault(),
       onclick: () => {
         const view = bar.closest('.view');
@@ -1541,7 +2025,8 @@ const BANK2 = {
     const inp = ansInput({ id: 'k-in', 'aria-label': 'Ta réponse', enterkeyhint: 'done' });
     inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); kGo(); } });
     card.append(
-      h('div', { class: 'row' }, chip(t), dots, s ? null : h('span', { class: 'note' }, 'nouvelle')),
+      h('div', { class: 'k-corner' }, dots, h('span', { class: 'note' }, s ? 'révision' : 'nouvelle')),
+      h('div', { class: 'row' }, chip(t), LEX.verbes[v] ? h('span', { class: 'tr-es', lang: 'es' }, LEX.verbes[v]) : ''),
       h('p', { class: 'verb' }, v),
       h('div', { class: 'who' }, h('label', { class: 'plabel', for: 'k-in' }, t === 'ger' ? 'gérondif' : plab(c)), inp),
       c.g ? h('p', { class: 'note', style: 'margin:0' }, 'Accorde le participe au ' + (c.g[0] === 'f' ? 'féminin' : 'masculin') + (c.g.includes('pl') ? ' pluriel' : '') + '.') : '');
@@ -1654,13 +2139,14 @@ const BANK2 = {
   const X = { qs: [], i: 0, timer: null, end: 0 };
   function buildExam() {
     const forms = [], seen = new Set();
-    while (forms.length < 12) {
+    while (forms.length < 10) {
       const v = pick(E.VERBS), t = pick(E.TENSES).id; if (!E.available(v, t)) continue;
       const p = pick(E.personsFor(t)), k = key(v, t, p); if (seen.has(k)) continue; seen.add(k);
       forms.push({ type: 'form', v, t, p, g: rg(v, t), ans: '' });
     }
-    const fr = shuffle(B.frases).slice(0, 8).map(it => ({ type: 'frase', it, t: it.t, ans: '' }));
-    return shuffle(forms.concat(fr));
+    const fr = shuffle(B.frases).slice(0, 6).map(it => ({ type: 'frase', it, t: it.t, ans: '' }));
+    const gr = shuffle(BANK3.topics.flatMap(t => t.ex).filter(x => x.k === 'g' && !Array.isArray(x.a[0]))).slice(0, 4).map(it => ({ type: 'gram', it, t: 'gram', ans: '' }));
+    return shuffle(forms.concat(fr, gr));
   }
   function examQ() {
     const q = X.qs[X.i], card = $('#e-card');
@@ -1673,6 +2159,9 @@ const BANK2 = {
     if (q.type === 'form') {
       const c = E.cell(q.v, q.t, q.p, q.g);
       card.replaceChildren(h('div', { class: 'row' }, chip(q.t)), h('p', { class: 'verb' }, q.v), h('div', { class: 'who' }, h('label', { class: 'plabel', for: 'e-in' }, q.t === 'ger' ? 'gérondif' : plab(c)), inp));
+    } else if (q.type === 'gram') {
+      const [a, b] = q.it.s.split('___'); inp.size = 10;
+      card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip kind', 'aria-pressed': 'true' }, 'Grammaire'), h('span', { class: 'note' }, GT[q.it.topic].name)), h('p', { class: 'sentence' }, a, inp, b));
     } else card.replaceChildren(h('div', { class: 'row' }, chip(q.t)), sentenceNodes(q.it, inp));
     inp.focus({ preventScroll: true });
   }
@@ -1698,12 +2187,14 @@ const BANK2 = {
     const rows = X.qs.map((q, n) => {
       let accept, p = null, prompt;
       if (q.type === 'form') { const c = E.cell(q.v, q.t, q.p, q.g); accept = c.accept; p = q.p; prompt = `${q.v} · ${q.t === 'ger' ? 'gérondif' : c.label}${c.g ? ' (' + c.g + ')' : ''}`; }
+      else if (q.type === 'gram') { accept = q.it.a; prompt = q.it.s; }
       else { accept = q.it.a; prompt = q.it.s.replace(/\[([^\]]+)\]/, '___ ($1)'); }
-      const v = judge(q.ans, accept, p, q.t), good = v === 'ok';
-      if (v !== 'empty' && !good) logErr(q.ans, accept, q.t);
+      const v = judge(q.ans, accept, p, q.type === 'gram' ? null : q.t), good = v === 'ok';
+      if (q.type === 'gram') { if (v !== 'empty') recG(q.it, good, q.ans); }
+      else if (v !== 'empty' && !good) logErr(q.ans, accept, q.t);
       if (good) ok++;
       const b = byT[q.t] || (byT[q.t] = [0, 0]); b[1]++; if (good) b[0]++;
-      if (v !== 'empty') { if (q.type === 'form') recForm(q.v, q.t, q.p, good); else bump(P.forms, q.t, good); }
+      if (v !== 'empty') { if (q.type === 'form') recForm(q.v, q.t, q.p, good); else if (q.type === 'frase') bump(P.forms, q.t, good); }
       return { q, prompt, v, good, right: accept[0] };
     });
     touch();
@@ -1711,10 +2202,10 @@ const BANK2 = {
     const wrong = rows.filter(r => !r.good);
     const done = $('#e-done');
     done.replaceChildren(
-      h('div', { class: 'row between' }, h('div', {}, h('p', { class: 'big-score' }, `${ok}/${X.qs.length}`), h('p', { class: 'note', style: 'margin:4px 0 0' }, `${pct} % de aciertos`)),
-        h('div', { class: 'chips' }, Object.entries(byT).map(([t, [a, n]]) => h('span', { class: 'chip tense', style: tvars(t) }, `${T[t].name} ${a}/${n}`)))),
-      wrong.length ? h('div', { class: 'errlist' }, h('p', { class: 'prog-head', style: 'margin:0' }, `Tus ${wrong.length} fallos`), wrong.map(r => h('div', { class: 'erritem' },
-          h('div', { class: 'row' }, chip(r.q.t)), h('div', {}, r.prompt),
+      h('div', { class: 'row between' }, h('div', {}, h('p', { class: 'big-score' }, `${ok}/${X.qs.length}`), h('p', { class: 'note', style: 'margin:4px 0 0' }, `${pct} % de réussite`)),
+        h('div', { class: 'chips' }, Object.entries(byT).map(([t, [a, n]]) => t === 'gram' ? h('span', { class: 'chip kind', 'aria-pressed': 'true' }, `Grammaire ${a}/${n}`) : h('span', { class: 'chip tense', style: tvars(t) }, `${T[t].name} ${a}/${n}`)))),
+      wrong.length ? h('div', { class: 'errlist' }, h('p', { class: 'prog-head', style: 'margin:0' }, `${wrong.length === 1 ? 'Ton erreur' : 'Tes ' + wrong.length + ' erreurs'}`), wrong.map(r => h('div', { class: 'erritem' },
+          h('div', { class: 'row' }, r.q.type === 'gram' ? h('span', { class: 'chip kind', 'aria-pressed': 'true' }, GT[r.q.it.topic].name) : chip(r.q.t)), h('div', {}, r.prompt),
           h('div', { class: 'errans' }, h('span', {}, 'Ta réponse : ', h('s', { style: 'color:var(--err)' }, r.q.ans.trim() || '—')), h('span', {}, 'Bonne réponse : ', h('b', { style: 'color:var(--ok)' }, r.right))))))
         : h('p', { class: 'feedback ok' }, 'Parfait ! Aucune erreur.'),
       h('div', { class: 'actions' }, h('button', { class: 'btn primary', type: 'button', onclick: () => $('#e-begin').click() }, 'Un autre examen blanc'), h('button', { class: 'btn', type: 'button', onclick: () => go('progreso') }, 'Voir ma progression')));
@@ -1730,6 +2221,7 @@ const BANK2 = {
     let n = 0, ok = 0;
     for (const o of [P.forms, P.uso]) for (const s of Object.values(o)) { n += s.n; ok += s.ok; }
     n += P.trap.n; ok += P.trap.ok;
+    for (const s of Object.values(P.gram || {})) { n += s.n; ok += s.ok; }
     const cards = Object.keys(P.srs).length, mastered = Object.values(P.srs).filter(s => s[0] >= 4).length;
     const worst = E.TENSES.map(t => ({ t, s: P.forms[t.id] })).filter(x => x.s && x.s.n >= 5).sort((a, b) => a.s.ok / a.s.n - b.s.ok / b.s.n)[0];
     $('#p-kpis').replaceChildren(
@@ -1741,6 +2233,10 @@ const BANK2 = {
     tbl.replaceChildren(h('div', { class: 'prog-row prog-head' }, h('span', {}, 'Temps'), h('span', {}, 'Formes'), h('span', {}, 'Emploi')));
     E.TENSES.forEach(t => tbl.append(h('div', { class: 'prog-row tense', style: tvars(t.id) }, h('span', {}, h('span', { class: 'chip tense', style: tvars(t.id) }, t.name)), bar(P.forms[t.id], 'formes'), bar(P.uso[t.id], 'phrases'))));
     [['Pièges', P.trap, 'pièges'], ['Transformations', P.tr, 'phrases'], ['Hypothèses avec si', P.hip, 'phrases'], ['Dictée', P.dict, 'dictées']].forEach(([name, st, unit]) => tbl.append(h('div', { class: 'prog-row', style: '--tc:var(--accent)' }, h('span', {}, h('span', { class: 'chip', style: 'background:var(--accent-soft);color:var(--accent)' }, name)), bar(st, unit), h('span'))));
+    BANK3.groups.forEach(g => {
+      tbl.append(h('div', { class: 'prog-row prog-head' }, h('span', {}, 'Grammaire · ' + g.name), h('span', {}, 'Exercices'), h('span', {})));
+      BANK3.topics.filter(t => t.g === g.id).forEach(t => tbl.append(h('div', { class: 'prog-row', style: '--tc:var(--accent)' }, h('span', {}, h('a', { href: '#' + g.id, onclick: e => { e.preventDefault(); go(g.id); gOpenTopic(t.id); } }, t.name)), bar(P.gram[t.id], 'exercices'), h('span', {}))));
+    });
     const pe = $('#p-errs'); if (pe) renderErrs(pe);
     renderSync();
   }
@@ -1900,7 +2396,7 @@ const BANK2 = {
     } catch (e) {}
   }
   const SPK = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
-  function speakBtn(text, label = 'Escuchar') {
+  function speakBtn(text, label = 'Écouter') {
     if (!TTS) return null;
     const b = h('button', { type: 'button', class: 'spk', title: label, 'aria-label': label + ': ' + text, onclick: e => { e.preventDefault(); speak(typeof text === 'function' ? text() : text); } });
     b.innerHTML = SPK; return b;
@@ -2218,6 +2714,133 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   }
   $('#hp-go').onclick = hipGo; $('#hp-skip').onclick = nextHip;
 
+  /* ---------- Grammaire ---------- */
+  const G = { group: null, topic: null, order: [], cur: null, state: 'ask', done: 0, right: 0 };
+  const GT = Object.fromEntries(BANK3.topics.map(t => [t.id, t]));
+  const GKIND = { g: 'Complète', q: 'Choisis', t: 'Transforme' };
+  const gStat = id => { const s = (P.gram || {})[id]; return s ? s : { ok: 0, n: 0 }; };
+  function gOpenGroup(gid) {
+    if (G.group !== gid) { G.group = gid; G.topic = null; G.cur = null; }
+    const grp = BANK3.groups.find(x => x.id === gid);
+    $('#g-intro').textContent = grp.intro;
+    renderGTopics();
+    $('#g-main').hidden = !G.topic;
+  }
+  function renderGTopics() {
+    const ts = BANK3.topics.filter(t => t.g === G.group);
+    const btn = (id, name, cls, stat, total) => h('button', { type: 'button', class: 'g-topic' + cls, 'aria-pressed': String(G.topic === id), onclick: () => gOpenTopic(id) },
+      h('b', {}, name),
+      h('span', { class: 'g-bar', 'aria-hidden': 'true' }, h('i', { style: `width:${stat.n ? Math.round(stat.ok / stat.n * 100) : 0}%` })),
+      h('small', {}, stat.n ? `${Math.round(stat.ok / stat.n * 100)} % de réussite · ${stat.n} réponses` : `${total} exercices · pas encore commencé`));
+    const all = ts.reduce((a, t) => { const s = gStat(t.id); a.ok += s.ok; a.n += s.n; return a; }, { ok: 0, n: 0 });
+    $('#g-topics').replaceChildren(...ts.map(t => btn(t.id, t.name, '', gStat(t.id), t.ex.length)),
+      btn('mix', 'Tous les thèmes mélangés', ' mix', all, ts.reduce((a, t) => a + t.ex.length, 0)));
+  }
+  function gOpenTopic(id) {
+    G.topic = id; G.order = []; G.done = G.right = 0;
+    renderGTopics(); $('#g-main').hidden = false;
+    const fiche = $('#g-fiche');
+    if (id === 'mix') fiche.hidden = true;
+    else { fiche.hidden = false; fiche.open = !(gStat(id).n >= 10); renderFiche(GT[id]); }
+    nextG();
+    (id === 'mix' ? $('#g-card') : fiche).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function renderFiche(t) {
+    $('#g-fiche-title').textContent = 'Fiche : ' + t.name;
+    $('#g-fiche-body').replaceChildren(
+      h('p', { class: 'f-tip' }, t.tip),
+      h('div', { class: 'f-rules' }, t.fiche.map(([lab, expl, exs]) => h('div', { class: 'f-rule' }, h('h4', {}, lab), expl ? h('p', {}, expl) : '', exs.length ? h('ul', {}, exs.map(e => h('li', {}, e, ' ', speakBtn(e)))) : ''))),
+      t.note ? h('p', { class: 'note', style: 'margin:0' }, t.note) : '',
+      t.links && t.links.length ? h('p', { class: 'note', style: 'margin:0' }, 'Pour aller plus loin : ', t.links.map(([l, u], i) => [i ? ' · ' : '', h('a', { href: u, target: '_blank', rel: 'noopener' }, l)])) : '');
+  }
+  const gPool = () => G.topic === 'mix' ? BANK3.topics.filter(t => t.g === G.group).flatMap(t => t.ex) : GT[G.topic].ex;
+  function nextG() {
+    const items = gPool();
+    if (!G.order.length) G.order = shuffle(items).sort((a, b) => { const sa = P.gseen[a.id] || [0, 0], sb = P.gseen[b.id] || [0, 0]; return (sa[1] ? sa[0] / sa[1] : -1) - (sb[1] ? sb[0] / sb[1] : -1); }).map(x => x.id);
+    const id = G.order.shift(); G.cur = items.find(x => x.id === id); G.state = 'ask';
+    renderGItem($('#g-card'), G.cur, gGo, gAnswerQ);
+    $('#g-go').textContent = 'Vérifier'; $('#g-go').hidden = G.cur.k === 'q';
+    gStats();
+  }
+  // Muestra un ejercicio de gramática en `card`; `onEnter` corrige, `onPick(i)` responde a un ejercicio de opciones.
+  function renderGItem(card, it, onEnter, onPick, extraChip) {
+    const head = h('div', { class: 'row' }, h('span', { class: 'chip kind', 'aria-pressed': 'true' }, GKIND[it.k]), (G.topic === 'mix' || extraChip) ? h('span', { class: 'note' }, GT[it.topic].name) : '');
+    let focusEl = null;
+    if (it.k === 'g') {
+      const parts = it.s.split('___');
+      const kids = [parts[0]];
+      for (let i = 1; i < parts.length; i++) {
+        const inp = ansInput({ class: 'ans g-blank', 'data-b': i - 1, 'aria-label': 'Trou ' + i, enterkeyhint: i === parts.length - 1 ? 'done' : 'next' });
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); const nx = card.querySelector(`.g-blank[data-b="${i}"]`); nx ? nx.focus() : onEnter(); } });
+        if (!focusEl) focusEl = inp; kids.push(inp, parts[i]);
+      }
+      card.replaceChildren(head, h('p', { class: 'sentence' }, kids));
+    } else if (it.k === 'q') {
+      const parts = it.s.split('___');
+      const sent = parts.length > 1 ? h('p', { class: 'sentence' }, parts[0], h('span', { class: 'blank g-qblank' }, ' '), parts.slice(1).join('___')) : h('p', { class: 'sentence' }, it.s);
+      card.replaceChildren(head, sent, h('div', { class: 'opts' }, shuffle(it.o.map((o, i) => [o, i])).map(([o, i]) => h('button', { type: 'button', class: 'opt', 'data-i': i, onclick: () => onPick(i) }, o))));
+    } else {
+      focusEl = ansInput({ class: 'ans wide', 'aria-label': 'Phrase transformée', enterkeyhint: 'done' });
+      focusEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); onEnter(); } });
+      card.replaceChildren(head, h('p', { class: 'consigna' }, it.i), h('p', { class: 'from' }, it.f, ' ', speakBtn(it.f)), focusEl);
+    }
+    card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
+    focusEl && focusEl.focus({ preventScroll: true });
+  }
+  const gAccepts = it => (it.k === 'g' && !Array.isArray(it.a[0])) ? [it.a] : it.a;
+  const gFull = it => { if (it.k !== 'g') return ''; const A = gAccepts(it); let i = 0; const out = it.s.replace(/___( ?)/g, (m, sp) => { const r = A[i++][0]; return /['’]$/.test(r) ? r : r + sp; }); return out.charAt(0).toUpperCase() + out.slice(1); };
+  function recG(it, ok, you) {
+    bump(P.gram, it.topic, ok);
+    const s = P.gseen[it.id] || (P.gseen[it.id] = [0, 0]); s[1]++; if (ok) s[0]++;
+    if (!ok && you != null) logErr(you || '∅', it.k === 'q' ? [it.o[it.c]] : it.k === 'g' ? gAccepts(it).map(a => a[0]) : it.a, null, 'g_' + it.topic);
+    touch();
+  }
+  // Corrige un ejercicio de huecos o de transformación. Devuelve {ok, level, fb} o null si falta respuesta.
+  function gCheck(card, it) {
+    if (it.k === 'g') {
+      const ins = [...card.querySelectorAll('.g-blank')], A = gAccepts(it);
+      const vs = ins.map((inp, i) => judge(inp.value, A[i], null, null));
+      const e = vs.indexOf('empty'); if (e >= 0) { ins[e].focus(); return null; }
+      ins.forEach((inp, i) => { inp.className = 'ans g-blank ' + (vs[i] === 'ok' ? 'ok' : vs[i] === 'acc' ? 'acc' : 'bad'); inp.readOnly = true; });
+      const ok = vs.every(v => v === 'ok'), minor = !ok && vs.every(v => v === 'ok' || v === 'acc');
+      const full = gFull(it);
+      const fb = h('div', { class: 'feedback ' + (ok ? 'ok' : minor ? 'acc' : 'bad'), role: 'status' }, h('b', {}, ok ? 'Correct.' : minor ? verdictText.acc + '.' : 'Ce n’est pas correct.'), ok ? '' : [' → ', h('b', {}, full)], ' ', speakBtn(full), h('span', { class: 'why' }, it.w));
+      return { ok, minor, fb, you: ins.map(i => i.value).join(' / ') };
+    }
+    const inp = card.querySelector('.ans'), r = gradeSentence(inp.value, it.a);
+    if (r.level === 'empty') { inp.focus(); return null; }
+    const ok = r.level === 'ok'; logSentence(r);
+    inp.className = 'ans wide ' + (ok ? 'ok' : r.level === 'minor' ? 'acc' : 'bad'); inp.readOnly = true;
+    const fb = gradeView(r, [ok ? null : h('p', { class: 'answer' }, 'Réponse : ', h('b', {}, r.right), ' ', speakBtn(r.right)), h('span', { class: 'why' }, it.w)]);
+    if (r.level === 'grave') askValid(fb, it.i, it.f, it.a[0], inp.value.trim(), () => { const s = P.gseen[it.id]; if (s) s[0]++; const st = P.gram[it.topic]; if (st) st.ok++; touch(); });
+    return { ok, minor: r.level === 'minor', fb, you: inp.value };
+  }
+  function gPick(card, it, i) {
+    const ok = i === it.c;
+    card.querySelectorAll('.opt').forEach(b => { b.disabled = true; const j = +b.dataset.i; if (j === it.c) b.classList.add('right'); else if (j === i) b.classList.add('wrong'); });
+    const bl = card.querySelector('.g-qblank'); if (bl) { bl.textContent = it.o[it.c]; bl.classList.add('filled'); }
+    const fb = h('div', { class: 'feedback ' + (ok ? 'ok' : 'bad'), role: 'status' }, h('b', {}, ok ? 'Correct.' : 'Ce n’est pas correct.'), ok ? '' : [' → ', h('b', {}, it.o[it.c])], h('span', { class: 'why' }, it.w));
+    return { ok, fb, you: it.o[i] };
+  }
+  function gStats() {
+    const n = gPool().length;
+    $('#g-stats').replaceChildren(h('span', {}, 'Cette séance : ', h('b', {}, `${G.right} / ${G.done}`)), h('span', {}, 'Exercices : ', h('b', {}, n)));
+  }
+  function gGo() {
+    if (G.state === 'shown') { nextG(); renderGTopics(); return; }
+    const card = $('#g-card'), r = gCheck(card, G.cur); if (!r) return;
+    recG(G.cur, r.ok, r.you); G.done++; if (r.ok) G.right++;
+    card.append(r.fb); G.state = 'shown'; $('#g-go').textContent = 'Suivant'; $('#g-go').hidden = false; $('#g-go').focus({ preventScroll: true }); gStats();
+  }
+  function gAnswerQ(i) {
+    if (G.state === 'shown') return;
+    const card = $('#g-card'), r = gPick(card, G.cur, i);
+    recG(G.cur, r.ok, r.you); G.done++; if (r.ok) G.right++;
+    card.append(r.fb); G.state = 'shown'; $('#g-go').textContent = 'Suivant'; $('#g-go').hidden = false; $('#g-go').focus({ preventScroll: true }); gStats();
+  }
+  $('#g-go').onclick = gGo; $('#g-skip').onclick = () => { nextG(); };
+  BANK3.topics.forEach(t => { ERRCAT['g_' + t.id] = { name: t.name, tip: t.tip, go: () => { go(t.g); gOpenTopic(t.id); }, btn: 'Revoir la fiche et s’entraîner' }; });
+
   /* ---------- Hoy ---------- */
   function streak() {
     let n = 0; const d = new Date();
@@ -2279,22 +2902,30 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   function sessionPlanText() {
     const w = weakTenses().slice(0, 2).map(id => T[id].name).join(' et ');
     const due = Object.values(P.srs).filter(s => s[1] <= Date.now()).length;
-    return `15 exercices (environ 10 minutes) : ${due ? Math.min(due, 6) + ' cartes à réviser' : '6 cartes'}, 4 phrases centrées sur ${w}, 2 transformations, 2 hypothèses avec si et 1 piège. Correction immédiate.`;
+    return `15 exercices (environ 10 minutes) : ${due ? Math.min(due, 5) + ' cartes à réviser' : '5 cartes'}, 3 phrases centrées sur ${w}, 3 exercices de grammaire (pronoms, connecteurs), 2 transformations, 1 hypothèse avec si et 1 piège. Correction immédiate.`;
   }
   const S = { qs: [], i: 0, state: 'ask', res: [] };
   function buildSession() {
     const now = Date.now(), w = weakTenses(), qs = [];
     const due = Object.entries(P.srs).filter(([k, s]) => s[1] <= now).sort((a, b) => a[1][0] - b[1][0]).map(([k]) => k.split('|')).filter(([v, t]) => E.V[v] && T[t] && E.available(v, t));
     const seen = new Set();
-    for (const [v, t, p] of due) { if (qs.length >= 6) break; const k = v + t + p; if (!seen.has(k)) { seen.add(k); qs.push({ type: 'form', v, t, p: +p, g: rg(v, t) }); } }
-    while (qs.length < 6) { const t = pick(w.slice(0, 4)), v = pick(E.VERBS); if (!E.available(v, t)) continue; const p = pick(E.personsFor(t)); qs.push({ type: 'form', v, t, p, g: rg(v, t) }); }
-    const fr = shuffle(B.frases.filter(f => w.slice(0, 3).includes(f.t))).slice(0, 4); fr.forEach(it => qs.push({ type: 'frase', it, t: it.t }));
+    for (const [v, t, p] of due) { if (qs.length >= 5) break; const k = v + t + p; if (!seen.has(k)) { seen.add(k); qs.push({ type: 'form', v, t, p: +p, g: rg(v, t) }); } }
+    while (qs.length < 5) { const t = pick(w.slice(0, 4)), v = pick(E.VERBS); if (!E.available(v, t)) continue; const p = pick(E.personsFor(t)); qs.push({ type: 'form', v, t, p, g: rg(v, t) }); }
+    const fr = shuffle(B.frases.filter(f => w.slice(0, 3).includes(f.t))).slice(0, 3); fr.forEach(it => qs.push({ type: 'frase', it, t: it.t }));
     shuffle(B2.transform).slice(0, 2).forEach(it => qs.push({ type: 'tr', it }));
-    shuffle(B2.hipotesis.filter(x => x.k < 3)).slice(0, 2).forEach(it => qs.push({ type: 'hip', it }));
+    shuffle(B2.hipotesis.filter(x => x.k < 3)).slice(0, 1).forEach(it => qs.push({ type: 'hip', it }));
+    gramPicks(3).forEach(it => qs.push({ type: 'gram', it }));
     qs.push({ type: 'trampa', it: pick(B.trampas) });
     // intercalar: formas repartidas
     const forms = qs.filter(q => q.type === 'form'), rest = shuffle(qs.filter(q => q.type !== 'form')), out = [];
     while (forms.length || rest.length) { if (forms.length) out.push(forms.shift()); if (rest.length) out.push(rest.shift()); }
+    return out;
+  }
+  // Ejercicios de gramática para la sesión: primero los fallados, luego los no vistos; temas distintos.
+  function gramPicks(n) {
+    const sc = x => { const s = P.gseen[x.id]; return !s ? 1 : s[0] < s[1] ? 0 : 2 + s[0] / (s[1] + 1); };
+    const all = shuffle(BANK3.topics.flatMap(t => t.ex)).sort((a, b) => sc(a) - sc(b)), out = [], used = new Set();
+    for (const x of all) { if (out.length >= n) break; if (used.has(x.topic)) continue; used.add(x.topic); out.push(x); }
     return out;
   }
   function sessionQ() {
@@ -2305,23 +2936,27 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
     let focusEl = null;
     if (q.type === 'form') {
       const c = E.cell(q.v, q.t, q.p, q.g); focusEl = ansInput({ id: 'h-in', 'aria-label': 'Ta réponse' });
-      card.replaceChildren(h('div', { class: 'row' }, chip(q.t), h('span', { class: 'note' }, 'Carte')), h('p', { class: 'verb' }, q.v), h('div', { class: 'who' }, h('label', { class: 'plabel', for: 'h-in' }, plab(c)), focusEl));
+      card.replaceChildren(h('div', { class: 'row' }, chip(q.t), LEX.verbes[q.v] ? h('span', { class: 'tr-es', lang: 'es' }, LEX.verbes[q.v]) : '', h('span', { class: 'note' }, 'Carte')), h('p', { class: 'verb' }, q.v), h('div', { class: 'who' }, h('label', { class: 'plabel', for: 'h-in' }, plab(c)), focusEl));
     } else if (q.type === 'frase') {
       focusEl = ansInput({ id: 'h-in', 'aria-label': 'Ta réponse', size: 14 });
       card.replaceChildren(h('div', { class: 'row' }, chip(q.t), h('span', { class: 'note' }, 'Phrase')), sentenceNodes(q.it, focusEl));
     } else if (q.type === 'tr') {
       focusEl = ansInput({ id: 'h-in', class: 'ans wide', 'aria-label': 'Phrase transformée' });
       card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip kind', 'aria-pressed': 'true' }, KINDS[q.it.k])), h('p', { class: 'consigna' }, q.it.i), h('p', { class: 'from' }, q.it.from), focusEl);
+    } else if (q.type === 'gram') {
+      renderGItem(card, q.it, () => sessionNext(), i => sessionAnswer(i), true);
+      focusEl = null; $('#h-next').hidden = q.it.k === 'q';
     } else if (q.type === 'hip') {
       const s = hipNodes(q.it, (i, a) => { const inp = ansInput({ id: 'h-hp-' + i, 'aria-label': 'Trou ' + (i + 1), size: 13 }); if (!focusEl) focusEl = inp; inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); const nx = document.getElementById('h-hp-' + (i + 1)); nx ? nx.focus() : sessionNext(); } }); return inp; });
       card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip kind', 'aria-pressed': 'true' }, HT[q.it.k].name)), s);
     } else {
       const [a, b] = q.it.s.split('___');
-      card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip', style: 'background:var(--accent-soft);color:var(--accent)' }, 'Trampa')), h('p', { class: 'sentence' }, a, h('span', { class: 'blank', id: 'h-blank' }, ' '), b),
+      card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip', style: 'background:var(--accent-soft);color:var(--accent)' }, 'Piège')), h('p', { class: 'sentence' }, a, h('span', { class: 'blank', id: 'h-blank' }, ' '), b),
         h('div', { class: 'opts' }, shuffle(q.it.o.map((o, i) => [o, i])).map(([o, i]) => h('button', { type: 'button', class: 'opt', 'data-i': i, onclick: () => sessionAnswer(i) }, o))));
       $('#h-next').hidden = true;
     }
-    if (q.type !== 'trampa') $('#h-next').hidden = false;
+    if (q.type !== 'trampa' && !(q.type === 'gram' && q.it.k === 'q')) $('#h-next').hidden = false;
+    if (q.type === 'gram') return;
     if (focusEl && q.type !== 'hip') focusEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sessionNext(); } });
     card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
     focusEl && focusEl.focus({ preventScroll: true });
@@ -2336,6 +2971,11 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
       const inp = $('#h-in'), v = judge(inp.value, q.it.a, null, q.t); if (v === 'empty') return inp.focus();
       ok = v === 'ok'; bump(P.forms, q.t, ok); if (!ok) logErr(inp.value, q.it.a, q.t); inp.className = 'ans ' + (ok ? 'ok' : 'bad'); inp.readOnly = true;
       fb = [h('b', {}, ok ? 'Correct.' : 'C’était : '), ok ? '' : h('b', {}, q.it.a[0]), ' ', speakBtn(fillSentence(q.it.s, q.it.a[0])), h('span', { class: 'why' }, q.it.w)];
+    } else if (q.type === 'gram') {
+      if (q.it.k === 'q' && choice == null) return;
+      const r = q.it.k === 'q' ? gPick(card, q.it, choice) : gCheck(card, q.it); if (!r) return;
+      recG(q.it, r.ok, r.you); S.res.push({ q, ok: r.ok }); card.append(r.fb); $('#h-next').hidden = false;
+      S.state = 'shown'; $('#h-next').textContent = S.i === S.qs.length - 1 ? 'Voir le résultat' : 'Suivant'; $('#h-next').focus({ preventScroll: true }); return;
     } else if (q.type === 'tr') {
       const inp = $('#h-in'), r = gradeSentence(inp.value, q.it.a); if (r.level === 'empty') return inp.focus();
       ok = r.level === 'ok'; bump(P, 'tr', ok); logSentence(r); inp.className = 'ans wide ' + (ok ? 'ok' : r.level === 'minor' ? 'acc' : 'bad'); inp.readOnly = true;
@@ -2360,13 +3000,13 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   function sessionNext() { if (S.state === 'ask') return sessionAnswer(); if (S.i < S.qs.length - 1) { S.i++; sessionQ(); } else sessionEnd(); }
   function sessionEnd() {
     const ok = S.res.filter(r => r.ok).length, n = S.res.length;
-    const LBL = { form: 'Cartes', frase: 'Phrases', tr: 'Transformations', hip: 'Hypothèses', trampa: 'Piège' };
+    const LBL = { form: 'Cartes', frase: 'Phrases', tr: 'Transformations', hip: 'Hypothèses', trampa: 'Piège', gram: 'Grammaire' };
     const by = {}; S.res.forEach(r => { const b = by[r.q.type] || (by[r.q.type] = [0, 0]); b[1]++; if (r.ok) b[0]++; });
     $('#h-run').hidden = true; const d = $('#h-done'); d.hidden = false;
     d.replaceChildren(h('h2', { class: 'h2' }, 'Séance terminée'), h('p', { class: 'big-score' }, `${ok}/${n}`),
       h('div', { class: 'chips' }, Object.entries(by).map(([k, [a, m]]) => h('span', { class: 'chip', style: 'background:var(--accent-soft);color:var(--accent)' }, `${LBL[k]} ${a}/${m}`))),
       h('p', { class: 'note', style: 'margin:0' }, (P.days[todayKey()] || 0) >= P.goal ? 'Objectif quotidien atteint !' : `Il te manque ${P.goal - (P.days[todayKey()] || 0)} réponses pour l’objectif du jour.`),
-      h('div', { class: 'actions' }, h('button', { class: 'btn primary', type: 'button', onclick: startSession }, 'Autre séance'), h('button', { class: 'btn', type: 'button', onclick: () => { d.hidden = true; $('#h-start').hidden = false; renderHoy(); } }, 'Volver')));
+      h('div', { class: 'actions' }, h('button', { class: 'btn primary', type: 'button', onclick: startSession }, 'Autre séance'), h('button', { class: 'btn', type: 'button', onclick: () => { d.hidden = true; $('#h-start').hidden = false; renderHoy(); } }, 'Retour')));
     renderHoy();
   }
   function startSession() { S.qs = buildSession(); S.i = 0; S.res = []; $('#h-start').hidden = true; $('#h-done').hidden = true; $('#h-run').hidden = false; sessionQ(); }
@@ -2376,19 +3016,22 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
 
 
   /* ---------- Navegación ---------- */
-  const VIEWS = ['hoy', 'conjugar', 'tarjetas', 'irregulares', 'dictado', 'frases', 'tiempo', 'textos', 'transformar', 'hipotesis', 'trampas', 'escribir', 'examen', 'progreso'];
+  const VIEWS = ['hoy', 'conjugar', 'tarjetas', 'irregulares', 'dictado', 'frases', 'tiempo', 'textos', 'transformar', 'hipotesis', 'trampas', 'pronoms', 'connecteurs', 'escribir', 'examen', 'progreso'];
+  const SEC = v => (v === 'pronoms' || v === 'connecteurs') ? 'grammaire' : v;
+  const SECS = [...new Set(VIEWS.map(SEC))];
   const inited = {};
   let current = null;
   function go(v, push = true) {
     if (!VIEWS.includes(v)) v = 'hoy';
     current = v;
-    VIEWS.forEach(x => { $('#v-' + x).hidden = x !== v; });
+    SECS.forEach(x => { $('#v-' + x).hidden = x !== SEC(v); });
     document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === v)));
     const tab = document.querySelector(`.tab[data-view="${v}"]`); tab && tab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     $('#vtitle').textContent = tab ? tab.textContent : '';
     if (TTS && v !== 'dictado') speechSynthesis.cancel();
     if (push && location.hash !== '#' + v) history.replaceState(null, '', '#' + v);
     if (v === 'tarjetas') nextCard();
+    else if (SEC(v) === 'grammaire') gOpenGroup(v);
     else if (!inited[v]) { inited[v] = true; ({ hoy: () => {}, dictado: nextDict, textos: () => { renderTxList(); renderText(); }, transformar: nextTr, hipotesis: nextHip, escribir: newConsigna, conjugar: renderConj, irregulares: () => { renderIrrList(); renderIrr(); }, frases: nextFrase, tiempo: nextTiempo, trampas: nextTrampa, examen: () => {}, progreso: () => {} })[v](); }
     if (v === 'progreso') renderProg();
     if (v === 'hoy') renderHoy();

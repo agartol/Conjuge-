@@ -41,7 +41,7 @@ window.claude = { use: async n => n === 'sample' ? mockSample : null };`;
     await page.click('#h-next');
   }
   console.log('session done:', await page.textContent('#h-done .big-score'));
-  await page.click('#h-done .btn:has-text("Volver")');
+  await page.click('#h-done .btn:has-text("Retour")');
   await page.screenshot({ path: 'shots/n-hoy.png', fullPage: true });
   // textos
   await page.click('.tab[data-view="textos"]'); await page.waitForTimeout(200);

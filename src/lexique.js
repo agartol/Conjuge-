@@ -1,0 +1,40 @@
+// Traducciones al español (tarjetas de verbos y, más adelante, vocabulario).
+const LEX = {
+  verbes: {
+    'être': 'ser, estar', 'avoir': 'tener, haber', 'aller': 'ir', 'venir': 'venir', 'faire': 'hacer', 'dire': 'decir',
+    'pouvoir': 'poder', 'vouloir': 'querer', 'devoir': 'deber, tener que', 'savoir': 'saber', 'prendre': 'tomar, coger',
+    'mettre': 'poner', 'voir': 'ver', 'parler': 'hablar', 'aimer': 'querer, gustar', 'travailler': 'trabajar',
+    'habiter': 'vivir, habitar', 'regarder': 'mirar', 'écouter': 'escuchar', 'chercher': 'buscar', 'trouver': 'encontrar',
+    'donner': 'dar', 'demander': 'preguntar, pedir', 'penser': 'pensar', 'jouer': 'jugar, tocar', 'arriver': 'llegar',
+    'entrer': 'entrar', 'rester': 'quedarse', 'tomber': 'caer(se)', 'rentrer': 'volver (a casa)', 'monter': 'subir',
+    'oublier': 'olvidar', 'étudier': 'estudiar', 'montrer': 'mostrar, enseñar', 'porter': 'llevar (puesto)',
+    'laisser': 'dejar', 'gagner': 'ganar', 'aider': 'ayudar', 'utiliser': 'utilizar', 'raconter': 'contar, relatar',
+    'préparer': 'preparar', 'visiter': 'visitar', 'fermer': 'cerrar', 'expliquer': 'explicar', 'décider': 'decidir',
+    'continuer': 'continuar', 'danser': 'bailar', 'chanter': 'cantar', 'apporter': 'traer', 'marcher': 'andar, caminar',
+    'rencontrer': 'conocer, encontrarse con', 'accepter': 'aceptar', 'refuser': 'rechazar, negarse', 'inviter': 'invitar',
+    'rêver': 'soñar', 'créer': 'crear', 'manger': 'comer', 'voyager': 'viajar', 'nager': 'nadar', 'changer': 'cambiar',
+    'commencer': 'empezar', 'avancer': 'avanzar', 'acheter': 'comprar', 'amener': 'traer (a alguien)',
+    'emmener': 'llevar (a alguien)', 'préférer': 'preferir', 'espérer': 'esperar (desear)', 'répéter': 'repetir',
+    'appeler': 'llamar', 'rappeler': 'volver a llamar, recordar', 'jeter': 'tirar', 'payer': 'pagar', 'essayer': 'intentar, probar',
+    'envoyer': 'enviar', 'nettoyer': 'limpiar', 'employer': 'emplear, usar', 'finir': 'terminar', 'choisir': 'elegir',
+    'réussir': 'aprobar, tener éxito', 'grandir': 'crecer', 'maigrir': 'adelgazar', 'réfléchir': 'reflexionar',
+    'remplir': 'llenar, rellenar', 'obéir': 'obedecer', 'agir': 'actuar', 'partir': 'irse, marcharse', 'sortir': 'salir',
+    'dormir': 'dormir', 'sentir': 'oler, sentir', 'servir': 'servir', 'mentir': 'mentir', 'ouvrir': 'abrir', 'offrir': 'regalar, ofrecer',
+    'découvrir': 'descubrir', 'souffrir': 'sufrir', 'courir': 'correr', 'mourir': 'morir', 'tenir': 'sujetar, sostener',
+    'obtenir': 'obtener', 'devenir': 'convertirse en, llegar a ser', 'revenir': 'volver', 'apprendre': 'aprender',
+    'comprendre': 'entender, comprender', 'promettre': 'prometer', 'permettre': 'permitir', 'attendre': 'esperar (aguardar)',
+    'entendre': 'oír', 'répondre': 'responder', 'vendre': 'vender', 'perdre': 'perder', 'descendre': 'bajar',
+    'rendre': 'devolver', 'croire': 'creer', 'recevoir': 'recibir', 'apercevoir': 'divisar, percibir', 'boire': 'beber',
+    'lire': 'leer', 'écrire': 'escribir', 'décrire': 'describir', 'conduire': 'conducir', 'construire': 'construir',
+    'traduire': 'traducir', 'produire': 'producir', 'connaître': 'conocer', 'reconnaître': 'reconocer',
+    'paraître': 'parecer', 'disparaître': 'desaparecer', 'naître': 'nacer', 'vivre': 'vivir', 'suivre': 'seguir',
+    'plaire': 'gustar, agradar', 'rire': 'reír', 'sourire': 'sonreír', 'craindre': 'temer', 'peindre': 'pintar',
+    'éteindre': 'apagar', 'rejoindre': 'reunirse con, alcanzar', 'battre': 'golpear, vencer', 'convaincre': 'convencer',
+    'interdire': 'prohibir', 'se lever': 'levantarse', 'se coucher': 'acostarse', 'se réveiller': 'despertarse',
+    's’habiller': 'vestirse', 'se promener': 'pasear', 'se dépêcher': 'darse prisa', 's’amuser': 'divertirse',
+    'se reposer': 'descansar', 'se laver': 'lavarse', 'se marier': 'casarse', 'se souvenir': 'acordarse',
+    's’asseoir': 'sentarse', 'se sentir': 'sentirse', 's’appeler': 'llamarse', 's’inquiéter': 'preocuparse',
+    's’occuper': 'ocuparse', 'se taire': 'callarse', 's’ennuyer': 'aburrirse'
+  }
+};
+if (typeof module !== 'undefined') module.exports = LEX;

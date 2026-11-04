@@ -160,6 +160,9 @@ select { background: var(--panel); border: 1px solid var(--line); border-radius:
 .feedback.bad { background: var(--err-soft); color: var(--err); }
 .feedback .why { color: var(--ink); display: block; margin-top: 4px; }
 .box-dots { display: inline-flex; gap: 3px; vertical-align: middle; }
+#k-card { position: relative; }
+.k-corner { position: absolute; top: 12px; right: 22px; display: flex; align-items: center; gap: 8px; }
+.tr-es { color: var(--muted); font-style: italic; font-size: 15px; }
 .box-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); display: block; }
 .box-dots i.on { background: var(--accent); }
 
@@ -340,6 +343,28 @@ select { background: var(--panel); border: 1px solid var(--line); border-radius:
 .field-l { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
 /* ---- Transformar / hipótesis ---- */
 .consigna { font-weight: 700; font-size: 17px; margin: 0; }
+/* Grammaire */
+.g-topics { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.g-topic { text-align: left; border: 1.5px solid var(--line); background: var(--panel); border-radius: 12px; padding: 12px 14px; cursor: pointer; display: grid; gap: 8px; font: inherit; color: var(--ink); }
+.g-topic b { font-size: 15px; line-height: 1.3; }
+.g-topic[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent); }
+.g-topic .g-bar { height: 5px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.g-topic .g-bar i { display: block; height: 100%; background: var(--ok, #2E7D32); }
+.g-topic small { color: var(--muted); font-size: 12.5px; }
+.g-topic.mix { border-style: dashed; }
+.g-main { display: grid; gap: 16px; margin-top: 18px; }
+.fiche > summary { cursor: pointer; font-weight: 700; font-size: 17px; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.fiche > summary::-webkit-details-marker { display: none; }
+.fiche > summary::after { content: 'Masquer la fiche'; font-weight: 600; font-size: 13px; color: var(--accent); }
+.fiche:not([open]) > summary::after { content: 'Voir la fiche'; }
+.fiche-body { display: grid; gap: 14px; border-top: 1px solid var(--line); }
+.f-tip { margin: 0; padding: 10px 14px; border-radius: 8px; background: var(--accent-soft); font-weight: 600; }
+.f-rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 22px; }
+.f-rule h4 { margin: 0 0 2px; font-size: 16px; color: var(--accent); }
+.f-rule p { margin: 0 0 4px; }
+.f-rule ul { margin: 0; padding-left: 18px; font-style: italic; }
+.f-rule li { margin: 2px 0; }
+.sentence .ans.g-blank { width: 10ch; min-width: 0; }
 .from { font-family: var(--f-display); font-size: 26px; line-height: 1.3; margin: 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .chip.kind { background: var(--accent-soft); color: var(--accent); }
 button.chip.kind[aria-pressed="false"] { background: transparent; color: var(--muted); border-color: var(--line); }
@@ -384,19 +409,22 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 <nav class="sidenav" aria-label="Exercices">
   <div class="brand"><h1>Conjugue <em>!</em></h1></div>
   <button class="tab" data-view="hoy">Aujourd’hui</button>
-  <p class="navsec">Formes</p>
+  <p class="navsec">Verbes · formes</p>
   <button class="tab" data-view="conjugar">Conjugueur</button>
   <button class="tab" data-view="tarjetas">Cartes</button>
   <button class="tab" data-view="irregulares">Irréguliers</button>
   <button class="tab" data-view="dictado">Dictée</button>
-  <p class="navsec">Emploi</p>
+  <p class="navsec">Verbes · emploi</p>
   <button class="tab" data-view="frases">Phrases</button>
   <button class="tab" data-view="tiempo">Quel temps ?</button>
   <button class="tab" data-view="textos">Textes à trous</button>
   <button class="tab" data-view="transformar">Transformer</button>
   <button class="tab" data-view="hipotesis">Hypothèses avec si</button>
   <button class="tab" data-view="trampas">Pièges</button>
-  <p class="navsec">Avec Claude</p>
+  <p class="navsec">Grammaire</p>
+  <button class="tab" data-view="pronoms">Pronoms</button>
+  <button class="tab" data-view="connecteurs">Connecteurs logiques</button>
+  <p class="navsec">Expression écrite</p>
   <button class="tab" data-view="escribir">Écrire</button>
   <p class="navsec">Évaluation</p>
   <button class="tab" data-view="examen">Examen</button>
@@ -517,7 +545,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   <section class="view" id="v-examen" hidden>
     <div id="e-start" class="card card-pad" style="display:grid;gap:14px;justify-items:start">
       <h2 style="font-family:var(--f-display);font-weight:400;font-size:28px;margin:0">Examen blanc chronométré</h2>
-      <p class="intro" style="margin:0"><b>20 questions</b> (12 formes isolées et 8 phrases) en <b>10 minutes</b>. Pas de correction avant la fin, comme à l’examen.</p>
+      <p class="intro" style="margin:0"><b>20 questions</b> (10 formes isolées, 6 phrases et 4 questions de grammaire) en <b>10 minutes</b>. Pas de correction avant la fin, comme à l’examen.</p>
       <button class="btn primary" id="e-begin" type="button">Commencer</button>
     </div>
     <div id="e-run" hidden style="display:grid;gap:16px">
@@ -670,6 +698,22 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   </section>
 
 
+  <!-- Grammaire (pronoms, connecteurs…) -->
+  <section class="view" id="v-grammaire" hidden>
+    <p class="intro" id="g-intro"></p>
+    <div class="g-topics" id="g-topics"></div>
+    <div id="g-main" class="g-main" hidden>
+      <details class="card fiche" id="g-fiche" open><summary class="card-pad"><span id="g-fiche-title"></span></summary><div class="card-pad fiche-body" id="g-fiche-body"></div></details>
+      <div class="card">
+        <div class="sheet"><div class="flash" id="g-card"></div></div>
+        <div class="card-pad" style="display:grid;gap:12px;border-top:1px solid var(--line)">
+          <div class="accents" data-accents></div>
+          <div class="row between"><div class="actions"><button class="btn primary" id="g-go" type="button">Vérifier</button><button class="btn ghost" id="g-skip" type="button">Passer</button></div><span class="stats-line" id="g-stats"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </main>
 </div>
 
@@ -677,6 +721,8 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 /*__ENGINE__*/
 /*__BANK__*/
 /*__BANK2__*/
+/*__LEX__*/
+/*__BANK3__*/
 (() => {
   const E = ENGINE, B = BANK;
   const T = Object.fromEntries(E.TENSES.map(t => [t.id, t]));
@@ -743,7 +789,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 
   /* ---------- Progreso (cuenta → db; navegador como respaldo) ---------- */
   const LS = 'atelier-conj-v1';
-  const blank = () => ({ v: 1, updated: 0, forms: {}, uso: {}, trap: { ok: 0, n: 0 }, tr: { ok: 0, n: 0 }, hip: { ok: 0, n: 0 }, dict: { ok: 0, n: 0 }, wr: { n: 0 }, srs: {}, seen: {}, days: {}, err: {}, errEx: {}, conf: {}, text: {}, gen: [], exam: '', goal: 40 });
+  const blank = () => ({ v: 1, updated: 0, forms: {}, uso: {}, trap: { ok: 0, n: 0 }, tr: { ok: 0, n: 0 }, hip: { ok: 0, n: 0 }, dict: { ok: 0, n: 0 }, wr: { n: 0 }, srs: {}, seen: {}, days: {}, err: {}, errEx: {}, conf: {}, text: {}, gen: [], exam: '', goal: 40, gram: {}, gseen: {} });
   let P = blank();
   try { const raw = localStorage.getItem(LS); if (raw) P = Object.assign(blank(), JSON.parse(raw)); } catch (e) {}
   const fixP = () => { const b = blank(); for (const k of Object.keys(b)) if (P[k] == null) P[k] = b[k]; };
@@ -806,7 +852,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   document.addEventListener('focusin', e => { if (e.target.classList && e.target.classList.contains('ans')) lastInput = e.target; });
   document.querySelectorAll('[data-accents]').forEach(bar => {
     bar.setAttribute('aria-label', 'Insérer un accent');
-    ACC.forEach(c => bar.append(h('button', { type: 'button', 'aria-label': 'Insertar ' + c,
+    ACC.forEach(c => bar.append(h('button', { type: 'button', 'aria-label': 'Insérer ' + c,
       onpointerdown: e => e.preventDefault(),
       onclick: () => {
         const view = bar.closest('.view');
@@ -979,7 +1025,8 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     const inp = ansInput({ id: 'k-in', 'aria-label': 'Ta réponse', enterkeyhint: 'done' });
     inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); kGo(); } });
     card.append(
-      h('div', { class: 'row' }, chip(t), dots, s ? null : h('span', { class: 'note' }, 'nouvelle')),
+      h('div', { class: 'k-corner' }, dots, h('span', { class: 'note' }, s ? 'révision' : 'nouvelle')),
+      h('div', { class: 'row' }, chip(t), LEX.verbes[v] ? h('span', { class: 'tr-es', lang: 'es' }, LEX.verbes[v]) : ''),
       h('p', { class: 'verb' }, v),
       h('div', { class: 'who' }, h('label', { class: 'plabel', for: 'k-in' }, t === 'ger' ? 'gérondif' : plab(c)), inp),
       c.g ? h('p', { class: 'note', style: 'margin:0' }, 'Accorde le participe au ' + (c.g[0] === 'f' ? 'féminin' : 'masculin') + (c.g.includes('pl') ? ' pluriel' : '') + '.') : '');
@@ -1092,13 +1139,14 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   const X = { qs: [], i: 0, timer: null, end: 0 };
   function buildExam() {
     const forms = [], seen = new Set();
-    while (forms.length < 12) {
+    while (forms.length < 10) {
       const v = pick(E.VERBS), t = pick(E.TENSES).id; if (!E.available(v, t)) continue;
       const p = pick(E.personsFor(t)), k = key(v, t, p); if (seen.has(k)) continue; seen.add(k);
       forms.push({ type: 'form', v, t, p, g: rg(v, t), ans: '' });
     }
-    const fr = shuffle(B.frases).slice(0, 8).map(it => ({ type: 'frase', it, t: it.t, ans: '' }));
-    return shuffle(forms.concat(fr));
+    const fr = shuffle(B.frases).slice(0, 6).map(it => ({ type: 'frase', it, t: it.t, ans: '' }));
+    const gr = shuffle(BANK3.topics.flatMap(t => t.ex).filter(x => x.k === 'g' && !Array.isArray(x.a[0]))).slice(0, 4).map(it => ({ type: 'gram', it, t: 'gram', ans: '' }));
+    return shuffle(forms.concat(fr, gr));
   }
   function examQ() {
     const q = X.qs[X.i], card = $('#e-card');
@@ -1111,6 +1159,9 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     if (q.type === 'form') {
       const c = E.cell(q.v, q.t, q.p, q.g);
       card.replaceChildren(h('div', { class: 'row' }, chip(q.t)), h('p', { class: 'verb' }, q.v), h('div', { class: 'who' }, h('label', { class: 'plabel', for: 'e-in' }, q.t === 'ger' ? 'gérondif' : plab(c)), inp));
+    } else if (q.type === 'gram') {
+      const [a, b] = q.it.s.split('___'); inp.size = 10;
+      card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip kind', 'aria-pressed': 'true' }, 'Grammaire'), h('span', { class: 'note' }, GT[q.it.topic].name)), h('p', { class: 'sentence' }, a, inp, b));
     } else card.replaceChildren(h('div', { class: 'row' }, chip(q.t)), sentenceNodes(q.it, inp));
     inp.focus({ preventScroll: true });
   }
@@ -1136,12 +1187,14 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     const rows = X.qs.map((q, n) => {
       let accept, p = null, prompt;
       if (q.type === 'form') { const c = E.cell(q.v, q.t, q.p, q.g); accept = c.accept; p = q.p; prompt = `${q.v} · ${q.t === 'ger' ? 'gérondif' : c.label}${c.g ? ' (' + c.g + ')' : ''}`; }
+      else if (q.type === 'gram') { accept = q.it.a; prompt = q.it.s; }
       else { accept = q.it.a; prompt = q.it.s.replace(/\[([^\]]+)\]/, '___ ($1)'); }
-      const v = judge(q.ans, accept, p, q.t), good = v === 'ok';
-      if (v !== 'empty' && !good) logErr(q.ans, accept, q.t);
+      const v = judge(q.ans, accept, p, q.type === 'gram' ? null : q.t), good = v === 'ok';
+      if (q.type === 'gram') { if (v !== 'empty') recG(q.it, good, q.ans); }
+      else if (v !== 'empty' && !good) logErr(q.ans, accept, q.t);
       if (good) ok++;
       const b = byT[q.t] || (byT[q.t] = [0, 0]); b[1]++; if (good) b[0]++;
-      if (v !== 'empty') { if (q.type === 'form') recForm(q.v, q.t, q.p, good); else bump(P.forms, q.t, good); }
+      if (v !== 'empty') { if (q.type === 'form') recForm(q.v, q.t, q.p, good); else if (q.type === 'frase') bump(P.forms, q.t, good); }
       return { q, prompt, v, good, right: accept[0] };
     });
     touch();
@@ -1149,10 +1202,10 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     const wrong = rows.filter(r => !r.good);
     const done = $('#e-done');
     done.replaceChildren(
-      h('div', { class: 'row between' }, h('div', {}, h('p', { class: 'big-score' }, `${ok}/${X.qs.length}`), h('p', { class: 'note', style: 'margin:4px 0 0' }, `${pct} % de aciertos`)),
-        h('div', { class: 'chips' }, Object.entries(byT).map(([t, [a, n]]) => h('span', { class: 'chip tense', style: tvars(t) }, `${T[t].name} ${a}/${n}`)))),
-      wrong.length ? h('div', { class: 'errlist' }, h('p', { class: 'prog-head', style: 'margin:0' }, `Tus ${wrong.length} fallos`), wrong.map(r => h('div', { class: 'erritem' },
-          h('div', { class: 'row' }, chip(r.q.t)), h('div', {}, r.prompt),
+      h('div', { class: 'row between' }, h('div', {}, h('p', { class: 'big-score' }, `${ok}/${X.qs.length}`), h('p', { class: 'note', style: 'margin:4px 0 0' }, `${pct} % de réussite`)),
+        h('div', { class: 'chips' }, Object.entries(byT).map(([t, [a, n]]) => t === 'gram' ? h('span', { class: 'chip kind', 'aria-pressed': 'true' }, `Grammaire ${a}/${n}`) : h('span', { class: 'chip tense', style: tvars(t) }, `${T[t].name} ${a}/${n}`)))),
+      wrong.length ? h('div', { class: 'errlist' }, h('p', { class: 'prog-head', style: 'margin:0' }, `${wrong.length === 1 ? 'Ton erreur' : 'Tes ' + wrong.length + ' erreurs'}`), wrong.map(r => h('div', { class: 'erritem' },
+          h('div', { class: 'row' }, r.q.type === 'gram' ? h('span', { class: 'chip kind', 'aria-pressed': 'true' }, GT[r.q.it.topic].name) : chip(r.q.t)), h('div', {}, r.prompt),
           h('div', { class: 'errans' }, h('span', {}, 'Ta réponse : ', h('s', { style: 'color:var(--err)' }, r.q.ans.trim() || '—')), h('span', {}, 'Bonne réponse : ', h('b', { style: 'color:var(--ok)' }, r.right))))))
         : h('p', { class: 'feedback ok' }, 'Parfait ! Aucune erreur.'),
       h('div', { class: 'actions' }, h('button', { class: 'btn primary', type: 'button', onclick: () => $('#e-begin').click() }, 'Un autre examen blanc'), h('button', { class: 'btn', type: 'button', onclick: () => go('progreso') }, 'Voir ma progression')));
@@ -1168,6 +1221,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     let n = 0, ok = 0;
     for (const o of [P.forms, P.uso]) for (const s of Object.values(o)) { n += s.n; ok += s.ok; }
     n += P.trap.n; ok += P.trap.ok;
+    for (const s of Object.values(P.gram || {})) { n += s.n; ok += s.ok; }
     const cards = Object.keys(P.srs).length, mastered = Object.values(P.srs).filter(s => s[0] >= 4).length;
     const worst = E.TENSES.map(t => ({ t, s: P.forms[t.id] })).filter(x => x.s && x.s.n >= 5).sort((a, b) => a.s.ok / a.s.n - b.s.ok / b.s.n)[0];
     $('#p-kpis').replaceChildren(
@@ -1179,6 +1233,10 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     tbl.replaceChildren(h('div', { class: 'prog-row prog-head' }, h('span', {}, 'Temps'), h('span', {}, 'Formes'), h('span', {}, 'Emploi')));
     E.TENSES.forEach(t => tbl.append(h('div', { class: 'prog-row tense', style: tvars(t.id) }, h('span', {}, h('span', { class: 'chip tense', style: tvars(t.id) }, t.name)), bar(P.forms[t.id], 'formes'), bar(P.uso[t.id], 'phrases'))));
     [['Pièges', P.trap, 'pièges'], ['Transformations', P.tr, 'phrases'], ['Hypothèses avec si', P.hip, 'phrases'], ['Dictée', P.dict, 'dictées']].forEach(([name, st, unit]) => tbl.append(h('div', { class: 'prog-row', style: '--tc:var(--accent)' }, h('span', {}, h('span', { class: 'chip', style: 'background:var(--accent-soft);color:var(--accent)' }, name)), bar(st, unit), h('span'))));
+    BANK3.groups.forEach(g => {
+      tbl.append(h('div', { class: 'prog-row prog-head' }, h('span', {}, 'Grammaire · ' + g.name), h('span', {}, 'Exercices'), h('span', {})));
+      BANK3.topics.filter(t => t.g === g.id).forEach(t => tbl.append(h('div', { class: 'prog-row', style: '--tc:var(--accent)' }, h('span', {}, h('a', { href: '#' + g.id, onclick: e => { e.preventDefault(); go(g.id); gOpenTopic(t.id); } }, t.name)), bar(P.gram[t.id], 'exercices'), h('span', {}))));
+    });
     const pe = $('#p-errs'); if (pe) renderErrs(pe);
     renderSync();
   }
@@ -1338,7 +1396,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     } catch (e) {}
   }
   const SPK = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
-  function speakBtn(text, label = 'Escuchar') {
+  function speakBtn(text, label = 'Écouter') {
     if (!TTS) return null;
     const b = h('button', { type: 'button', class: 'spk', title: label, 'aria-label': label + ': ' + text, onclick: e => { e.preventDefault(); speak(typeof text === 'function' ? text() : text); } });
     b.innerHTML = SPK; return b;
@@ -1656,6 +1714,133 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   }
   $('#hp-go').onclick = hipGo; $('#hp-skip').onclick = nextHip;
 
+  /* ---------- Grammaire ---------- */
+  const G = { group: null, topic: null, order: [], cur: null, state: 'ask', done: 0, right: 0 };
+  const GT = Object.fromEntries(BANK3.topics.map(t => [t.id, t]));
+  const GKIND = { g: 'Complète', q: 'Choisis', t: 'Transforme' };
+  const gStat = id => { const s = (P.gram || {})[id]; return s ? s : { ok: 0, n: 0 }; };
+  function gOpenGroup(gid) {
+    if (G.group !== gid) { G.group = gid; G.topic = null; G.cur = null; }
+    const grp = BANK3.groups.find(x => x.id === gid);
+    $('#g-intro').textContent = grp.intro;
+    renderGTopics();
+    $('#g-main').hidden = !G.topic;
+  }
+  function renderGTopics() {
+    const ts = BANK3.topics.filter(t => t.g === G.group);
+    const btn = (id, name, cls, stat, total) => h('button', { type: 'button', class: 'g-topic' + cls, 'aria-pressed': String(G.topic === id), onclick: () => gOpenTopic(id) },
+      h('b', {}, name),
+      h('span', { class: 'g-bar', 'aria-hidden': 'true' }, h('i', { style: `width:${stat.n ? Math.round(stat.ok / stat.n * 100) : 0}%` })),
+      h('small', {}, stat.n ? `${Math.round(stat.ok / stat.n * 100)} % de réussite · ${stat.n} réponses` : `${total} exercices · pas encore commencé`));
+    const all = ts.reduce((a, t) => { const s = gStat(t.id); a.ok += s.ok; a.n += s.n; return a; }, { ok: 0, n: 0 });
+    $('#g-topics').replaceChildren(...ts.map(t => btn(t.id, t.name, '', gStat(t.id), t.ex.length)),
+      btn('mix', 'Tous les thèmes mélangés', ' mix', all, ts.reduce((a, t) => a + t.ex.length, 0)));
+  }
+  function gOpenTopic(id) {
+    G.topic = id; G.order = []; G.done = G.right = 0;
+    renderGTopics(); $('#g-main').hidden = false;
+    const fiche = $('#g-fiche');
+    if (id === 'mix') fiche.hidden = true;
+    else { fiche.hidden = false; fiche.open = !(gStat(id).n >= 10); renderFiche(GT[id]); }
+    nextG();
+    (id === 'mix' ? $('#g-card') : fiche).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function renderFiche(t) {
+    $('#g-fiche-title').textContent = 'Fiche : ' + t.name;
+    $('#g-fiche-body').replaceChildren(
+      h('p', { class: 'f-tip' }, t.tip),
+      h('div', { class: 'f-rules' }, t.fiche.map(([lab, expl, exs]) => h('div', { class: 'f-rule' }, h('h4', {}, lab), expl ? h('p', {}, expl) : '', exs.length ? h('ul', {}, exs.map(e => h('li', {}, e, ' ', speakBtn(e)))) : ''))),
+      t.note ? h('p', { class: 'note', style: 'margin:0' }, t.note) : '',
+      t.links && t.links.length ? h('p', { class: 'note', style: 'margin:0' }, 'Pour aller plus loin : ', t.links.map(([l, u], i) => [i ? ' · ' : '', h('a', { href: u, target: '_blank', rel: 'noopener' }, l)])) : '');
+  }
+  const gPool = () => G.topic === 'mix' ? BANK3.topics.filter(t => t.g === G.group).flatMap(t => t.ex) : GT[G.topic].ex;
+  function nextG() {
+    const items = gPool();
+    if (!G.order.length) G.order = shuffle(items).sort((a, b) => { const sa = P.gseen[a.id] || [0, 0], sb = P.gseen[b.id] || [0, 0]; return (sa[1] ? sa[0] / sa[1] : -1) - (sb[1] ? sb[0] / sb[1] : -1); }).map(x => x.id);
+    const id = G.order.shift(); G.cur = items.find(x => x.id === id); G.state = 'ask';
+    renderGItem($('#g-card'), G.cur, gGo, gAnswerQ);
+    $('#g-go').textContent = 'Vérifier'; $('#g-go').hidden = G.cur.k === 'q';
+    gStats();
+  }
+  // Muestra un ejercicio de gramática en `card`; `onEnter` corrige, `onPick(i)` responde a un ejercicio de opciones.
+  function renderGItem(card, it, onEnter, onPick, extraChip) {
+    const head = h('div', { class: 'row' }, h('span', { class: 'chip kind', 'aria-pressed': 'true' }, GKIND[it.k]), (G.topic === 'mix' || extraChip) ? h('span', { class: 'note' }, GT[it.topic].name) : '');
+    let focusEl = null;
+    if (it.k === 'g') {
+      const parts = it.s.split('___');
+      const kids = [parts[0]];
+      for (let i = 1; i < parts.length; i++) {
+        const inp = ansInput({ class: 'ans g-blank', 'data-b': i - 1, 'aria-label': 'Trou ' + i, enterkeyhint: i === parts.length - 1 ? 'done' : 'next' });
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); const nx = card.querySelector(`.g-blank[data-b="${i}"]`); nx ? nx.focus() : onEnter(); } });
+        if (!focusEl) focusEl = inp; kids.push(inp, parts[i]);
+      }
+      card.replaceChildren(head, h('p', { class: 'sentence' }, kids));
+    } else if (it.k === 'q') {
+      const parts = it.s.split('___');
+      const sent = parts.length > 1 ? h('p', { class: 'sentence' }, parts[0], h('span', { class: 'blank g-qblank' }, ' '), parts.slice(1).join('___')) : h('p', { class: 'sentence' }, it.s);
+      card.replaceChildren(head, sent, h('div', { class: 'opts' }, shuffle(it.o.map((o, i) => [o, i])).map(([o, i]) => h('button', { type: 'button', class: 'opt', 'data-i': i, onclick: () => onPick(i) }, o))));
+    } else {
+      focusEl = ansInput({ class: 'ans wide', 'aria-label': 'Phrase transformée', enterkeyhint: 'done' });
+      focusEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); onEnter(); } });
+      card.replaceChildren(head, h('p', { class: 'consigna' }, it.i), h('p', { class: 'from' }, it.f, ' ', speakBtn(it.f)), focusEl);
+    }
+    card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
+    focusEl && focusEl.focus({ preventScroll: true });
+  }
+  const gAccepts = it => (it.k === 'g' && !Array.isArray(it.a[0])) ? [it.a] : it.a;
+  const gFull = it => { if (it.k !== 'g') return ''; const A = gAccepts(it); let i = 0; const out = it.s.replace(/___( ?)/g, (m, sp) => { const r = A[i++][0]; return /['’]$/.test(r) ? r : r + sp; }); return out.charAt(0).toUpperCase() + out.slice(1); };
+  function recG(it, ok, you) {
+    bump(P.gram, it.topic, ok);
+    const s = P.gseen[it.id] || (P.gseen[it.id] = [0, 0]); s[1]++; if (ok) s[0]++;
+    if (!ok && you != null) logErr(you || '∅', it.k === 'q' ? [it.o[it.c]] : it.k === 'g' ? gAccepts(it).map(a => a[0]) : it.a, null, 'g_' + it.topic);
+    touch();
+  }
+  // Corrige un ejercicio de huecos o de transformación. Devuelve {ok, level, fb} o null si falta respuesta.
+  function gCheck(card, it) {
+    if (it.k === 'g') {
+      const ins = [...card.querySelectorAll('.g-blank')], A = gAccepts(it);
+      const vs = ins.map((inp, i) => judge(inp.value, A[i], null, null));
+      const e = vs.indexOf('empty'); if (e >= 0) { ins[e].focus(); return null; }
+      ins.forEach((inp, i) => { inp.className = 'ans g-blank ' + (vs[i] === 'ok' ? 'ok' : vs[i] === 'acc' ? 'acc' : 'bad'); inp.readOnly = true; });
+      const ok = vs.every(v => v === 'ok'), minor = !ok && vs.every(v => v === 'ok' || v === 'acc');
+      const full = gFull(it);
+      const fb = h('div', { class: 'feedback ' + (ok ? 'ok' : minor ? 'acc' : 'bad'), role: 'status' }, h('b', {}, ok ? 'Correct.' : minor ? verdictText.acc + '.' : 'Ce n’est pas correct.'), ok ? '' : [' → ', h('b', {}, full)], ' ', speakBtn(full), h('span', { class: 'why' }, it.w));
+      return { ok, minor, fb, you: ins.map(i => i.value).join(' / ') };
+    }
+    const inp = card.querySelector('.ans'), r = gradeSentence(inp.value, it.a);
+    if (r.level === 'empty') { inp.focus(); return null; }
+    const ok = r.level === 'ok'; logSentence(r);
+    inp.className = 'ans wide ' + (ok ? 'ok' : r.level === 'minor' ? 'acc' : 'bad'); inp.readOnly = true;
+    const fb = gradeView(r, [ok ? null : h('p', { class: 'answer' }, 'Réponse : ', h('b', {}, r.right), ' ', speakBtn(r.right)), h('span', { class: 'why' }, it.w)]);
+    if (r.level === 'grave') askValid(fb, it.i, it.f, it.a[0], inp.value.trim(), () => { const s = P.gseen[it.id]; if (s) s[0]++; const st = P.gram[it.topic]; if (st) st.ok++; touch(); });
+    return { ok, minor: r.level === 'minor', fb, you: inp.value };
+  }
+  function gPick(card, it, i) {
+    const ok = i === it.c;
+    card.querySelectorAll('.opt').forEach(b => { b.disabled = true; const j = +b.dataset.i; if (j === it.c) b.classList.add('right'); else if (j === i) b.classList.add('wrong'); });
+    const bl = card.querySelector('.g-qblank'); if (bl) { bl.textContent = it.o[it.c]; bl.classList.add('filled'); }
+    const fb = h('div', { class: 'feedback ' + (ok ? 'ok' : 'bad'), role: 'status' }, h('b', {}, ok ? 'Correct.' : 'Ce n’est pas correct.'), ok ? '' : [' → ', h('b', {}, it.o[it.c])], h('span', { class: 'why' }, it.w));
+    return { ok, fb, you: it.o[i] };
+  }
+  function gStats() {
+    const n = gPool().length;
+    $('#g-stats').replaceChildren(h('span', {}, 'Cette séance : ', h('b', {}, `${G.right} / ${G.done}`)), h('span', {}, 'Exercices : ', h('b', {}, n)));
+  }
+  function gGo() {
+    if (G.state === 'shown') { nextG(); renderGTopics(); return; }
+    const card = $('#g-card'), r = gCheck(card, G.cur); if (!r) return;
+    recG(G.cur, r.ok, r.you); G.done++; if (r.ok) G.right++;
+    card.append(r.fb); G.state = 'shown'; $('#g-go').textContent = 'Suivant'; $('#g-go').hidden = false; $('#g-go').focus({ preventScroll: true }); gStats();
+  }
+  function gAnswerQ(i) {
+    if (G.state === 'shown') return;
+    const card = $('#g-card'), r = gPick(card, G.cur, i);
+    recG(G.cur, r.ok, r.you); G.done++; if (r.ok) G.right++;
+    card.append(r.fb); G.state = 'shown'; $('#g-go').textContent = 'Suivant'; $('#g-go').hidden = false; $('#g-go').focus({ preventScroll: true }); gStats();
+  }
+  $('#g-go').onclick = gGo; $('#g-skip').onclick = () => { nextG(); };
+  BANK3.topics.forEach(t => { ERRCAT['g_' + t.id] = { name: t.name, tip: t.tip, go: () => { go(t.g); gOpenTopic(t.id); }, btn: 'Revoir la fiche et s’entraîner' }; });
+
   /* ---------- Hoy ---------- */
   function streak() {
     let n = 0; const d = new Date();
@@ -1717,22 +1902,30 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   function sessionPlanText() {
     const w = weakTenses().slice(0, 2).map(id => T[id].name).join(' et ');
     const due = Object.values(P.srs).filter(s => s[1] <= Date.now()).length;
-    return `15 exercices (environ 10 minutes) : ${due ? Math.min(due, 6) + ' cartes à réviser' : '6 cartes'}, 4 phrases centrées sur ${w}, 2 transformations, 2 hypothèses avec si et 1 piège. Correction immédiate.`;
+    return `15 exercices (environ 10 minutes) : ${due ? Math.min(due, 5) + ' cartes à réviser' : '5 cartes'}, 3 phrases centrées sur ${w}, 3 exercices de grammaire (pronoms, connecteurs), 2 transformations, 1 hypothèse avec si et 1 piège. Correction immédiate.`;
   }
   const S = { qs: [], i: 0, state: 'ask', res: [] };
   function buildSession() {
     const now = Date.now(), w = weakTenses(), qs = [];
     const due = Object.entries(P.srs).filter(([k, s]) => s[1] <= now).sort((a, b) => a[1][0] - b[1][0]).map(([k]) => k.split('|')).filter(([v, t]) => E.V[v] && T[t] && E.available(v, t));
     const seen = new Set();
-    for (const [v, t, p] of due) { if (qs.length >= 6) break; const k = v + t + p; if (!seen.has(k)) { seen.add(k); qs.push({ type: 'form', v, t, p: +p, g: rg(v, t) }); } }
-    while (qs.length < 6) { const t = pick(w.slice(0, 4)), v = pick(E.VERBS); if (!E.available(v, t)) continue; const p = pick(E.personsFor(t)); qs.push({ type: 'form', v, t, p, g: rg(v, t) }); }
-    const fr = shuffle(B.frases.filter(f => w.slice(0, 3).includes(f.t))).slice(0, 4); fr.forEach(it => qs.push({ type: 'frase', it, t: it.t }));
+    for (const [v, t, p] of due) { if (qs.length >= 5) break; const k = v + t + p; if (!seen.has(k)) { seen.add(k); qs.push({ type: 'form', v, t, p: +p, g: rg(v, t) }); } }
+    while (qs.length < 5) { const t = pick(w.slice(0, 4)), v = pick(E.VERBS); if (!E.available(v, t)) continue; const p = pick(E.personsFor(t)); qs.push({ type: 'form', v, t, p, g: rg(v, t) }); }
+    const fr = shuffle(B.frases.filter(f => w.slice(0, 3).includes(f.t))).slice(0, 3); fr.forEach(it => qs.push({ type: 'frase', it, t: it.t }));
     shuffle(B2.transform).slice(0, 2).forEach(it => qs.push({ type: 'tr', it }));
-    shuffle(B2.hipotesis.filter(x => x.k < 3)).slice(0, 2).forEach(it => qs.push({ type: 'hip', it }));
+    shuffle(B2.hipotesis.filter(x => x.k < 3)).slice(0, 1).forEach(it => qs.push({ type: 'hip', it }));
+    gramPicks(3).forEach(it => qs.push({ type: 'gram', it }));
     qs.push({ type: 'trampa', it: pick(B.trampas) });
     // intercalar: formas repartidas
     const forms = qs.filter(q => q.type === 'form'), rest = shuffle(qs.filter(q => q.type !== 'form')), out = [];
     while (forms.length || rest.length) { if (forms.length) out.push(forms.shift()); if (rest.length) out.push(rest.shift()); }
+    return out;
+  }
+  // Ejercicios de gramática para la sesión: primero los fallados, luego los no vistos; temas distintos.
+  function gramPicks(n) {
+    const sc = x => { const s = P.gseen[x.id]; return !s ? 1 : s[0] < s[1] ? 0 : 2 + s[0] / (s[1] + 1); };
+    const all = shuffle(BANK3.topics.flatMap(t => t.ex)).sort((a, b) => sc(a) - sc(b)), out = [], used = new Set();
+    for (const x of all) { if (out.length >= n) break; if (used.has(x.topic)) continue; used.add(x.topic); out.push(x); }
     return out;
   }
   function sessionQ() {
@@ -1743,23 +1936,27 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
     let focusEl = null;
     if (q.type === 'form') {
       const c = E.cell(q.v, q.t, q.p, q.g); focusEl = ansInput({ id: 'h-in', 'aria-label': 'Ta réponse' });
-      card.replaceChildren(h('div', { class: 'row' }, chip(q.t), h('span', { class: 'note' }, 'Carte')), h('p', { class: 'verb' }, q.v), h('div', { class: 'who' }, h('label', { class: 'plabel', for: 'h-in' }, plab(c)), focusEl));
+      card.replaceChildren(h('div', { class: 'row' }, chip(q.t), LEX.verbes[q.v] ? h('span', { class: 'tr-es', lang: 'es' }, LEX.verbes[q.v]) : '', h('span', { class: 'note' }, 'Carte')), h('p', { class: 'verb' }, q.v), h('div', { class: 'who' }, h('label', { class: 'plabel', for: 'h-in' }, plab(c)), focusEl));
     } else if (q.type === 'frase') {
       focusEl = ansInput({ id: 'h-in', 'aria-label': 'Ta réponse', size: 14 });
       card.replaceChildren(h('div', { class: 'row' }, chip(q.t), h('span', { class: 'note' }, 'Phrase')), sentenceNodes(q.it, focusEl));
     } else if (q.type === 'tr') {
       focusEl = ansInput({ id: 'h-in', class: 'ans wide', 'aria-label': 'Phrase transformée' });
       card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip kind', 'aria-pressed': 'true' }, KINDS[q.it.k])), h('p', { class: 'consigna' }, q.it.i), h('p', { class: 'from' }, q.it.from), focusEl);
+    } else if (q.type === 'gram') {
+      renderGItem(card, q.it, () => sessionNext(), i => sessionAnswer(i), true);
+      focusEl = null; $('#h-next').hidden = q.it.k === 'q';
     } else if (q.type === 'hip') {
       const s = hipNodes(q.it, (i, a) => { const inp = ansInput({ id: 'h-hp-' + i, 'aria-label': 'Trou ' + (i + 1), size: 13 }); if (!focusEl) focusEl = inp; inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); const nx = document.getElementById('h-hp-' + (i + 1)); nx ? nx.focus() : sessionNext(); } }); return inp; });
       card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip kind', 'aria-pressed': 'true' }, HT[q.it.k].name)), s);
     } else {
       const [a, b] = q.it.s.split('___');
-      card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip', style: 'background:var(--accent-soft);color:var(--accent)' }, 'Trampa')), h('p', { class: 'sentence' }, a, h('span', { class: 'blank', id: 'h-blank' }, ' '), b),
+      card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip', style: 'background:var(--accent-soft);color:var(--accent)' }, 'Piège')), h('p', { class: 'sentence' }, a, h('span', { class: 'blank', id: 'h-blank' }, ' '), b),
         h('div', { class: 'opts' }, shuffle(q.it.o.map((o, i) => [o, i])).map(([o, i]) => h('button', { type: 'button', class: 'opt', 'data-i': i, onclick: () => sessionAnswer(i) }, o))));
       $('#h-next').hidden = true;
     }
-    if (q.type !== 'trampa') $('#h-next').hidden = false;
+    if (q.type !== 'trampa' && !(q.type === 'gram' && q.it.k === 'q')) $('#h-next').hidden = false;
+    if (q.type === 'gram') return;
     if (focusEl && q.type !== 'hip') focusEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sessionNext(); } });
     card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
     focusEl && focusEl.focus({ preventScroll: true });
@@ -1774,6 +1971,11 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
       const inp = $('#h-in'), v = judge(inp.value, q.it.a, null, q.t); if (v === 'empty') return inp.focus();
       ok = v === 'ok'; bump(P.forms, q.t, ok); if (!ok) logErr(inp.value, q.it.a, q.t); inp.className = 'ans ' + (ok ? 'ok' : 'bad'); inp.readOnly = true;
       fb = [h('b', {}, ok ? 'Correct.' : 'C’était : '), ok ? '' : h('b', {}, q.it.a[0]), ' ', speakBtn(fillSentence(q.it.s, q.it.a[0])), h('span', { class: 'why' }, q.it.w)];
+    } else if (q.type === 'gram') {
+      if (q.it.k === 'q' && choice == null) return;
+      const r = q.it.k === 'q' ? gPick(card, q.it, choice) : gCheck(card, q.it); if (!r) return;
+      recG(q.it, r.ok, r.you); S.res.push({ q, ok: r.ok }); card.append(r.fb); $('#h-next').hidden = false;
+      S.state = 'shown'; $('#h-next').textContent = S.i === S.qs.length - 1 ? 'Voir le résultat' : 'Suivant'; $('#h-next').focus({ preventScroll: true }); return;
     } else if (q.type === 'tr') {
       const inp = $('#h-in'), r = gradeSentence(inp.value, q.it.a); if (r.level === 'empty') return inp.focus();
       ok = r.level === 'ok'; bump(P, 'tr', ok); logSentence(r); inp.className = 'ans wide ' + (ok ? 'ok' : r.level === 'minor' ? 'acc' : 'bad'); inp.readOnly = true;
@@ -1798,13 +2000,13 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   function sessionNext() { if (S.state === 'ask') return sessionAnswer(); if (S.i < S.qs.length - 1) { S.i++; sessionQ(); } else sessionEnd(); }
   function sessionEnd() {
     const ok = S.res.filter(r => r.ok).length, n = S.res.length;
-    const LBL = { form: 'Cartes', frase: 'Phrases', tr: 'Transformations', hip: 'Hypothèses', trampa: 'Piège' };
+    const LBL = { form: 'Cartes', frase: 'Phrases', tr: 'Transformations', hip: 'Hypothèses', trampa: 'Piège', gram: 'Grammaire' };
     const by = {}; S.res.forEach(r => { const b = by[r.q.type] || (by[r.q.type] = [0, 0]); b[1]++; if (r.ok) b[0]++; });
     $('#h-run').hidden = true; const d = $('#h-done'); d.hidden = false;
     d.replaceChildren(h('h2', { class: 'h2' }, 'Séance terminée'), h('p', { class: 'big-score' }, `${ok}/${n}`),
       h('div', { class: 'chips' }, Object.entries(by).map(([k, [a, m]]) => h('span', { class: 'chip', style: 'background:var(--accent-soft);color:var(--accent)' }, `${LBL[k]} ${a}/${m}`))),
       h('p', { class: 'note', style: 'margin:0' }, (P.days[todayKey()] || 0) >= P.goal ? 'Objectif quotidien atteint !' : `Il te manque ${P.goal - (P.days[todayKey()] || 0)} réponses pour l’objectif du jour.`),
-      h('div', { class: 'actions' }, h('button', { class: 'btn primary', type: 'button', onclick: startSession }, 'Autre séance'), h('button', { class: 'btn', type: 'button', onclick: () => { d.hidden = true; $('#h-start').hidden = false; renderHoy(); } }, 'Volver')));
+      h('div', { class: 'actions' }, h('button', { class: 'btn primary', type: 'button', onclick: startSession }, 'Autre séance'), h('button', { class: 'btn', type: 'button', onclick: () => { d.hidden = true; $('#h-start').hidden = false; renderHoy(); } }, 'Retour')));
     renderHoy();
   }
   function startSession() { S.qs = buildSession(); S.i = 0; S.res = []; $('#h-start').hidden = true; $('#h-done').hidden = true; $('#h-run').hidden = false; sessionQ(); }
@@ -1814,19 +2016,22 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
 
 
   /* ---------- Navegación ---------- */
-  const VIEWS = ['hoy', 'conjugar', 'tarjetas', 'irregulares', 'dictado', 'frases', 'tiempo', 'textos', 'transformar', 'hipotesis', 'trampas', 'escribir', 'examen', 'progreso'];
+  const VIEWS = ['hoy', 'conjugar', 'tarjetas', 'irregulares', 'dictado', 'frases', 'tiempo', 'textos', 'transformar', 'hipotesis', 'trampas', 'pronoms', 'connecteurs', 'escribir', 'examen', 'progreso'];
+  const SEC = v => (v === 'pronoms' || v === 'connecteurs') ? 'grammaire' : v;
+  const SECS = [...new Set(VIEWS.map(SEC))];
   const inited = {};
   let current = null;
   function go(v, push = true) {
     if (!VIEWS.includes(v)) v = 'hoy';
     current = v;
-    VIEWS.forEach(x => { $('#v-' + x).hidden = x !== v; });
+    SECS.forEach(x => { $('#v-' + x).hidden = x !== SEC(v); });
     document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === v)));
     const tab = document.querySelector(`.tab[data-view="${v}"]`); tab && tab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     $('#vtitle').textContent = tab ? tab.textContent : '';
     if (TTS && v !== 'dictado') speechSynthesis.cancel();
     if (push && location.hash !== '#' + v) history.replaceState(null, '', '#' + v);
     if (v === 'tarjetas') nextCard();
+    else if (SEC(v) === 'grammaire') gOpenGroup(v);
     else if (!inited[v]) { inited[v] = true; ({ hoy: () => {}, dictado: nextDict, textos: () => { renderTxList(); renderText(); }, transformar: nextTr, hipotesis: nextHip, escribir: newConsigna, conjugar: renderConj, irregulares: () => { renderIrrList(); renderIrr(); }, frases: nextFrase, tiempo: nextTiempo, trampas: nextTrampa, examen: () => {}, progreso: () => {} })[v](); }
     if (v === 'progreso') renderProg();
     if (v === 'hoy') renderHoy();
