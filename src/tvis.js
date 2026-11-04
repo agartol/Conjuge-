@@ -6,10 +6,10 @@ const { chromium } = require('playwright'); const fs=require('fs');
   const page = await ctx.newPage();
   await page.goto('file://' + process.cwd() + '/preview.html#hoy'); await page.waitForTimeout(600);
   const SP = /[áíóúñ¿¡]|\b(y|el|los|las|del|una|para|con|sin|está|más|también|frase|frases|tiempo|tiempos|verbo|verbos|errores|respuesta|respuestas|hueco|huecos|palabra|palabras|semana|días|sesión|ejercicios?|consigna|nuevas|todos|todas|forma|formas|elige|escribe|hoy|vez|veces|ver|tipo|regla|raíz|bien|mal|Correcto|Siguiente|Comprobar|Saltar)\b/;
-  const views = ['hoy','conjugar','tarjetas','irregulares','dictado','frases','tiempo','textos','transformar','hipotesis','trampas','escribir','redaccion','examen','progreso'];
+  const views = ['hoy','conjugar','tarjetas','irregulares','dictado','frases','tiempo','textos','transformar','hipotesis','trampas','escribir','examen','progreso'];
   for (const v of views) {
     await page.click(`.tab[data-view="${v}"]`); await page.waitForTimeout(250);
-    if (v === 'escribir') { await page.fill('#w-text', 'Hier il fait beau.'); await page.click('#w-send'); await page.waitForTimeout(600); await page.click('#w-out .err-item .btn'); }
+    if (v === 'escribir') { await page.fill('#w-text', 'Hier il fait beau.'); }
     if (v === 'transformar') { await page.fill('#r2-in', 'xx'); await page.click('#r2-go'); }
     if (v === 'tarjetas') { await page.fill('#k-in', 'xx'); await page.click('#k-go'); }
     if (v === 'frases') { await page.fill('#f-in', 'xx'); await page.click('#f-go'); }

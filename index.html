@@ -408,7 +408,6 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   <button class="tab" data-view="trampas">Pièges</button>
   <p class="navsec">Avec Claude</p>
   <button class="tab" data-view="escribir">Écrire</button>
-  <button class="tab" data-view="redaccion">Corriger une rédaction</button>
   <p class="navsec">Évaluation</p>
   <button class="tab" data-view="examen">Examen</button>
   <button class="tab" data-view="progreso">Progression</button>
@@ -670,29 +669,16 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 
   <!-- Escribir con Claude -->
   <section class="view" id="v-escribir" hidden>
-    <p class="intro">Écris en français ce que demande la consigne et Claude te corrige : il signale chaque erreur, son type et pourquoi. La correction de chaque erreur reste cachée jusqu’à ce que tu la demandes.</p>
-    <div class="claude-off note" hidden>Claude n’est pas disponible dans cette vue. Ouvre la page depuis Claude pour utiliser la correction.</div>
+    <p class="intro">Écris en français ce que demande la consigne. Ensuite, clique sur <b>Copier et ouvrir Claude</b> : ton texte est copié avec la consigne et une demande de correction. Dans la nouvelle conversation, colle-le (<b>Ctrl + V</b> ou <b>Cmd + V</b>) et envoie-le : Claude te corrige.</p>
     <div class="card card-pad" style="display:grid;gap:14px">
       <div class="row between"><p class="consigna" id="w-consigna"></p><button class="btn" id="w-new" type="button">Autre consigne</button></div>
       <label class="field" for="w-text"><span>Ta réponse</span><textarea id="w-text" class="area" rows="5" spellcheck="false" placeholder="Écris ici…"></textarea></label>
       <div class="accents" data-accents></div>
-      <div class="actions"><button class="btn primary" id="w-send" type="button">Corriger avec Claude</button><button class="btn ghost" id="w-stop" type="button" hidden>Parar</button></div>
-      <div id="w-out" class="corr" aria-live="polite"></div>
+      <div class="actions"><button class="btn primary" id="w-copy" type="button">Copier et ouvrir Claude</button><a class="btn ghost" id="w-link" style="text-decoration:none" href="https://claude.ai/new" target="_blank" rel="noopener">Ouvrir claude.ai/new ↗</a></div>
+      <p id="w-out" class="note" role="status" aria-live="polite"></p>
     </div>
   </section>
 
-  <!-- Corriger une rédaction -->
-  <section class="view" id="v-redaccion" hidden>
-    <p class="intro">Colle une rédaction (comme ta <b>Production écrite</b>) et Claude signale les erreurs par type. Tu vois d’abord seulement où elles se trouvent ; ouvre chacune quand tu veux lire l’explication.</p>
-    <div class="claude-off note" hidden>Claude n’est pas disponible dans cette vue. Ouvre la page depuis Claude pour utiliser la correction.</div>
-    <div class="card card-pad" style="display:grid;gap:14px">
-      <label class="field" for="e2-task"><span>Consigne (facultative)</span><input id="e2-task" class="ans" type="text" autocomplete="off" placeholder="ex. : Production écrite 4 – L’intelligence artificielle"></label>
-      <label class="field" for="e2-text"><span>Ta rédaction</span><textarea id="e2-text" class="area" rows="12" spellcheck="false" placeholder="Colle ton texte ici…"></textarea></label>
-      <div class="accents" data-accents></div>
-      <div class="row between"><div class="actions"><button class="btn primary" id="e2-send" type="button">Corriger avec Claude</button><button class="btn ghost" id="e2-stop" type="button" hidden>Parar</button></div><span class="note" id="e2-count"></span></div>
-      <div id="e2-out" class="corr" aria-live="polite"></div>
-    </div>
-  </section>
 
 </main>
 </div>
@@ -1930,7 +1916,6 @@ const BANK2 = {
   function setClaude() {
     const off = !SAMPLE || claudeOff;
     document.querySelectorAll('.claude-off').forEach(el => { el.hidden = !off; });
-    ['#w-send', '#e2-send'].forEach(s => { const b = $(s); if (b) b.disabled = off; });
     document.querySelectorAll('[data-claude]').forEach(el => { el.hidden = off; });
   }
   const CLAUDE_ERR = {
@@ -2012,21 +1997,23 @@ ${CORR_SCHEMA}`;
   function newConsigna() {
     if (!W.order.length) W.order = shuffle(B2.consignas).map(c => c.id);
     const nid = W.order.shift(); W.cur = B2.consignas.find(c => c.id === nid);
-    $('#w-consigna').textContent = W.cur.t; $('#w-text').value = ''; $('#w-out').replaceChildren();
+    $('#w-consigna').textContent = W.cur.t; $('#w-text').value = ''; $('#w-out').textContent = '';
   }
   $('#w-new').onclick = newConsigna;
-  claudeRunner('#w-send', '#w-stop', '#w-out', () => {
-    const text = $('#w-text').value.trim(); if (!text) { $('#w-text').focus(); return null; }
-    return { prompt: corrPrompt(W.cur.t, text), text };
-  }, (r, job) => { renderCorrection($('#w-out'), job.text, r, true); P.wr.n++; touch(); });
-
-  /* ---------- Corriger une rédaction ---------- */
-  $('#e2-text').addEventListener('input', () => { const n = ($('#e2-text').value.trim().match(/\S+/g) || []).length; $('#e2-count').textContent = n ? n + ' mots' : ''; });
-  claudeRunner('#e2-send', '#e2-stop', '#e2-out', () => {
-    const text = $('#e2-text').value.trim(); if (!text) { $('#e2-text').focus(); return null; }
-    const task = $('#e2-task').value.trim() || 'Rédaction libre de niveau B1';
-    return { prompt: corrPrompt(task, text.slice(0, 12000)), text: text.slice(0, 12000) };
-  }, (r, job) => { renderCorrection($('#e2-out'), job.text, r, !!$('#e2-task').value.trim()); P.wr.n++; touch(); });
+  // La corrección se hace en una conversación nueva de Claude: se copia la consigna, el texto y la petición.
+  const wPrompt = text => `Je prépare l’examen DELF B1 de français. Corrige mon texte, s’il te plaît : signale chaque erreur (conjugaison, accords, orthographe, vocabulaire, syntaxe), explique simplement pourquoi c’est une erreur et donne la forme correcte. Ensuite, écris la version corrigée complète et dis-moi si j’ai bien répondu à la consigne.\n\nConsigne : ${W.cur.t}\n\nMon texte :\n${text}`;
+  async function copyText(t) {
+    try { await navigator.clipboard.writeText(t); return true; } catch (e) {}
+    try { const ta = h('textarea', { style: 'position:fixed;left:-9999px;top:0' }); ta.value = t; document.body.append(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove(); return ok; } catch (e) { return false; }
+  }
+  $('#w-copy').onclick = async () => {
+    const text = $('#w-text').value.trim(); if (!text) { $('#w-out').textContent = 'Écris d’abord ta réponse.'; $('#w-text').focus(); return; }
+    const ok = await copyText(wPrompt(text));
+    let win = null; try { win = window.open('https://claude.ai/new', '_blank'); if (win) win.opener = null; } catch (e) {}
+    P.wr.n++; touch();
+    $('#w-out').textContent = ok ? 'Copié ! Colle le texte dans la nouvelle conversation (Ctrl + V ou Cmd + V) et envoie-le.' + (win ? '' : ' Si Claude ne s’est pas ouvert, utilise le lien à côté.')
+      : 'Impossible de copier automatiquement : sélectionne ton texte, copie-le et colle-le dans Claude avec la consigne.';
+  };
 
   /* ---------- Generador de frases (en Frases) ---------- */
   function syncFrChips() { document.querySelectorAll('#f-tenses button').forEach(x => x.setAttribute('aria-pressed', String(F.tenses.has(x.dataset.t)))); }
@@ -2389,7 +2376,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
 
 
   /* ---------- Navegación ---------- */
-  const VIEWS = ['hoy', 'conjugar', 'tarjetas', 'irregulares', 'dictado', 'frases', 'tiempo', 'textos', 'transformar', 'hipotesis', 'trampas', 'escribir', 'redaccion', 'examen', 'progreso'];
+  const VIEWS = ['hoy', 'conjugar', 'tarjetas', 'irregulares', 'dictado', 'frases', 'tiempo', 'textos', 'transformar', 'hipotesis', 'trampas', 'escribir', 'examen', 'progreso'];
   const inited = {};
   let current = null;
   function go(v, push = true) {
@@ -2402,7 +2389,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
     if (TTS && v !== 'dictado') speechSynthesis.cancel();
     if (push && location.hash !== '#' + v) history.replaceState(null, '', '#' + v);
     if (v === 'tarjetas') nextCard();
-    else if (!inited[v]) { inited[v] = true; ({ hoy: () => {}, dictado: nextDict, textos: () => { renderTxList(); renderText(); }, transformar: nextTr, hipotesis: nextHip, escribir: newConsigna, redaccion: () => {}, conjugar: renderConj, irregulares: () => { renderIrrList(); renderIrr(); }, frases: nextFrase, tiempo: nextTiempo, trampas: nextTrampa, examen: () => {}, progreso: () => {} })[v](); }
+    else if (!inited[v]) { inited[v] = true; ({ hoy: () => {}, dictado: nextDict, textos: () => { renderTxList(); renderText(); }, transformar: nextTr, hipotesis: nextHip, escribir: newConsigna, conjugar: renderConj, irregulares: () => { renderIrrList(); renderIrr(); }, frases: nextFrase, tiempo: nextTiempo, trampas: nextTrampa, examen: () => {}, progreso: () => {} })[v](); }
     if (v === 'progreso') renderProg();
     if (v === 'hoy') renderHoy();
     if (v === 'textos') renderTxList();

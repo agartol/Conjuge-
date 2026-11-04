@@ -82,13 +82,15 @@ window.claude = { use: async n => n === 'sample' ? mockSample : null };`;
   await page.fill('#d-in', 'nous prenions'); await page.click('#d-go'); 
   await page.click('#d-go'); await page.click('#d-mode button[data-m="frases"]'); await page.fill('#d-in', 'Il fait beau aujourd hui'); await page.click('#d-go');
   await page.screenshot({ path: 'shots/n-dict.png' });
-  // escribir
-  await page.click('.tab[data-view="escribir"]'); await page.fill('#w-text', 'Hier il fait beau et nous sommes allé a la plage.'); await page.click('#w-send'); await page.waitForTimeout(700);
-  await page.click('#w-out .err-item .btn >> nth=0');
+  // escribir: copiar y abrir Claude
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.click('.tab[data-view="escribir"]'); await page.fill('#w-text', 'Hier il fait beau et nous sommes allé a la plage.');
+  const [popup] = await Promise.all([page.context().waitForEvent('page', { timeout: 3000 }).catch(() => null), page.click('#w-copy')]);
+  await page.waitForTimeout(300);
+  console.log('popup:', popup && popup.url(), '| note:', await page.textContent('#w-out'));
+  console.log('clipboard:', (await page.evaluate(() => navigator.clipboard.readText())).replace(/\n/g, ' / ').slice(0, 160));
+  if (popup) await popup.close();
   await page.screenshot({ path: 'shots/n-escribir.png', fullPage: true });
-  // redacción
-  await page.click('.tab[data-view="redaccion"]'); await page.fill('#e2-text', 'L’intelligence artificiel a été créée en 1943. Cependant, le terme apparait par premier fois en 1956.'); await page.click('#e2-send'); await page.waitForTimeout(700);
-  await page.screenshot({ path: 'shots/n-redac.png', fullPage: true });
   // generador en frases
   await page.click('.tab[data-view="frases"]'); await page.click('#f-gen'); await page.waitForTimeout(700);
   console.log('gen note:', await page.textContent('#f-gen-note'), '| card:', (await page.textContent('#f-card .sentence')).slice(0, 50));
