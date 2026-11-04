@@ -30,3 +30,8 @@ Se publica con GitHub Pages desde la rama `main`: https://agartol.github.io/Conj
 - Fuera de Claude no existe `window.claude`: el progreso se guarda en `localStorage` (clave `atelier-conj-v1`) y las funciones con Claude (Écrire, Corriger une rédaction, frases nuevas) se desactivan solas.
 - Corrección: los espacios no cuentan; mayúsculas, acentos y punto final sí (errores leves). Error de tiempo, forma o sujeto = error grave.
 - Verbos pronominales: hay que escribir el pronombre reflexivo. En tiempos compuestos con être se pide un género concreto (etiqueta m. / f.; « vous » = plural).
+
+## Versión dentro de Claude (artefacto)
+Además de GitHub Pages, la aplicación está publicada como artefacto de Claude: https://claude.ai/artifact/3d6KFm1FE8kBvqQb5N7dpz
+Es la versión que el usuario comparte con quien tiene cuenta de Claude, porque ahí sí funcionan las funciones con Claude (`sample`) y el progreso se guarda en la cuenta (`db`, `user`).
+**Cada cambio debe publicarse en los dos sitios:** push a `main` (web) y publicar `src/atelier-conjugaison.html` con la herramienta Artifact pasando esa URL como `url` (leer antes el artefacto; las capacidades declaradas son `{db:{}, user:{}, sample:{}}` y se conservan si no se pasa `capabilities`).
