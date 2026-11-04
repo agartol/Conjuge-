@@ -1,0 +1,5 @@
+t=open('app.template.html').read()
+strip=lambda f,name: open(f).read().replace('if (typeof module !== "undefined") module.exports = %s;'%name,'').replace("if (typeof module !== 'undefined') module.exports = %s;"%name,'')
+eng=strip('engine.js','ENGINE').replace("typeof VDATA !== 'undefined' ? VDATA : require('./verbs-data.js')","VDATA")
+out=t.replace('/*__ENGINE__*/',strip('verbs-data.js','VDATA')+'\n'+eng).replace('/*__BANK__*/',strip('bank.js','BANK')).replace('/*__BANK2__*/',strip('bank2.js','BANK2'))
+open('atelier-conjugaison.html','w').write(out); print(len(out))

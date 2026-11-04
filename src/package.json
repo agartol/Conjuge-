@@ -1,0 +1,17 @@
+{
+  "name": "verbs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "french-verbs": "^5.4.0",
+    "french-verbs-lefff": "^3.4.0",
+    "playwright": "^1.47.2"
+  }
+}
