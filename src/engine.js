@@ -2,7 +2,9 @@
 const ENGINE = ((D) => {
   const TENSES = [
     { id: 'pres',   name: 'Présent',              dark: '#C00000', light: '#F7E0E0', ddark: '#FF7A7A' },
+    { id: 'cont',   name: 'Présent continu',      dark: '#9E7C0C', light: '#F5EFD9', ddark: '#E0C060' },
     { id: 'proche', name: 'Futur proche',         dark: '#E36C09', light: '#FCEDE1', ddark: '#FFA65C' },
+    { id: 'recent', name: 'Passé récent',         dark: '#546E7A', light: '#E6EBEE', ddark: '#9FB4C0' },
     { id: 'fut',    name: 'Futur simple',         dark: '#00838F', light: '#E0F0F2', ddark: '#4FD0DC' },
     { id: 'cond',   name: 'Conditionnel présent', dark: '#AD1457', light: '#F5E3EB', ddark: '#F07AAE' },
     { id: 'imp',    name: 'Imparfait',            dark: '#3949AB', light: '#E7E9F5', ddark: '#97A3F0' },
@@ -20,6 +22,7 @@ const ENGINE = ((D) => {
   const V = D.verbs, VERBS = Object.keys(V), GROUPS = D.groups;
   const ETRE = ['suis', 'es', 'est', 'sommes', 'êtes', 'sont'];
   const ALLER = ['vais', 'vas', 'va', 'allons', 'allez', 'vont'];
+  const VENIR = ['viens', 'viens', 'vient', 'venons', 'venez', 'viennent'];
   const AVOIR = ['ai', 'as', 'a', 'avons', 'avez', 'ont'];
   const AUX = {
     pc:    { avoir: AVOIR, 'être': ETRE },
@@ -55,6 +58,11 @@ const ENGINE = ((D) => {
       case 'pres': case 'imp': case 'fut': case 'cond': case 'subj':
         forms = alts(v[t][p]).map(f => withRefl(v, p, f)); break;
       case 'proche': forms = [ALLER[p] + ' ' + (v.refl ? join(el(REFL[p], v.base), v.base) : v.base)]; break;
+      case 'recent': case 'cont': {
+        // venir de + infinitif · être en train de + infinitif (de → d’ devant une voyelle)
+        const inf = v.refl ? join(el(REFL[p], v.base), v.base) : v.base;
+        forms = [(t === 'recent' ? VENIR[p] : ETRE[p] + ' en train') + ' ' + join(el('de', inf), inf)]; break;
+      }
       case 'pc': case 'pqp': case 'futa': case 'condp': {
         const aux = AUX[t][v.aux][p];
         const head = v.refl ? join(el(REFL[p], aux), aux) : aux;

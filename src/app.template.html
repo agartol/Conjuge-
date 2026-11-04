@@ -60,7 +60,7 @@ button, input, select { font: inherit; color: inherit; }
 .brand h1 { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1; margin: 0; letter-spacing: -.02em; }
 .brand h1 em { font-style: normal; color: var(--accent); }
 .brand p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
-.navsec { margin: 14px 8px 4px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.navsec { margin: 18px 4px 6px; padding: 7px 10px; border-radius: 7px; font-size: 12.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); border-left: 3px solid var(--accent); }
 .tab { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 8px 12px; border-radius: 10px; color: var(--muted); cursor: pointer; font-weight: 700; font-size: 15px; transition: background .15s, color .15s; }
 .tab:hover { background: var(--paper); color: var(--ink); }
 .tab[aria-selected="true"] { background: var(--accent-soft); color: var(--accent); }
@@ -424,6 +424,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   <p class="navsec">Grammaire</p>
   <button class="tab" data-view="pronoms">Pronoms</button>
   <button class="tab" data-view="connecteurs">Connecteurs logiques</button>
+  <button class="tab" data-view="phrase">La phrase</button>
   <p class="navsec">Expression écrite</p>
   <button class="tab" data-view="escribir">Écrire</button>
   <p class="navsec">Évaluation</p>
@@ -456,6 +457,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
             <div class="actions">
               <button class="btn primary" id="c-check" type="button">Corriger</button>
               <button class="btn" id="c-show" type="button">Voir la solution</button>
+              <button class="btn" id="c-next" type="button" title="Un autre verbe, au même temps">Verbe suivant →</button>
               <button class="btn ghost" id="c-clear" type="button">Effacer</button>
             </div>
             <span class="score" id="c-score" aria-live="polite"></span>
@@ -941,6 +943,13 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   }
   $('#c-check').onclick = () => checkConj();
   $('#c-show').onclick = () => showConj();
+  // Otro verbo al azar (del grupo elegido en « Au hasard parmi »), en el mismo tiempo.
+  $('#c-next').onclick = () => {
+    const pool = cRG.value === 'all' ? E.VERBS : cRG.value === 'irr' ? E.VERBS.filter(v => E.V[v].irrVerb) : E.GROUPS[+cRG.value].verbs;
+    let v, guard = 0; do { v = pick(pool); } while ((!E.available(v, C.tense) || v === C.verb) && guard++ < 200);
+    C.verb = v; renderConj();
+    const first = $('#c-grid .ans'); first && first.focus({ preventScroll: true });
+  };
   $('#c-clear').onclick = () => renderConj();
 
   /* ---------- Irregulares ---------- */
@@ -1902,7 +1911,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   function sessionPlanText() {
     const w = weakTenses().slice(0, 2).map(id => T[id].name).join(' et ');
     const due = Object.values(P.srs).filter(s => s[1] <= Date.now()).length;
-    return `15 exercices (environ 10 minutes) : ${due ? Math.min(due, 5) + ' cartes à réviser' : '5 cartes'}, 3 phrases centrées sur ${w}, 3 exercices de grammaire (pronoms, connecteurs), 2 transformations, 1 hypothèse avec si et 1 piège. Correction immédiate.`;
+    return `15 exercices (environ 10 minutes) : ${due ? Math.min(due, 5) + ' cartes à réviser' : '5 cartes'}, 3 phrases centrées sur ${w}, 3 exercices de grammaire, 2 transformations, 1 hypothèse avec si et 1 piège. Correction immédiate.`;
   }
   const S = { qs: [], i: 0, state: 'ask', res: [] };
   function buildSession() {
@@ -2016,8 +2025,8 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
 
 
   /* ---------- Navegación ---------- */
-  const VIEWS = ['hoy', 'conjugar', 'tarjetas', 'irregulares', 'dictado', 'frases', 'tiempo', 'textos', 'transformar', 'hipotesis', 'trampas', 'pronoms', 'connecteurs', 'escribir', 'examen', 'progreso'];
-  const SEC = v => (v === 'pronoms' || v === 'connecteurs') ? 'grammaire' : v;
+  const VIEWS = ['hoy', 'conjugar', 'tarjetas', 'irregulares', 'dictado', 'frases', 'tiempo', 'textos', 'transformar', 'hipotesis', 'trampas', 'pronoms', 'connecteurs', 'phrase', 'escribir', 'examen', 'progreso'];
+  const SEC = v => BANK3.groups.some(g => g.id === v) ? 'grammaire' : v;
   const SECS = [...new Set(VIEWS.map(SEC))];
   const inited = {};
   let current = null;

@@ -13,7 +13,7 @@ Se publica con GitHub Pages desde la rama `main`: https://agartol.github.io/Conj
 - `src/engine.js` — motor de conjugación (tiempos, auxiliares, concordancia, pronombres reflexivos, género m./f. con `cell(inf, t, p, g)`).
 - `src/verbs-data.js` — datos de los 158 verbos (generados con `src/gen.js` a partir de las librerías `french-verbs` y `french-verbs-lefff`).
 - `src/bank.js`, `src/bank2.js` — bancos de ejercicios (frases, trampas, reglas, textos con huecos, transformaciones, hipótesis, consignas).
-- `src/bank3.js` — **Grammaire**: grupos (`pronoms`, `connecteurs`) y temas, cada uno con ficha (`tip`, `fiche`, `note`, `links`) y ejercicios (`g` huecos, `q` opciones, `t` transformación). Para añadir un tema nuevo basta con añadir un objeto aquí; para un grupo nuevo, añadirlo a `groups`, a la navegación (`data-view`) y a `VIEWS`/`SEC` en la plantilla. Los ejercicios son originales: no copiar los de las webs que enlaza la profesora.
+- `src/bank3.js` — **Grammaire**: grupos (`pronoms`, `connecteurs`, `phrase`) y temas, cada uno con ficha (`tip`, `fiche`, `note`, `links`) y ejercicios (`g` huecos, `q` opciones, `t` transformación). Para añadir un tema nuevo basta con añadir un objeto aquí; para un grupo nuevo, añadirlo a `groups`, a la navegación (`data-view`) y a `VIEWS` en la plantilla. Los ejercicios son originales: no copiar los de las webs que enlaza la profesora.
 - `src/lexique.js` — traducciones al español (verbos; luego vocabulario).
 - `docs/programme.md` — temario del curso según el blog de la profesora (qué falta por añadir).
 - `src/build.py` — une todo en `src/atelier-conjugaison.html` (versión para el artefacto de Claude).

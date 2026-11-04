@@ -6,7 +6,8 @@
 const BANK3 = {
   groups: [
     { id: 'pronoms', name: 'Pronoms', intro: 'Choisis un thème : lis la fiche, puis entraîne-toi. Les exercices que tu rates reviennent plus souvent.' },
-    { id: 'connecteurs', name: 'Connecteurs logiques', intro: 'Cause, conséquence, opposition, concession et temps : les mots qui relient les idées, indispensables pour la production écrite du DELF B1.' }
+    { id: 'connecteurs', name: 'Connecteurs logiques', intro: 'Cause, conséquence, opposition, concession et temps : les mots qui relient les idées, indispensables pour la production écrite du DELF B1.' },
+    { id: 'phrase', name: 'La phrase', intro: 'Poser une question, dire non, la voix passive, comparer, les adverbes et la place des adjectifs.' }
   ],
   topics: [
     /* ======================= PRONOMS ======================= */
@@ -389,6 +390,184 @@ const BANK3 = {
         { k: 'q', s: 'Ils ont construit leur maison ___ six mois seulement.', o: ['en', 'dans', 'depuis'], c: 0, w: 'Temps nécessaire → en.' },
         { k: 't', i: 'Exprime la même idée avec « depuis ».', f: 'J’ai commencé à travailler ici il y a trois ans et je travaille encore ici.', a: ['Je travaille ici depuis trois ans.'], w: 'Depuis + présent pour une situation qui continue.' },
         { k: 't', i: 'Exprime la même idée avec « ça fait… que ».', f: 'J’habite à Valence depuis dix ans.', a: ['Ça fait dix ans que j’habite à Valence.'], w: 'Ça fait + durée + que + présent.' }
+      ]
+    }
+    ,
+    /* ======================= LA PHRASE ======================= */
+    {
+      id: 'interrogation', g: 'phrase', name: 'L’interrogation',
+      tip: 'Trois façons de poser une question : l’intonation (oral), est-ce que (courant) et l’inversion (soutenu). Entre deux voyelles, on ajoute -t- : aime-t-elle ?',
+      fiche: [
+        ['Intonation', 'Registre familier, à l’oral : la voix monte.', ['Tu aimes le jazz ?']],
+        ['Est-ce que', 'Registre courant.', ['Est-ce que tu aimes le jazz ?', 'Où est-ce que tu habites ?']],
+        ['Inversion', 'Registre soutenu, à l’écrit : verbe-trait d’union-sujet. -t- entre deux voyelles. Avec un nom sujet, on le reprend par un pronom.', ['Aimes-tu le jazz ?', 'Parle-t-il anglais ?', 'Marie vient-elle ce soir ?']],
+        ['Mots interrogatifs', 'qui, que (qu’est-ce que), quoi (après une préposition), où, quand, comment, pourquoi, combien (de).', ['Que fais-tu ?', 'À quoi penses-tu ?', 'Combien de frères as-tu ?']],
+        ['Quel', 'quel / quelle / quels / quelles + nom, ou + être. S’accorde avec le nom.', ['Quelle heure est-il ?', 'Quels sont tes films préférés ?']]
+      ],
+      note: 'Avec l’inversion, on n’utilise jamais est-ce que : « Où habites-tu ? » ou « Où est-ce que tu habites ? », mais pas les deux.',
+      links: [],
+      ex: [
+        { k: 'q', s: '___ heure est-il ?', o: ['Quelle', 'Quel', 'Qu’est-ce que'], c: 0, w: 'Heure est féminin singulier → quelle.' },
+        { k: 'q', s: '___ sont tes chanteurs préférés ?', o: ['Quels', 'Quelles', 'Qui'], c: 0, w: 'Quel + être ; chanteurs est masculin pluriel → quels.' },
+        { k: 'q', s: '___ vous faites ce week-end ?', o: ['Qu’est-ce que', 'Que', 'Quel'], c: 0, w: 'Sans inversion → qu’est-ce que. Avec inversion, on dirait « Que faites-vous ? ».' },
+        { k: 'q', s: '___ as-tu rencontré à la fête ?', o: ['Qui', 'Quoi', 'Quel'], c: 0, w: 'On demande une personne → qui.' },
+        { k: 'q', s: 'À ___ tu penses ?', o: ['quoi', 'que', 'qu’est-ce que'], c: 0, w: 'Après une préposition (à, de, avec…) → quoi.' },
+        { k: 'q', s: '___ coûte ce billet de train ?', o: ['Combien', 'Comment', 'Quel'], c: 0, w: 'Le prix → combien.' },
+        { k: 'q', s: 'Elle aime le théâtre. → Avec l’inversion : ___', o: ['Aime-t-elle le théâtre ?', 'Aime-elle le théâtre ?', 'Elle aime-t-elle le théâtre ?'], c: 0, w: 'Aime finit par une voyelle et elle commence par une voyelle → -t-.' },
+        { k: 'g', s: '___ langues parles-tu ?', a: ['quelles'], w: 'Langues est féminin pluriel → quelles.' },
+        { k: 'g', s: '___ est-ce que tu habites ? — À Valence.', a: ['où'], w: 'Le lieu → où.' },
+        { k: 'g', s: '___ allez-vous ? — Très bien, merci.', a: ['comment'], w: 'La manière, l’état → comment.' },
+        { k: 'g', s: '___ est-ce que tu apprends le français ? — Parce que je veux étudier à Paris.', a: ['pourquoi'], w: 'La réponse commence par parce que → pourquoi.' },
+        { k: 't', i: 'Pose la question avec « est-ce que ».', f: 'Vous habitez à Montréal.', a: ['Est-ce que vous habitez à Montréal ?'], w: 'Est-ce que + phrase affirmative + point d’interrogation.' },
+        { k: 't', i: 'Pose la question avec l’inversion.', f: 'Tu parles espagnol.', a: ['Parles-tu espagnol ?'], w: 'Verbe-trait d’union-sujet.' },
+        { k: 't', i: 'Pose la question avec l’inversion.', f: 'Il arrive demain.', a: ['Arrive-t-il demain ?'], w: 'Arrive finit par une voyelle → -t- : arrive-t-il.' },
+        { k: 't', i: 'Pose la question avec l’inversion.', f: 'Ils finissent à six heures.', a: ['Finissent-ils à six heures ?'], w: 'Finissent finit par une consonne : pas de -t-.' },
+        { k: 't', i: 'Pose la question avec « où » et l’inversion (tu).', f: 'J’habite à Lyon.', a: ['Où habites-tu ?'], w: 'Mot interrogatif + verbe-trait d’union-sujet.' }
+      ]
+    },
+    {
+      id: 'negation', g: 'phrase', name: 'La négation',
+      tip: 'ne… pas, ne… plus, ne… jamais, ne… rien, ne… personne, ne… ni… ni. Aux temps composés, la négation encadre l’auxiliaire, sauf personne, qui se place après le participe.',
+      fiche: [
+        ['ne… pas / plus / jamais / pas encore', 'plus : l’action s’est arrêtée ; jamais : à aucun moment ; pas encore : pas jusqu’à maintenant.', ['Il ne fume plus.', 'Je ne suis jamais allé en Grèce.']],
+        ['ne… rien / ne… personne', 'rien = aucune chose ; personne = aucune personne. Aux temps composés : rien avant le participe, personne après.', ['Je n’ai rien vu.', 'Je n’ai vu personne.']],
+        ['Rien / personne sujets', 'En début de phrase, suivis de ne.', ['Personne ne m’a appelé.', 'Rien n’est impossible.']],
+        ['ne… ni… ni', 'Deux éléments niés.', ['Elle ne boit ni café ni thé.', 'Je n’aime ni le froid ni la pluie.']],
+        ['Article', 'un, une, des, du, de la → de (d’) après la négation, sauf avec être.', ['Je n’ai pas de voiture.', 'Ce n’est pas un problème.']],
+        ['Infinitif', 'ne pas, ne plus, ne jamais se placent ensemble devant l’infinitif.', ['Il m’a conseillé de ne pas sortir.']]
+      ],
+      note: 'À l’oral, on supprime souvent ne (« J’sais pas »), mais à l’écrit et à l’examen, il est obligatoire.',
+      links: [['La négation (lepointdufle.net)', 'https://www.lepointdufle.net/ressources_fle/negation2.htm']],
+      ex: [
+        { k: 'g', s: 'Il ne fume ___ : il a arrêté l’année dernière.', a: ['plus'], w: 'L’action s’est arrêtée → ne… plus.' },
+        { k: 'g', s: 'Je n’ai ___ mangé de sushis : c’est la première fois !', a: ['jamais'], w: 'À aucun moment → ne… jamais.' },
+        { k: 'g', s: 'Il n’y a ___ dans le frigo : il est complètement vide.', a: ['rien'], w: 'Aucune chose → ne… rien.' },
+        { k: 'g', s: 'J’ai sonné trois fois, mais ___ n’a ouvert la porte.', a: ['personne'], w: 'Aucune personne, en position de sujet → personne ne.' },
+        { k: 'g', s: 'Elle ne mange ___ viande ___ poisson : elle est végétarienne.', a: [['ni'], ['ni']], w: 'Deux éléments niés → ne… ni… ni.' },
+        { k: 'g', s: 'Tu as fini tes devoirs ? — Non, pas ___.', a: ['encore'], w: 'Pas jusqu’à maintenant → pas encore.' },
+        { k: 'q', s: 'Je n’ai pas ___ voiture.', o: ['de', 'une', 'la'], c: 0, w: 'Après la négation, un / une / des → de.' },
+        { k: 'q', s: 'Ce n’est pas ___ problème.', o: ['un', 'de', 'd’'], c: 0, w: 'Avec être, l’article ne change pas.' },
+        { k: 'q', s: 'Hier soir, ___', o: ['je n’ai vu personne.', 'je n’ai personne vu.', 'je n’ai pas vu personne.'], c: 0, w: 'Personne se place après le participe, sans pas.' },
+        { k: 'q', s: 'Le médecin m’a dit ___ sel.', o: ['de ne pas manger de', 'de ne manger pas de', 'de pas manger de'], c: 0, w: 'Devant un infinitif : ne pas + infinitif.' },
+        { k: 'q', s: '___ est impossible !', o: ['Rien n’', 'Rien', 'Ne rien'], c: 0, w: 'Rien sujet + ne (n’) + verbe.' },
+        { k: 't', i: 'Mets à la forme négative avec « ne… jamais ».', f: 'Je suis allé au Canada.', a: ['Je ne suis jamais allé au Canada.'], w: 'Ne… jamais encadre l’auxiliaire.' },
+        { k: 't', i: 'Réponds négativement avec « ne… rien ».', f: 'Tu as acheté quelque chose ?', a: ['Non, je n’ai rien acheté.'], w: 'Rien se place entre l’auxiliaire et le participe.' },
+        { k: 't', i: 'Réponds négativement avec « ne… personne ».', f: 'Tu connais quelqu’un à Lyon ?', a: ['Non, je ne connais personne à Lyon.'], w: 'Ne + verbe + personne.' },
+        { k: 't', i: 'Réponds négativement avec « ne… ni… ni ».', f: 'Tu aimes le café et le thé ?', a: ['Non, je n’aime ni le café ni le thé.'], w: 'Ne + verbe + ni… ni.' },
+        { k: 't', i: 'Réponds négativement avec « ne… plus ».', f: 'Tu fais encore du piano ?', a: ['Non, je ne fais plus de piano.'], w: 'Ne… plus ; du devient de après la négation.' }
+      ]
+    },
+    {
+      id: 'passive', g: 'phrase', name: 'La voix passive',
+      tip: 'être (au temps du verbe actif) + participe passé accordé avec le sujet. L’agent est introduit par « par » (ou « de » avec les verbes de sentiment et d’état).',
+      fiche: [
+        ['Formation', 'Le COD de la phrase active devient le sujet. Être se met au temps du verbe actif.', ['Le chat mange la souris. → La souris est mangée par le chat.']],
+        ['Les temps', 'présent : est construit · passé composé : a été construit · imparfait : était construit · futur : sera construit.', ['Ce pont a été construit en 1990.', 'Les résultats seront publiés demain.']],
+        ['Accord', 'Le participe s’accorde avec le sujet.', ['Les lettres ont été envoyées.']],
+        ['par ou de', 'par pour une action ; de pour un sentiment ou un état (aimé de, respecté de, couvert de, entouré de).', ['La Joconde a été peinte par Léonard de Vinci.', 'La montagne est couverte de neige.']],
+        ['Sans agent', 'Quand l’agent est inconnu ou évident, on ne le dit pas. On peut aussi utiliser on.', ['Mon vélo a été volé. = On a volé mon vélo.']]
+      ],
+      note: 'Seuls les verbes avec un COD peuvent se mettre au passif : on ne peut pas dire « il a été parlé ».',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Ce roman ___ (traduire, présent) dans trente langues.', a: ['est traduit'], w: 'Présent passif : est + participe, accordé avec ce roman.' },
+        { k: 'g', s: 'Le musée Guggenheim de Bilbao ___ (dessiner, passé composé) par Frank Gehry.', a: ['a été dessiné'], w: 'Passé composé passif : a été + participe.' },
+        { k: 'g', s: 'Les résultats ___ (publier, futur simple) vendredi.', a: ['seront publiés'], w: 'Futur passif : seront + participe accordé (pluriel).' },
+        { k: 'g', s: 'Autrefois, la ville ___ (entourer, imparfait) de remparts.', a: ['était entourée'], w: 'Imparfait passif : était + participe accordé (féminin).' },
+        { k: 'g', s: 'La tour Eiffel ___ (visiter, présent) par des millions de touristes.', a: ['est visitée'], w: 'Accord avec la tour (féminin).' },
+        { k: 'g', s: 'Les invitations ___ (envoyer, passé composé) hier.', a: ['ont été envoyées'], w: 'Ont été + participe accordé (féminin pluriel).' },
+        { k: 'q', s: 'Le sommet est couvert ___ neige toute l’année.', o: ['de', 'par', 'avec'], c: 0, w: 'Un état → de.' },
+        { k: 'q', s: 'Le téléphone a été inventé ___ Graham Bell.', o: ['par', 'de', 'à'], c: 0, w: 'Une action → par.' },
+        { k: 'q', s: 'Pendant la tempête, plusieurs maisons ___.', o: ['ont été détruites', 'ont détruit', 'sont détruit'], c: 0, w: 'Passif : ont été + participe accordé avec maisons.' },
+        { k: 'q', s: 'Le chat mange la souris. → ___', o: ['La souris est mangée par le chat.', 'La souris est mangé par le chat.', 'La souris a mangé le chat.'], c: 0, w: 'Le COD (la souris) devient sujet ; le participe s’accorde.' },
+        { k: 't', i: 'Mets la phrase à la voix passive.', f: 'Le jury choisit les gagnants.', a: ['Les gagnants sont choisis par le jury.'], w: 'Présent → sont choisis ; accord au masculin pluriel.' },
+        { k: 't', i: 'Mets la phrase à la voix passive.', f: 'Un architecte célèbre a dessiné ce pont.', a: ['Ce pont a été dessiné par un architecte célèbre.'], w: 'Passé composé → a été dessiné.' },
+        { k: 't', i: 'Mets la phrase à la voix passive.', f: 'La mairie fermera la piscine en août.', a: ['La piscine sera fermée par la mairie en août.', 'En août, la piscine sera fermée par la mairie.'], w: 'Futur → sera fermée ; accord au féminin.' },
+        { k: 't', i: 'Mets la phrase à la voix active.', f: 'Le gâteau a été préparé par ma grand-mère.', a: ['Ma grand-mère a préparé le gâteau.'], w: 'L’agent devient sujet ; a été préparé → a préparé.' },
+        { k: 't', i: 'Mets la phrase à la voix passive, sans agent.', f: 'On a volé mon vélo.', a: ['Mon vélo a été volé.'], w: 'On = agent inconnu : on ne le dit pas.' }
+      ]
+    },
+    {
+      id: 'comparaison', g: 'phrase', name: 'Le comparatif et le superlatif',
+      tip: 'plus / moins / aussi + adjectif + que ; plus de / moins de / autant de + nom + que ; bon → meilleur, bien → mieux ; superlatif : le / la / les plus (moins) + adjectif + de.',
+      fiche: [
+        ['Avec un adjectif ou un adverbe', 'plus… que (+), moins… que (–), aussi… que (=).', ['Paris est plus grand que Lyon.', 'Il court aussi vite que moi.']],
+        ['Avec un nom ou un verbe', 'plus de / moins de / autant de + nom ; verbe + plus / moins / autant.', ['J’ai plus de livres que toi.', 'Il travaille autant que moi.']],
+        ['Irréguliers', 'bon → meilleur ; bien → mieux ; mauvais → plus mauvais ou pire.', ['Ce gâteau est meilleur que l’autre.', 'Elle chante mieux que moi.']],
+        ['Superlatif', 'le / la / les + plus / moins + adjectif (+ de + groupe). Le meilleur, le mieux.', ['C’est la ville la plus peuplée d’Espagne.', 'C’est le meilleur restaurant du quartier.']]
+      ],
+      note: 'Après le superlatif, on emploie de (et non « en ») : le plus grand musée du monde.',
+      links: [['Comparatif et superlatif (lingolia)', 'https://francais.lingolia.com/fr/grammaire/les-adjectifs/le-comparatif-et-le-superlatif/exercices']],
+      ex: [
+        { k: 'g', s: 'Madrid est ___ grande que Valence. (+)', a: ['plus'], w: 'Supériorité → plus… que.' },
+        { k: 'g', s: 'Ce restaurant est bon, mais l’autre est ___. (+)', a: ['meilleur'], w: 'Bon → meilleur (jamais « plus bon »).' },
+        { k: 'g', s: 'Elle chante ___ que sa sœur. (bien, +)', a: ['mieux'], w: 'Bien → mieux.' },
+        { k: 'g', s: 'J’ai ___ livres que toi. (+)', a: ['plus de'], w: 'Avec un nom → plus de.' },
+        { k: 'g', s: 'Il travaille ___ que moi. (=)', a: ['autant'], w: 'Avec un verbe, égalité → autant.' },
+        { k: 'g', s: 'Mon frère est ___ sportif que moi. (=)', a: ['aussi'], w: 'Avec un adjectif, égalité → aussi… que.' },
+        { k: 'g', s: 'C’est le bâtiment le plus haut ___ la ville.', a: ['de'], w: 'Superlatif + de + lieu.' },
+        { k: 'g', s: 'C’est ___ meilleure pizza de la ville !', a: ['la'], w: 'Pizza est féminin → la meilleure.' },
+        { k: 'q', s: 'Ce film est ___ que le livre.', o: ['meilleur', 'mieux', 'plus bon'], c: 0, w: 'On compare des choses (adjectif bon) → meilleur.' },
+        { k: 'q', s: 'Tu parles français ___ que l’année dernière.', o: ['mieux', 'meilleur', 'plus bien'], c: 0, w: 'On compare une manière (adverbe bien) → mieux.' },
+        { k: 'q', s: 'Il y a ___ touristes en août qu’en novembre.', o: ['plus de', 'plus', 'autant'], c: 0, w: 'Avec un nom → plus de.' },
+        { k: 'q', s: 'Le Mont-Blanc est la montagne ___ haute des Alpes.', o: ['la plus', 'plus', 'le plus'], c: 0, w: 'Superlatif après le nom : la montagne la plus haute.' },
+        { k: 't', i: 'Compare avec « moins… que ».', f: 'Le train est rapide. L’avion est plus rapide.', a: ['Le train est moins rapide que l’avion.'], w: 'Infériorité → moins + adjectif + que.' },
+        { k: 't', i: 'Fais une phrase au superlatif (+).', f: 'Le Louvre / le musée / visité / le monde', a: ['Le Louvre est le musée le plus visité du monde.'], w: 'Le + nom + le plus + adjectif + du (de + le) monde.' }
+      ]
+    },
+    {
+      id: 'adverbes', g: 'phrase', name: 'Les adverbes en -ment et leur place',
+      tip: 'Adjectif au féminin + -ment (lente → lentement). -ant → -amment, -ent → -emment. Les adverbes courts se placent entre l’auxiliaire et le participe : j’ai bien dormi.',
+      fiche: [
+        ['Formation', 'adjectif féminin + -ment. Si l’adjectif masculin finit par une voyelle : masculin + -ment.', ['lent → lentement ; heureux → heureusement', 'vrai → vraiment ; poli → poliment']],
+        ['-ant, -ent', '-ant → -amment ; -ent → -emment (même prononciation [amɑ̃]).', ['courant → couramment', 'évident → évidemment ; prudent → prudemment']],
+        ['Irréguliers', '', ['gentil → gentiment ; bref → brièvement ; bon → bien ; mauvais → mal']],
+        ['Place', 'Après le verbe conjugué. Aux temps composés, les adverbes courts (bien, mal, beaucoup, déjà, souvent, toujours, encore, vraiment) entre l’auxiliaire et le participe ; les adverbes longs en -ment, souvent après le participe. Devant un adjectif : très, trop, vraiment.', ['Il parle lentement.', 'J’ai bien dormi. Il a déjà fini.', 'Il a répondu poliment.']]
+      ],
+      note: '',
+      links: [['Les adverbes en -ment (tolearnfrench.com)', 'https://www.tolearnfrench.com/exercises/exercise-french-2/exercise-french-114686.php']],
+      ex: [
+        { k: 'g', s: 'lent → ___', a: ['lentement'], w: 'Féminin lente + -ment.' },
+        { k: 'g', s: 'heureux → ___', a: ['heureusement'], w: 'Féminin heureuse + -ment.' },
+        { k: 'g', s: 'vrai → ___', a: ['vraiment'], w: 'L’adjectif finit par une voyelle : vrai + -ment.' },
+        { k: 'g', s: 'courant → ___', a: ['couramment'], w: '-ant → -amment.' },
+        { k: 'g', s: 'évident → ___', a: ['évidemment'], w: '-ent → -emment.' },
+        { k: 'g', s: 'prudent → ___', a: ['prudemment'], w: '-ent → -emment.' },
+        { k: 'g', s: 'gentil → ___', a: ['gentiment'], w: 'Forme irrégulière : gentiment.' },
+        { k: 'g', s: 'Elle parle ___ (doux) à son bébé.', a: ['doucement'], w: 'Féminin douce + -ment.' },
+        { k: 'g', s: 'Il conduit trop ___ (rapide).', a: ['rapidement'], w: 'Rapide finit par -e : rapide + -ment.' },
+        { k: 'q', s: 'Quelle phrase est correcte ?', o: ['J’ai bien dormi.', 'J’ai dormi bien.', 'Je bien ai dormi.'], c: 0, w: 'Adverbe court entre l’auxiliaire et le participe.' },
+        { k: 'q', s: 'Quelle phrase est correcte ?', o: ['Il a déjà fini.', 'Il a fini déjà.', 'Il déjà a fini.'], c: 0, w: 'Déjà se place entre l’auxiliaire et le participe.' },
+        { k: 'q', s: 'Quelle phrase est correcte ?', o: ['Nous avons beaucoup travaillé.', 'Nous beaucoup avons travaillé.', 'Beaucoup nous avons travaillé.'], c: 0, w: 'Beaucoup entre l’auxiliaire et le participe.' },
+        { k: 't', i: 'Ajoute l’adverbe « souvent » à la bonne place.', f: 'Nous sommes allés au cinéma cet été.', a: ['Nous sommes souvent allés au cinéma cet été.'], w: 'Adverbe court entre l’auxiliaire et le participe.' },
+        { k: 't', i: 'Remplace « de façon polie » par un adverbe.', f: 'Il a répondu de façon polie.', a: ['Il a répondu poliment.'], w: 'Poli finit par une voyelle : poli + -ment.' }
+      ]
+    },
+    {
+      id: 'adjectifs', g: 'phrase', name: 'La place des adjectifs',
+      tip: 'En général, l’adjectif se place après le nom (couleur, nationalité, forme). Avant le nom : les adjectifs courts et fréquents (beau, joli, bon, mauvais, grand, petit, jeune, vieux, nouveau, gros, long).',
+      fiche: [
+        ['Après le nom', 'La plupart des adjectifs : couleur, nationalité, forme, adjectifs longs, participes.', ['une voiture rouge, un étudiant italien, une table ronde, un film intéressant']],
+        ['Avant le nom', 'Adjectifs courts et fréquents : beauté (beau, joli), âge (jeune, vieux, nouveau), qualité (bon, mauvais), taille (grand, petit, gros, long).', ['une jolie maison, un vieux pont, une bonne idée']],
+        ['bel, nouvel, vieil', 'Devant un nom masculin qui commence par une voyelle ou un h muet.', ['un bel appartement, un nouvel ami, un vieil homme']],
+        ['Le sens change', 'un grand homme (célèbre) / un homme grand (taille) ; mon ancien appartement (d’avant) / un meuble ancien (vieux) ; ma propre chambre (à moi) / une chambre propre (rangée) ; un cher ami (aimé) / un sac cher (prix).', []]
+      ],
+      note: 'Avec deux adjectifs, chacun garde sa place : une jolie robe bleue.',
+      links: [],
+      ex: [
+        { k: 'q', s: 'J’ai acheté ___.', o: ['une voiture rouge', 'une rouge voiture'], c: 0, w: 'Les couleurs se placent après le nom.' },
+        { k: 'q', s: 'Ils habitent dans ___.', o: ['un bel appartement', 'un beau appartement', 'un appartement bel'], c: 0, w: 'Devant une voyelle, beau → bel, avant le nom.' },
+        { k: 'q', s: 'Je te présente ___, Marc.', o: ['un vieil ami', 'un vieux ami', 'un ami vieil'], c: 0, w: 'Devant une voyelle, vieux → vieil.' },
+        { k: 'q', s: 'Nous avons étudié avec ___.', o: ['un professeur canadien', 'un canadien professeur'], c: 0, w: 'La nationalité se place après le nom.' },
+        { k: 'q', s: '« Mon ancien appartement », ça veut dire :', o: ['l’appartement où j’habitais avant', 'un appartement très vieux'], c: 0, w: 'Ancien avant le nom = précédent.' },
+        { k: 'q', s: '« Un homme grand », ça veut dire :', o: ['un homme de grande taille', 'un homme célèbre et important'], c: 0, w: 'Grand après le nom = la taille ; un grand homme = célèbre.' },
+        { k: 'q', s: '« Ma propre chambre », ça veut dire :', o: ['la chambre qui est à moi', 'une chambre bien rangée'], c: 0, w: 'Propre avant le nom = à moi ; après = rangée, pas sale.' },
+        { k: 'g', s: 'Mes parents ont acheté un ___ ordinateur. (nouveau)', a: ['nouvel'], w: 'Devant une voyelle, nouveau → nouvel.' },
+        { k: 'g', s: 'C’est un ___ hôtel au bord de la mer. (beau)', a: ['bel'], w: 'Hôtel commence par un h muet → bel.' },
+        { k: 'g', s: 'Ma grand-mère m’a raconté une ___ histoire. (vieux)', a: ['vieille'], w: 'Histoire est féminin → vieille, avant le nom.' },
+        { k: 't', i: 'Ajoute l’adjectif à la bonne place.', f: 'Ils ont acheté une maison. (grand)', a: ['Ils ont acheté une grande maison.'], w: 'Grand se place avant le nom ; accord au féminin.' },
+        { k: 't', i: 'Ajoute les deux adjectifs à la bonne place.', f: 'J’ai vu un film. (beau, italien)', a: ['J’ai vu un beau film italien.'], w: 'Beau avant le nom, la nationalité après.' },
+        { k: 't', i: 'Ajoute les deux adjectifs à la bonne place.', f: 'Elle porte une robe. (joli, bleu)', a: ['Elle porte une jolie robe bleue.'], w: 'Joli avant, la couleur après ; accord au féminin.' }
       ]
     }
   ]
