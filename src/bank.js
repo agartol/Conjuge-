@@ -233,7 +233,7 @@ const BANK = {
     { id: 't04', s: 'Je pense qu’il ___ demain.', o: ['viendra', 'vienne'], a: 0, w: 'Penser / croire que à la forme affirmative → indicatif.' },
     { id: 't05', s: 'Je ne crois pas qu’il ___ raison.', o: ['ait', 'a'], a: 0, w: 'Penser / croire à la forme négative → subjonctif.' },
     { id: 't06', s: 'Je veux ___ ce soir.', o: ['partir', 'que je parte'], a: 0, w: 'Même sujet → infinitif, jamais « je veux que je… ».' },
-    { id: 't07', s: 'Après qu’il ___ parti, on a dîné.', o: ['est', 'soit'], a: 0, w: 'Après que + indicatif (avant que, au contraire, se construit avec le subjonctif).' },
+    { id: 't07', s: 'Après qu’il ___ parti, nous avons dîné.', o: ['était', 'soit'], a: 0, w: 'Après que + indicatif (ici le plus-que-parfait, car son départ est antérieur) ; avant que, au contraire, se construit avec le subjonctif.' },
     { id: 't08', s: 'Avant que tu ___, je dois te dire quelque chose.', o: ['partes', 'pars'], a: 0, w: 'Avant que + subjonctif.' },
     { id: 't09', s: 'Je n’ai pas ___ voiture.', o: ['de', 'une'], a: 0, w: 'À la forme négative, un / une / des → de.' },
     { id: 't10', s: 'Elle ___ à Paris depuis 2020.', o: ['habite', 'a habité'], a: 0, w: 'Depuis + présent : elle habite encore là-bas.' },
@@ -256,7 +256,7 @@ const BANK = {
     { id: 't27', s: 'Il est possible qu’elle ___ en retard.', o: ['soit', 'est', 'sera'], a: 0, w: 'Il est possible que + subjonctif.' },
     { id: 't28', s: 'Je suis sûr qu’il ___ raison.', o: ['a', 'ait'], a: 0, w: 'Être sûr que (certitude) → indicatif.' },
     { id: 't29', s: 'Je ne suis pas sûr qu’il ___ raison.', o: ['ait', 'a'], a: 0, w: 'Doute (pas sûr que) → subjonctif.' },
-    { id: 't30', s: 'Il faut ___ beaucoup d’eau quand il fait chaud.', o: ['boire', 'qu’on boive'], a: 0, w: 'Il faut + infinitif pour une obligation générale. Il faut que + subjonctif seulement avec un sujet précis.' },
+    { id: 't30', s: 'Il faut ___ beaucoup d’eau quand il fait chaud.', o: ['boire', 'que boire'], a: 0, w: 'Il faut + infinitif pour une obligation générale (il faut que + subjonctif seulement avec un sujet précis : il faut que tu boives).' },
     { id: 't31', s: 'Nous nous sommes ___ à huit heures.', o: ['levés', 'levé'], a: 0, w: 'Verbe pronominal avec être : le participe s’accorde avec le sujet (nous → levés).' },
     { id: 't32', s: 'Elle s’est ___ les mains.', o: ['lavé', 'lavée'], a: 0, w: 'Le COD (les mains) est placé après, donc pas d’accord : elle s’est lavé les mains.' },
     { id: 't33', s: 'La lettre que tu m’as ___ est très belle.', o: ['écrite', 'écrit'], a: 0, w: 'COD placé avant (que = la lettre) → accord : écrite.' },
@@ -273,7 +273,7 @@ const BANK = {
     { id: 't44', s: 'Ça fait un an que j’___ le français.', o: ['apprends', 'ai appris'], a: 0, w: 'Ça fait… que + présent : je l’apprends encore.' },
     { id: 't45', s: 'On ___ au cinéma ce soir ?', o: ['va', 'vont'], a: 0, w: 'On se conjugue toujours à la 3e personne du singulier.' },
     { id: 't46', s: 'Les gens ___ très gentils ici.', o: ['sont', 'est'], a: 0, w: 'Les gens est un pluriel : ils sont.' },
-    { id: 't47', s: 'Il m’a demandé si je ___ venir.', o: ['pouvais', 'pourrais'], a: 0, w: 'Discours indirect au passé : pouvoir (présent) devient un imparfait.' },
+    { id: 't47', s: '« Tu peux venir ? » → Il m’a demandé si je ___ venir.', o: ['pouvais', 'pourrais'], a: 0, w: 'Discours indirect au passé : pouvoir (présent) devient un imparfait.' },
   ],
 
   rules: {

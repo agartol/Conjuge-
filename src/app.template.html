@@ -700,7 +700,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 
   <!-- Transformar -->
   <section class="view" id="v-transformar" hidden>
-    <p class="intro">Réécris la phrase en suivant la consigne. Écris la phrase complète : les espaces ne comptent pas, mais les majuscules, les accents et la ponctuation, si (ce sont des erreurs mineures). Un verbe mal conjugué, un mauvais sujet ou un mot qui manque, c’est une erreur grave.</p>
+    <p class="intro">Réécris la phrase en suivant la consigne. Écris la phrase complète : les espaces ne comptent pas, mais les majuscules, les accents et la ponctuation comptent (ce sont des erreurs mineures). Un verbe mal conjugué, un mauvais sujet ou un mot qui manque, c’est une erreur grave.</p>
     <div class="card card-pad row" style="gap:10px"><div class="chips" id="r2-kinds"></div><span class="stats-line" id="r2-stats"></span></div>
     <div class="card">
       <div class="sheet"><div class="flash" id="r2-card"></div></div>
@@ -1220,7 +1220,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   }
   function examQ() {
     const q = X.qs[X.i], card = $('#e-card');
-    setTense($('#e-sheet'), q.t);
+    if (T[q.t]) setTense($('#e-sheet'), q.t); else $('#e-sheet').removeAttribute('style');
     $('#e-count').textContent = `Question ${X.i + 1} sur ${X.qs.length}`;
     $('#e-next').textContent = X.i === X.qs.length - 1 ? 'Terminer' : 'Suivant';
     const inp = ansInput({ id: 'e-in', 'aria-label': 'Ta réponse', enterkeyhint: 'next' });

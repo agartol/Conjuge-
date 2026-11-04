@@ -28,7 +28,8 @@ Se publica con GitHub Pages desde la rama `main`: https://agartol.github.io/Conj
    - `node tvis.js` — busca texto en español visible en la página.
    - `node tgrade.js` — pruebas del corrector de frases.
    - `node tgram.js` — responde bien a todos los ejercicios de gramática y comprueba que se aceptan.
-   - `node tvoc.js` — prueba cada palabra del vocabulario (escribir y elegir).
+   - `node tvoc.js` — prueba cada palabra del vocabulario (escribir y elegir) y los textos con huecos.
+   - `node tall.js` — recorre todas las vistas e interactúa con ellas en tres anchos y en modo oscuro; informa de errores de JavaScript.
 4. Commit y push a `main`: GitHub Pages publica en 1–2 minutos.
 
 ## Notas

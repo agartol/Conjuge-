@@ -50,7 +50,7 @@ const LEX = {
       ['le plombier', 'el fontanero'], ['l’électricien', 'el electricista', 'm.'], ['le / la comptable', 'el / la contable'], ['le / la fonctionnaire', 'el funcionario / la funcionaria'],
       ['le salaire', 'el sueldo'], ['l’entretien d’embauche', 'la entrevista de trabajo', 'm.'], ['le chômage', 'el paro'], ['le CV', 'el currículum'], ['le stage', 'las prácticas'], ['embaucher', 'contratar'], ['démissionner', 'dimitir'] ] },
     { id: 'benevolat', name: 'Le bénévolat', words: [
-      ['le bénévolat', 'el voluntariado'], ['le / la bénévole', 'el / la voluntario/a'], ['une association', 'una asociación'], ['la solidarité', 'la solidaridad'], ['faire un don', 'hacer una donación'],
+      ['le bénévolat', 'el voluntariado'], ['le / la bénévole', 'el voluntario / la voluntaria'], ['une association', 'una asociación'], ['la solidarité', 'la solidaridad'], ['faire un don', 'hacer una donación'],
       ['une collecte', 'una colecta'], ['les sans-abri', 'las personas sin hogar'], ['la banque alimentaire', 'el banco de alimentos'], ['s’engager', 'comprometerse'], ['les personnes âgées', 'las personas mayores'],
       ['aider', 'ayudar'], ['partager', 'compartir'], ['le quartier', 'el barrio'], ['l’entraide', 'la ayuda mutua', 'f.'], ['la pauvreté', 'la pobreza'] ] },
     { id: 'egalite', name: 'L’égalité femmes-hommes', words: [

@@ -6,7 +6,7 @@ const { chromium } = require('playwright'); const fs=require('fs');
   const page = await ctx.newPage();
   await page.goto('file://' + process.cwd() + '/preview.html#hoy'); await page.waitForTimeout(600);
   const SP = /[áíóúñ¿¡]|\b(y|el|los|las|del|una|para|con|sin|está|más|también|frase|frases|tiempo|tiempos|verbo|verbos|errores|respuesta|respuestas|hueco|huecos|palabra|palabras|semana|días|sesión|ejercicios?|consigna|nuevas|todos|todas|forma|formas|elige|escribe|hoy|vez|veces|ver|tipo|regla|raíz|bien|mal|Correcto|Siguiente|Comprobar|Saltar)\b/;
-  const views = ['hoy','conjugar','tarjetas','irregulares','dictado','frases','tiempo','textos','transformar','hipotesis','trampas','pronoms','connecteurs','escribir','examen','progreso'];
+  const views = ['hoy','conjugar','tarjetas','irregulares','dictado','frases','tiempo','textos','transformar','hipotesis','trampas','pronoms','connecteurs','phrase','idees','revision','escribir','examen','progreso'];
   for (const v of views) {
     await page.click(`.tab[data-view="${v}"]`); await page.waitForTimeout(250);
     if (v === 'escribir') { await page.fill('#w-text', 'Hier il fait beau.'); }
