@@ -436,7 +436,8 @@ const BANK3 = {
         ['Rien / personne sujets', 'En début de phrase, suivis de ne.', ['Personne ne m’a appelé.', 'Rien n’est impossible.']],
         ['ne… ni… ni', 'Deux éléments niés.', ['Elle ne boit ni café ni thé.', 'Je n’aime ni le froid ni la pluie.']],
         ['Article', 'un, une, des, du, de la → de (d’) après la négation, sauf avec être.', ['Je n’ai pas de voiture.', 'Ce n’est pas un problème.']],
-        ['Infinitif', 'ne pas, ne plus, ne jamais se placent ensemble devant l’infinitif.', ['Il m’a conseillé de ne pas sortir.']]
+        ['Infinitif', 'ne pas, ne plus, ne jamais se placent ensemble devant l’infinitif.', ['Il m’a conseillé de ne pas sortir.']],
+        ['ne… que', '= seulement : ce n’est pas une vraie négation, l’article ne change pas.', ['Je n’ai que dix euros.', 'Il ne boit que de l’eau.']]
       ],
       note: 'À l’oral, on supprime souvent ne (« J’sais pas »), mais à l’écrit et à l’examen, il est obligatoire.',
       links: [['La négation (lepointdufle.net)', 'https://www.lepointdufle.net/ressources_fle/negation2.htm']],
@@ -456,7 +457,10 @@ const BANK3 = {
         { k: 't', i: 'Réponds négativement avec « ne… rien ».', f: 'Tu as acheté quelque chose ?', a: ['Non, je n’ai rien acheté.'], w: 'Rien se place entre l’auxiliaire et le participe.' },
         { k: 't', i: 'Réponds négativement avec « ne… personne ».', f: 'Tu connais quelqu’un à Lyon ?', a: ['Non, je ne connais personne à Lyon.'], w: 'Ne + verbe + personne.' },
         { k: 't', i: 'Réponds négativement avec « ne… ni… ni ».', f: 'Tu aimes le café et le thé ?', a: ['Non, je n’aime ni le café ni le thé.'], w: 'Ne + verbe + ni… ni.' },
-        { k: 't', i: 'Réponds négativement avec « ne… plus ».', f: 'Tu fais encore du piano ?', a: ['Non, je ne fais plus de piano.'], w: 'Ne… plus ; du devient de après la négation.' }
+        { k: 't', i: 'Réponds négativement avec « ne… plus ».', f: 'Tu fais encore du piano ?', a: ['Non, je ne fais plus de piano.'], w: 'Ne… plus ; du devient de après la négation.' },
+        { k: 'g', s: 'Je n’ai ___ dix euros : je ne peux pas acheter ce livre.', a: ['que'], w: 'Ne… que = seulement.' },
+        { k: 'q', s: 'Il ne boit ___ de l’eau : jamais de soda.', o: ['que', 'pas', 'plus'], c: 0, w: 'Ne… que = seulement ; l’article (de l’) ne change pas.' },
+        { k: 't', i: 'Remplace « seulement » par « ne… que ».', f: 'Elle parle seulement espagnol.', a: ['Elle ne parle qu’espagnol.'], w: 'Ne + verbe + que (qu’ devant une voyelle).' }
       ]
     },
     {
@@ -788,6 +792,263 @@ const BANK3 = {
         { k: 'g', s: 'la 5e rue → la ___ rue', a: ['cinquième'], w: 'Cinq → cinquième (on ajoute u).' },
         { k: 'q', s: 'Mon grand-père a ___ ans.', o: ['quatre-vingts', 'quatre-vingt', 'quatre-vingts-un'], c: 0, w: 'À la fin du nombre, quatre-vingts prend un -s.' },
         { k: 'q', s: 'Ce vélo coûte ___ euros.', o: ['deux mille', 'deux milles', 'deux mils'], c: 0, w: 'Mille est invariable.' }
+      ]
+    }
+    ,
+    {
+      id: 'doubles', g: 'pronoms', name: 'Les doubles pronoms',
+      tip: 'Ordre : me, te, se, nous, vous → le, la, les → lui, leur → y → en. Je te le donne ; je le lui donne. À l’impératif affirmatif : donne-le-moi !',
+      fiche: [
+        ['L’ordre', 'me / te / se / nous / vous + le / la / les + lui / leur + y + en.', ['Je te le prête.', 'Je le lui ai dit.', 'Il m’en a parlé.', 'Il y en a.']],
+        ['Temps composés', 'Les deux pronoms se placent devant l’auxiliaire ; le participe s’accorde avec le COD placé avant.', ['Les photos ? Je les leur ai envoyées.']],
+        ['Impératif affirmatif', 'Verbe + COD + COI, avec des traits d’union ; me → moi.', ['Donne-le-moi !', 'Envoie-la-leur.']],
+        ['Impératif négatif', 'Ordre normal, devant le verbe.', ['Ne me le dis pas !']]
+      ],
+      note: '',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Tu me prêtes ta voiture ? — Oui, je ___ ___ prête.', a: [['te'], ['la']], w: 'te (à toi) + la (ta voiture) : je te la prête.' },
+        { k: 'g', s: 'Tu as donné le livre à Paul ? — Oui, je ___ ___ ai donné.', a: [['le'], ['lui']], w: 'le (le livre) + lui (à Paul).' },
+        { k: 'g', s: 'Tu as envoyé les photos à tes parents ? — Oui, je ___ ___ ai envoyées.', a: [['les'], ['leur']], w: 'les + leur ; envoyées s’accorde avec les photos.' },
+        { k: 'g', s: 'Il t’a parlé de son projet ? — Oui, il ___ ___ a parlé.', a: [['m’'], ['en']], w: 'me (m’) + en (de son projet).' },
+        { k: 'g', s: 'Il reste du café ? — Oui, il ___ ___ a encore.', a: [['y'], ['en']], w: 'Il y en a : y toujours avant en.' },
+        { k: 'q', s: 'Tu peux me prêter ton stylo ? — Oui, je ___ prête.', o: ['te le', 'le te', 'lui le'], c: 0, w: 'Te avant le.' },
+        { k: 'q', s: 'Les clés ? Donne-___ !', o: ['les-moi', 'moi-les', 'me-les'], c: 0, w: 'Impératif affirmatif : COD puis moi.' },
+        { k: 'q', s: 'La vérité ? Ne ___ dis pas, je préfère ne pas savoir !', o: ['me la', 'la me', 'la-moi'], c: 0, w: 'Impératif négatif : ordre normal, me avant la.' },
+        { k: 'q', s: 'Tu offres ce bracelet à ta sœur ? — Oui, je ___ offre.', o: ['le lui', 'lui le', 'la lui'], c: 0, w: 'Le (ce bracelet) avant lui (à ta sœur).' },
+        { k: 't', i: 'Remplace les compléments par des pronoms.', f: 'Je donne le dossier à mon chef.', a: ['Je le lui donne.'], w: 'le + lui devant le verbe.' },
+        { k: 't', i: 'Remplace « ses photos » par un pronom.', f: 'Elle m’a montré ses photos.', a: ['Elle me les a montrées.'], w: 'me + les ; accord du participe avec les (photos).' },
+        { k: 't', i: 'Remplace les compléments par des pronoms.', f: 'Rends le livre à Marie !', a: ['Rends-le-lui !', 'Rends-le-lui.'], w: 'Impératif affirmatif : verbe-COD-COI.' }
+      ]
+    },
+    {
+      id: 'but', g: 'connecteurs', name: 'Exprimer le but',
+      tip: 'pour / afin de + infinitif (même sujet) ; pour que / afin que + subjonctif (deux sujets différents).',
+      fiche: [
+        ['pour + infinitif', 'Le sujet est le même.', ['Je fais du sport pour rester en forme.', 'Je note tout pour ne pas oublier.']],
+        ['pour que + subjonctif', 'Les sujets sont différents.', ['Je parle lentement pour que tu comprennes.']],
+        ['afin de, afin que', 'Même sens, registre formel (lettres, examen).', ['Nous vous écrivons afin d’obtenir des informations.', 'Afin que tout le monde puisse participer, la réunion aura lieu en ligne.']]
+      ],
+      note: 'Pour ne pas + infinitif : la négation se place devant l’infinitif.',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Je fais du sport ___ rester en forme.', a: ['pour', 'afin de'], w: 'Même sujet → pour + infinitif.' },
+        { k: 'g', s: 'Je parle lentement pour que tu ___ (comprendre).', a: ['comprennes'], w: 'Pour que + subjonctif : que tu comprennes.' },
+        { k: 'g', s: 'Le professeur répète la consigne afin que tout le monde ___ (pouvoir) suivre.', a: ['puisse'], w: 'Afin que + subjonctif ; tout le monde est singulier : puisse.' },
+        { k: 'g', s: 'Il économise ___ s’acheter une moto.', a: ['pour', 'afin de'], w: 'Même sujet → pour + infinitif.' },
+        { k: 'g', s: 'J’écris une liste pour ne ___ oublier les courses.', a: ['pas'], w: 'Pour ne pas + infinitif.' },
+        { k: 'q', s: 'Je t’appelle ___ tu saches la nouvelle avant les autres.', o: ['pour que', 'pour', 'parce que'], c: 0, w: 'Deux sujets (je / tu) → pour que + subjonctif.' },
+        { k: 'q', s: 'Elle étudie le soir ___ réussir son examen.', o: ['pour', 'pour que', 'afin que'], c: 0, w: 'Même sujet → pour + infinitif.' },
+        { k: 'q', s: 'Ouvre la fenêtre pour que l’air frais ___.', o: ['entre', 'entrer', 'entrera'], c: 0, w: 'Pour que + subjonctif : qu’il entre.' },
+        { k: 'q', s: 'Dans une lettre formelle : « Nous vous écrivons ___ obtenir des informations. »', o: ['afin d’', 'pour que', 'alors'], c: 0, w: 'Registre formel, même sujet → afin de.' },
+        { k: 't', i: 'Relie les deux phrases avec « pour que ».', f: 'Je t’explique la règle. Tu la comprends.', a: ['Je t’explique la règle pour que tu la comprennes.'], w: 'Pour que + subjonctif.' },
+        { k: 't', i: 'Relie les deux phrases avec « pour ».', f: 'Je vais à la bibliothèque. Je veux étudier au calme.', a: ['Je vais à la bibliothèque pour étudier au calme.'], w: 'Même sujet → pour + infinitif.' }
+      ]
+    },
+    {
+      id: 'chronologie', g: 'connecteurs', name: 'La chronologie d’un récit',
+      tip: 'd’abord, ensuite, puis, après, enfin ; avant de + infinitif ; après + infinitif passé (après avoir mangé, après être sorti) ; pendant que ; dès que.',
+      fiche: [
+        ['Les étapes', 'd’abord → ensuite / puis / après → enfin / finalement.', ['D’abord, je me lève ; ensuite, je prends une douche ; enfin, je pars.']],
+        ['avant de + infinitif', 'Même sujet.', ['Lave-toi les mains avant de manger.']],
+        ['après + infinitif passé', 'avoir ou être à l’infinitif + participe passé.', ['Après avoir fini, j’ai regardé un film.', 'Après être rentrée, elle a dîné.']],
+        ['pendant que, quand, dès que', 'Deux actions en même temps ou l’une juste après l’autre.', ['Il chante pendant qu’il cuisine.', 'Dès qu’il est arrivé, nous sommes partis.']]
+      ],
+      note: '',
+      links: [],
+      ex: [
+        { k: 'g', s: '___, je me lève ; ensuite, je prends une douche ; enfin, je pars au travail.', a: ['d’abord'], w: 'La première étape → d’abord.' },
+        { k: 'g', s: 'Lave-toi les mains avant ___ manger.', a: ['de'], w: 'Avant de + infinitif.' },
+        { k: 'g', s: 'Après avoir ___ (finir) mes devoirs, j’ai regardé un film.', a: ['fini'], w: 'Après avoir + participe passé.' },
+        { k: 'g', s: 'Après être ___ (rentrer) chez elle, Léa a dîné.', a: ['rentrée'], w: 'Après être + participe accordé avec le sujet (Léa).' },
+        { k: 'g', s: 'Il écoute la radio ___ il cuisine.', a: ['pendant qu’', 'quand'], w: 'Deux actions en même temps → pendant que.' },
+        { k: 'q', s: 'D’abord, on coupe les légumes ; ___, on les fait cuire.', o: ['ensuite', 'enfin', 'd’abord'], c: 0, w: 'Étape suivante → ensuite.' },
+        { k: 'q', s: '___, après trois heures de route, nous sommes arrivés.', o: ['Enfin', 'D’abord', 'Avant'], c: 0, w: 'La dernière étape → enfin.' },
+        { k: 'q', s: 'Avant ___, il a fermé toutes les fenêtres.', o: ['de partir', 'partir', 'qu’il part'], c: 0, w: 'Avant de + infinitif.' },
+        { k: 'q', s: 'Après ___ le film, nous sommes allés au restaurant.', o: ['avoir vu', 'voir', 'avoir voir'], c: 0, w: 'Après + infinitif passé.' },
+        { k: 't', i: 'Relie les deux phrases avec « avant de ».', f: 'Je réfléchis. Ensuite, je réponds.', a: ['Je réfléchis avant de répondre.'], w: 'Avant de + infinitif.' },
+        { k: 't', i: 'Relie les deux phrases avec « après » + infinitif passé.', f: 'Il a mangé. Ensuite, il est sorti.', a: ['Après avoir mangé, il est sorti.'], w: 'Après avoir + participe passé.' }
+      ]
+    },
+    {
+      id: 'presentatifs', g: 'revision', name: 'C’est, il est, il y a, voici',
+      tip: 'C’est / ce sont + déterminant + nom, nom propre ou pronom tonique. Il / elle est + adjectif ou profession sans article. Il y a = quelque chose existe. Voici / voilà pour présenter.',
+      fiche: [
+        ['C’est / ce sont', '+ un, le, mon… + nom ; + nom propre ; + pronom tonique ; + adjectif pour une idée générale.', ['C’est un acteur célèbre.', 'C’est Marie.', 'Ce sont mes parents.', 'Apprendre une langue, c’est passionnant.']],
+        ['Il / elle est', '+ adjectif ; + profession, nationalité ou religion sans article.', ['Il est grand.', 'Elle est médecin.', 'Il est français.']],
+        ['Il y a', 'Pour dire qu’une chose existe ; invariable.', ['Il y a un parc près de chez moi.', 'Il y a beaucoup de monde.']],
+        ['Voici / voilà', 'Pour présenter ou montrer.', ['Voici mon frère.', 'Tiens, voilà ton café !']]
+      ],
+      note: 'On dit « Il est professeur », mais « C’est un professeur » (avec un article).',
+      links: [],
+      ex: [
+        { k: 'q', s: 'Regarde cet homme : ___ un acteur très connu.', o: ['c’est', 'il est', 'il y a'], c: 0, w: 'Article + nom → c’est.' },
+        { k: 'q', s: 'Mon père ? ___ ingénieur.', o: ['Il est', 'C’est', 'Il y a'], c: 0, w: 'Profession sans article → il est.' },
+        { k: 'q', s: '___ un supermarché au coin de la rue.', o: ['Il y a', 'C’est', 'Il est'], c: 0, w: 'Pour dire qu’une chose existe → il y a.' },
+        { k: 'q', s: 'Apprendre une langue, ___ difficile mais passionnant.', o: ['c’est', 'il est', 'il y a'], c: 0, w: 'Idée générale + adjectif → c’est.' },
+        { k: 'q', s: '___ Marie, ma meilleure amie.', o: ['C’est', 'Elle est', 'Il y a'], c: 0, w: 'Nom propre → c’est.' },
+        { k: 'q', s: 'Qui sont ces enfants ? — ___ mes neveux.', o: ['Ce sont', 'Ils sont', 'Il y a'], c: 0, w: 'Déterminant + nom pluriel → ce sont.' },
+        { k: 'q', s: 'Elle est française ? — Oui, ___ de Lyon.', o: ['elle est', 'c’est', 'il y a'], c: 0, w: 'Elle est + origine.' },
+        { k: 'g', s: 'Tiens, ___ ton cadeau !', a: ['voici', 'voilà'], w: 'Pour montrer → voici / voilà.' },
+        { k: 'g', s: 'Dans ma ville, il ___ a deux musées.', a: ['y'], w: 'Il y a.' },
+        { k: 'g', s: 'Ma sœur ? ___ est très sportive.', a: ['elle'], w: 'Adjectif → elle est.' },
+        { k: 'g', s: '___ sont mes parents, sur la photo.', a: ['ce'], w: 'Ce sont + nom pluriel.' }
+      ]
+    },
+    {
+      id: 'lieu', g: 'revision', name: 'Les prépositions de lieu',
+      tip: 'à + ville ; en + pays féminin (ou qui commence par une voyelle) ; au + pays masculin ; aux + pays pluriel ; chez + personne. Et : dans, sur, sous, devant, derrière, entre, à côté de, en face de, près de, loin de.',
+      fiche: [
+        ['Villes et pays', 'à Paris ; en France, en Italie, en Iran ; au Portugal, au Japon ; aux États-Unis.', ['Elle habite à Lisbonne, au Portugal.']],
+        ['D’où ?', 'de / d’ + ville et pays féminin ; du + pays masculin ; des + pluriel.', ['Je viens de Madrid.', 'Il revient d’Espagne.', 'Elle vient du Japon.']],
+        ['chez', '+ personne ou profession.', ['Je dîne chez mes parents.', 'Je vais chez le dentiste.']],
+        ['Situer', 'dans, sur, sous, devant, derrière, entre, à côté de, en face de, près de, loin de, au-dessus de, au bord de.', ['Le chat dort sous la table.', 'La pharmacie est en face de la mairie.', 'Le parking est à côté du supermarché.']]
+      ],
+      note: 'Les pays qui finissent par -e sont souvent féminins (la France, l’Espagne), sauf le Mexique, le Cambodge, le Mozambique…',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Elle habite ___ Lisbonne.', a: ['à'], w: 'Ville → à.' },
+        { k: 'g', s: 'Nous partons en vacances ___ Italie.', a: ['en'], w: 'Pays féminin → en.' },
+        { k: 'g', s: 'Mon cousin travaille ___ Canada.', a: ['au'], w: 'Pays masculin → au.' },
+        { k: 'g', s: 'Ils ont vécu deux ans ___ États-Unis.', a: ['aux'], w: 'Pays pluriel → aux.' },
+        { k: 'g', s: 'Demain, je vais ___ le dentiste.', a: ['chez'], w: 'Personne, profession → chez.' },
+        { k: 'g', s: 'Le chat dort ___ la table (en dessous).', a: ['sous'], w: 'En dessous → sous.' },
+        { k: 'g', s: 'La pharmacie est ___ face de la mairie.', a: ['en'], w: 'En face de.' },
+        { k: 'g', s: 'Le parking est à côté ___ supermarché.', a: ['du'], w: 'À côté de + le → du.' },
+        { k: 'g', s: 'Ma collègue vient ___ Japon.', a: ['du'], w: 'Venir de + pays masculin → du.' },
+        { k: 'g', s: 'Il revient ___ Espagne la semaine prochaine.', a: ['d’'], w: 'De + pays féminin → de (d’ devant une voyelle).' },
+        { k: 'q', s: 'J’ai grandi ___ Mexique.', o: ['au', 'en', 'à'], c: 0, w: 'Le Mexique est masculin → au.' },
+        { k: 'q', s: 'Ils passent l’été ___ Grèce.', o: ['en', 'au', 'à la'], c: 0, w: 'La Grèce est féminin → en.' },
+        { k: 'q', s: 'La banque se trouve ___ la poste et la boulangerie.', o: ['entre', 'devant', 'sur'], c: 0, w: 'Au milieu de deux choses → entre.' },
+        { k: 'q', s: 'Ce soir, on dîne ___ mes grands-parents.', o: ['chez', 'à', 'en'], c: 0, w: 'Chez + personne.' }
+      ]
+    },
+    {
+      id: 'heure', g: 'revision', name: 'L’heure, la date et la fréquence',
+      tip: 'à + heure ; en + mois, année, été, automne, hiver (mais au printemps) ; le lundi = chaque lundi ; le 14 juillet. Fréquence : toujours, souvent, parfois, rarement, jamais, une fois par semaine.',
+      fiche: [
+        ['L’heure', 'Il est huit heures et quart / et demie / moins le quart ; midi, minuit. À quelle heure ? À 15 heures.', ['Il est sept heures moins le quart.', 'Le cours commence à 15 heures.']],
+        ['Mois, années, saisons', 'en mai, en 2026, en été, en automne, en hiver ; au printemps ; au mois de mai.', ['Je suis né en 2004.', 'Au printemps, les arbres fleurissent.']],
+        ['Jours et dates', 'lundi = ce lundi ; le lundi = tous les lundis ; le 14 juillet.', ['Je fais du yoga le samedi.', 'Nous sommes le 3 novembre.']],
+        ['Fréquence', 'toujours, souvent, parfois, rarement, ne… jamais ; tous les jours ; une fois par semaine.', ['Je vais à la piscine deux fois par semaine.']]
+      ],
+      note: '',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Mon anniversaire est ___ mars.', a: ['en'], w: 'Mois → en (ou au mois de).' },
+        { k: 'g', s: 'Je suis né ___ 2004.', a: ['en'], w: 'Année → en.' },
+        { k: 'g', s: '___ printemps, les arbres sont en fleurs.', a: ['au'], w: 'Exception : au printemps.' },
+        { k: 'g', s: '___ hiver, il fait froid.', a: ['en'], w: 'En hiver, en été, en automne.' },
+        { k: 'g', s: 'Le cours commence ___ 15 heures.', a: ['à'], w: 'Heure précise → à.' },
+        { k: 'g', s: '8 h 15 → Il est huit heures et ___.', a: ['quart'], w: 'Et quart = 15 minutes.' },
+        { k: 'g', s: '10 h 30 → Il est dix heures et ___.', a: ['demie'], w: 'Et demie (avec -e après heures).' },
+        { k: 'g', s: '6 h 45 → Il est sept heures moins le ___.', a: ['quart'], w: 'Moins le quart = 15 minutes avant.' },
+        { k: 'g', s: '12 h 00 → Il est ___.', a: ['midi'], w: '12 heures du jour = midi.' },
+        { k: 'q', s: 'Je fais du yoga ___ samedi (tous les samedis).', o: ['le', 'en', 'au'], c: 0, w: 'Le + jour = habitude.' },
+        { k: 'q', s: 'Aujourd’hui, nous sommes ___ 14 juillet.', o: ['le', 'en', 'au'], c: 0, w: 'Date → le.' },
+        { k: 'q', s: 'Je vais à la piscine deux fois ___ semaine.', o: ['par', 'pour', 'en'], c: 0, w: 'Fréquence → par.' },
+        { k: 'q', s: 'Il n’est ___ en retard : c’est quelqu’un de très ponctuel.', o: ['jamais', 'toujours', 'souvent'], c: 0, w: 'Ne… jamais.' }
+      ]
+    },
+    {
+      id: 'quantite', g: 'revision', name: 'La quantité et l’intensité',
+      tip: 'très + adjectif ou adverbe ; beaucoup + verbe ; beaucoup de, trop de, assez de, peu de + nom ; un kilo de, une bouteille de, une tranche de ; quelques + nom pluriel.',
+      fiche: [
+        ['très / beaucoup', 'très + adjectif ou adverbe ; verbe + beaucoup ; beaucoup de + nom. Avec avoir faim, avoir peur… → très.', ['Ce gâteau est très bon.', 'Elle travaille beaucoup.', 'Il y a beaucoup de voitures.', 'J’ai très faim.']],
+        ['trop, assez, peu', '+ adjectif ; de + nom.', ['C’est trop cher.', 'Il n’y a pas assez de chaises.', 'Il mange peu de légumes.']],
+        ['Quantités précises', 'un kilo de, un litre de, une bouteille de, un paquet de, une tranche de, un morceau de.', ['Un kilo de tomates, une bouteille d’eau.']],
+        ['quelques, plusieurs', '+ nom pluriel.', ['J’ai invité quelques amis.']]
+      ],
+      note: 'Après une quantité, on utilise toujours de (d’), jamais du, de la ou des.',
+      links: [],
+      ex: [
+        { k: 'q', s: 'Ce gâteau est ___ bon.', o: ['très', 'beaucoup', 'beaucoup de'], c: 0, w: 'Très + adjectif.' },
+        { k: 'q', s: 'Elle travaille ___.', o: ['beaucoup', 'très', 'beaucoup de'], c: 0, w: 'Verbe + beaucoup.' },
+        { k: 'q', s: 'Il y a ___ voitures dans cette rue.', o: ['beaucoup de', 'très', 'beaucoup des'], c: 0, w: 'Beaucoup de + nom.' },
+        { k: 'q', s: 'Je n’ai pas déjeuné, j’ai ___ faim !', o: ['très', 'beaucoup', 'beaucoup de'], c: 0, w: 'Avoir faim → très faim.' },
+        { k: 'q', s: 'Je voudrais une bouteille ___ eau, s’il vous plaît.', o: ['d’', 'de l’', 'des'], c: 0, w: 'Après une quantité → de (d’).' },
+        { k: 'g', s: 'Tu as mis ___ de sel : la soupe est immangeable !', a: ['trop'], w: 'Excès → trop de.' },
+        { k: 'g', s: 'Il n’y a pas ___ de chaises pour tout le monde.', a: ['assez'], w: 'Quantité suffisante → assez de.' },
+        { k: 'g', s: 'Achète un paquet ___ pâtes, s’il te plaît.', a: ['de'], w: 'Après une quantité → de.' },
+        { k: 'g', s: 'Ce soir, j’ai invité ___ amis à dîner (deux ou trois).', a: ['quelques'], w: 'Un petit nombre → quelques.' },
+        { k: 'g', s: 'Il mange ___ de légumes : il devrait en manger plus.', a: ['peu', 'trop peu'], w: 'Petite quantité → peu de.' }
+      ]
+    },
+    {
+      id: 'indefinis', g: 'revision', name: 'Les indéfinis : tout, chaque, quelqu’un…',
+      tip: 'tout / toute / tous / toutes + le, la, les… ; tout le monde (+ verbe au singulier) ; chaque + nom singulier ; plusieurs, quelques ; quelqu’un, quelque chose ; aucun(e)… ne.',
+      fiche: [
+        ['tout', 'tout (m. s.), toute (f. s.), tous (m. pl.), toutes (f. pl.) + déterminant + nom.', ['toute la journée, tous les élèves, toutes les semaines']],
+        ['tout le monde', 'Verbe au singulier.', ['Tout le monde est content.']],
+        ['chaque, plusieurs, quelques', 'chaque + nom singulier ; plusieurs, quelques + pluriel.', ['Chaque étudiant a un livre.', 'J’ai lu plusieurs livres de cet auteur.']],
+        ['quelqu’un, quelque chose', 'Contraires : personne, rien.', ['Il y a quelqu’un ?', 'Tu veux quelque chose ?']],
+        ['aucun(e)', 'Avec ne ; s’accorde avec le nom.', ['Je n’ai aucune idée.']]
+      ],
+      note: '',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Il a plu ___ la journée.', a: ['toute'], w: 'La journée est féminin singulier → toute.' },
+        { k: 'g', s: '___ les élèves ont réussi l’examen.', a: ['tous'], w: 'Masculin pluriel → tous.' },
+        { k: 'g', s: 'Je fais du sport ___ les semaines.', a: ['toutes'], w: 'Féminin pluriel → toutes.' },
+        { k: 'g', s: 'Il a mangé ___ le gâteau, il n’en reste plus !', a: ['tout'], w: 'Masculin singulier → tout.' },
+        { k: 'g', s: '___ le monde est d’accord.', a: ['tout'], w: 'Tout le monde (verbe au singulier).' },
+        { k: 'g', s: 'On sonne : il y a ___ à la porte.', a: ['quelqu’un'], w: 'Une personne → quelqu’un.' },
+        { k: 'g', s: 'Tu veux boire ___ ?', a: ['quelque chose'], w: 'Une chose → quelque chose.' },
+        { k: 'q', s: '___ étudiant a reçu un livre.', o: ['Chaque', 'Chaques', 'Tous'], c: 0, w: 'Chaque est toujours singulier.' },
+        { k: 'q', s: 'Tout le monde ___ content.', o: ['est', 'sont', 'êtes'], c: 0, w: 'Tout le monde + verbe au singulier.' },
+        { k: 'q', s: 'Je n’ai ___ idée.', o: ['aucune', 'aucun', 'pas aucune'], c: 0, w: 'Idée est féminin → aucune, avec ne (sans pas).' },
+        { k: 'q', s: 'J’ai lu ___ livres de cet auteur.', o: ['plusieurs', 'chaque', 'aucun'], c: 0, w: 'Plus d’un → plusieurs + pluriel.' },
+        { k: 'q', s: 'Les filles sont ___ arrivées en retard.', o: ['toutes', 'tous', 'tout'], c: 0, w: 'Les filles → toutes.' }
+      ]
+    },
+    {
+      id: 'verbesprep', g: 'revision', name: 'Les verbes et leurs prépositions',
+      tip: 'jouer à (sport) / jouer de (instrument) ; penser à, s’intéresser à, participer à ; avoir besoin de, se souvenir de ; commencer à, apprendre à, aider à ; décider de, essayer de, oublier de, arrêter de.',
+      fiche: [
+        ['jouer à / jouer de', 'à + sport ou jeu ; de + instrument (avec contraction : au, du).', ['Je joue au tennis.', 'Il joue du piano, elle joue de la guitare.']],
+        ['Verbes + à', 'penser à, s’intéresser à, participer à, répondre à, commencer à, apprendre à, aider quelqu’un à, continuer à.', ['Elle apprend à nager.']],
+        ['Verbes + de', 'avoir besoin de, avoir envie de, parler de, se souvenir de, s’occuper de, décider de, essayer de, oublier de, arrêter de, finir de, accepter de, refuser de.', ['J’ai décidé d’apprendre le chinois.', 'Il a arrêté de fumer.']],
+        ['Sans préposition', 'aimer, adorer, détester, préférer, vouloir, pouvoir, devoir, savoir, aller + infinitif.', ['J’aime danser.']]
+      ],
+      note: '',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Mon frère joue ___ piano.', a: ['du'], w: 'Instrument → jouer de (du piano).' },
+        { k: 'g', s: 'Le samedi, nous jouons ___ football.', a: ['au'], w: 'Sport → jouer à (au football).' },
+        { k: 'g', s: 'J’ai décidé ___ apprendre le chinois.', a: ['d’'], w: 'Décider de (d’) + infinitif.' },
+        { k: 'g', s: 'Elle a commencé ___ courir l’année dernière.', a: ['à'], w: 'Commencer à + infinitif.' },
+        { k: 'g', s: 'N’oublie pas ___ fermer la porte à clé !', a: ['de'], w: 'Oublier de + infinitif.' },
+        { k: 'g', s: 'Il a arrêté ___ fumer.', a: ['de'], w: 'Arrêter de + infinitif.' },
+        { k: 'g', s: 'Je t’aide ___ porter tes valises.', a: ['à'], w: 'Aider quelqu’un à + infinitif.' },
+        { k: 'g', s: 'Tu te souviens ___ notre premier voyage ?', a: ['de'], w: 'Se souvenir de.' },
+        { k: 'g', s: 'Il s’intéresse ___ l’architecture.', a: ['à'], w: 'S’intéresser à.' },
+        { k: 'q', s: 'J’ai envie ___ une glace.', o: ['d’', 'à', 'pour'], c: 0, w: 'Avoir envie de (d’).' },
+        { k: 'q', s: 'Ils participent ___ un concours de photo.', o: ['à', 'de', 'en'], c: 0, w: 'Participer à.' },
+        { k: 'q', s: 'Elle apprend ___ nager.', o: ['à', 'de', '—'], c: 0, w: 'Apprendre à + infinitif.' },
+        { k: 'q', s: 'Je joue ___ guitare depuis dix ans.', o: ['de la', 'à la', 'la'], c: 0, w: 'Instrument → jouer de la guitare.' }
+      ]
+    },
+    {
+      id: 'exclamation', g: 'revision', name: 'L’exclamation',
+      tip: 'Quel / quelle / quels / quelles + (adjectif) + nom ! ; Comme / Que + phrase ! ; à l’oral : Qu’est-ce que + phrase !',
+      fiche: [
+        ['Quel + nom', 'S’accorde avec le nom.', ['Quelle belle vue !', 'Quel temps magnifique !', 'Quels beaux enfants !']],
+        ['Comme / Que + phrase', '', ['Comme il fait chaud !', 'Que c’est bon !']],
+        ['Qu’est-ce que + phrase', 'Registre familier, à l’oral.', ['Qu’est-ce que tu es drôle !']]
+      ],
+      note: '',
+      links: [],
+      ex: [
+        { k: 'q', s: '___ belle vue !', o: ['Quelle', 'Quel', 'Comme'], c: 0, w: 'Vue est féminin → quelle.' },
+        { k: 'q', s: '___ il fait chaud aujourd’hui !', o: ['Comme', 'Quel', 'Quelle'], c: 0, w: 'Devant une phrase → comme.' },
+        { k: 'q', s: '___ beaux enfants !', o: ['Quels', 'Quelles', 'Quel'], c: 0, w: 'Enfants, masculin pluriel → quels.' },
+        { k: 'q', s: '___ c’est bon !', o: ['Que', 'Quel', 'Quelle'], c: 0, w: 'Devant une phrase → que (ou comme).' },
+        { k: 'g', s: '___ temps magnifique !', a: ['quel'], w: 'Temps est masculin singulier → quel.' },
+        { k: 'g', s: '___ histoires incroyables !', a: ['quelles'], w: 'Féminin pluriel → quelles.' },
+        { k: 'g', s: 'Qu’est-___ que tu es drôle !', a: ['ce'], w: 'Qu’est-ce que + phrase (oral).' },
+        { k: 't', i: 'Transforme en phrase exclamative avec « quel ».', f: 'C’est une bonne idée.', a: ['Quelle bonne idée !'], w: 'Quelle + adjectif + nom.' },
+        { k: 't', i: 'Transforme en phrase exclamative avec « comme ».', f: 'Cette ville est belle.', a: ['Comme cette ville est belle !'], w: 'Comme + phrase.' },
+        { k: 't', i: 'Transforme en phrase exclamative avec « que ».', f: 'Ces chaussures sont chères.', a: ['Que ces chaussures sont chères !'], w: 'Que + phrase.' }
       ]
     }
   ]

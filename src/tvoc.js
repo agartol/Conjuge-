@@ -29,6 +29,19 @@ const { chromium } = require('playwright'); const L = require('./lexique.js');
     }
   }
   console.log('vocab checks', n, 'fails', fails);
+  // textes à trous: rellenar con la banca de palabras y corregir
+  let tf = 0;
+  for (const tx of L.textes) {
+    const th = L.themes.find(t => t.id === tx.th);
+    await page.click(`#vo-themes .g-topic:has-text("${th.name}")`); await page.click('#vo-modes button:has-text("Texte")');
+    const ans = [...tx.t.matchAll(/\{\{([^}]+)\}\}/g)].map(m => m[1].split('|')[0]);
+    const inputs = await page.$$('#vo-tbody .vo-blank');
+    for (let i = 0; i < inputs.length; i++) { await inputs[i].focus(); await page.click(`#vo-bank button[data-w="${ans[i].replace(/"/g, '\\"')}"]:not(.used)`); }
+    await page.click('#vo-tcheck');
+    const sc = await page.textContent('#vo-tscore'); if (!sc.includes('Tout est juste')) { tf++; console.log('TEXT FAIL', tx.th, sc); }
+  }
+  console.log('textes', L.textes.length, 'fails', tf);
+  await page.screenshot({ path: 'shots/voc-text.png' });
   // sin artículo → menor
   await page.click('#vo-themes .g-topic:has-text("La maison")'); await page.click('#vo-modes button:has-text("Écrire")');
   const es = (await page.textContent('#vo-card .vo-es')).trim(); const w = L.themes.find(t => t.id === 'maison').words.find(x => x[1] === es);
