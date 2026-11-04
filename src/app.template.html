@@ -60,10 +60,18 @@ button, input, select { font: inherit; color: inherit; }
 .brand h1 { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1; margin: 0; letter-spacing: -.02em; }
 .brand h1 em { font-style: normal; color: var(--accent); }
 .brand p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
-.navsec { margin: 18px 4px 6px; padding: 7px 10px; border-radius: 7px; font-size: 12.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); border-left: 3px solid var(--accent); }
+.sidenav { --sec: var(--accent); }
+.sidenav [data-sec="verbes"] { --sec: #C62828; }
+.sidenav [data-sec="grammaire"] { --sec: #3346C8; }
+.sidenav [data-sec="vocabulaire"] { --sec: #2E7D32; }
+.sidenav [data-sec="revision"] { --sec: #D35400; }
+.sidenav [data-sec="ecrit"] { --sec: #8E24AA; }
+.sidenav [data-sec="eval"] { --sec: #00796B; }
+.navsec { margin: 18px 4px 6px; padding: 7px 10px; border-radius: 7px; font-size: 12.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sec); background: color-mix(in srgb, var(--sec) 11%, transparent); border-left: 3px solid var(--sec); }
 .tab { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 8px 12px; border-radius: 10px; color: var(--muted); cursor: pointer; font-weight: 700; font-size: 15px; transition: background .15s, color .15s; }
-.tab:hover { background: var(--paper); color: var(--ink); }
-.tab[aria-selected="true"] { background: var(--accent-soft); color: var(--accent); }
+.tab:hover { background: color-mix(in srgb, var(--sec) 7%, transparent); color: var(--ink); }
+.tab[aria-selected="true"] { background: color-mix(in srgb, var(--sec) 14%, transparent); color: var(--sec); }
+@media (prefers-color-scheme: dark) { .navsec, .tab[aria-selected="true"] { color: color-mix(in srgb, var(--sec) 45%, white); } }
 .vtitle { font-family: var(--f-display); font-weight: 400; font-size: 36px; margin: 0; letter-spacing: -.02em; }
 @media (max-width: 900px) {
   .app { grid-template-columns: 1fr; background: none; }
@@ -365,6 +373,15 @@ select { background: var(--panel); border: 1px solid var(--line); border-radius:
 .f-rule ul { margin: 0; padding-left: 18px; font-style: italic; }
 .f-rule li { margin: 2px 0; }
 .sentence .ans.g-blank { width: 10ch; min-width: 0; }
+/* Vocabulaire */
+.vo-table { width: 100%; border-collapse: collapse; font-size: 16px; }
+.vo-table td { padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.vo-table td:first-child { font-weight: 700; }
+.vo-table td.es { color: var(--muted); font-style: italic; }
+.vo-table td.sc { text-align: right; color: var(--muted); font-size: 13px; white-space: nowrap; }
+.vo-word { font-family: var(--f-display); font-size: 34px; margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.vo-es { font-size: 30px; font-style: italic; }
+.vo-g { font-size: 14px; color: var(--muted); font-family: inherit; font-style: normal; }
 .from { font-family: var(--f-display); font-size: 26px; line-height: 1.3; margin: 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .chip.kind { background: var(--accent-soft); color: var(--accent); }
 button.chip.kind[aria-pressed="false"] { background: transparent; color: var(--muted); border-color: var(--line); }
@@ -409,25 +426,30 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 <nav class="sidenav" aria-label="Exercices">
   <div class="brand"><h1>Conjugue <em>!</em></h1></div>
   <button class="tab" data-view="hoy">Aujourd’hui</button>
-  <p class="navsec">Verbes · formes</p>
+  <p class="navsec" data-sec="verbes">Verbes · formes</p>
   <button class="tab" data-view="conjugar">Conjugueur</button>
   <button class="tab" data-view="tarjetas">Cartes</button>
   <button class="tab" data-view="irregulares">Irréguliers</button>
   <button class="tab" data-view="dictado">Dictée</button>
-  <p class="navsec">Verbes · emploi</p>
+  <p class="navsec" data-sec="verbes">Verbes · emploi</p>
   <button class="tab" data-view="frases">Phrases</button>
   <button class="tab" data-view="tiempo">Quel temps ?</button>
   <button class="tab" data-view="textos">Textes à trous</button>
   <button class="tab" data-view="transformar">Transformer</button>
   <button class="tab" data-view="hipotesis">Hypothèses avec si</button>
   <button class="tab" data-view="trampas">Pièges</button>
-  <p class="navsec">Grammaire</p>
+  <p class="navsec" data-sec="grammaire">Grammaire</p>
   <button class="tab" data-view="pronoms">Pronoms</button>
   <button class="tab" data-view="connecteurs">Connecteurs logiques</button>
   <button class="tab" data-view="phrase">La phrase</button>
-  <p class="navsec">Expression écrite</p>
+  <button class="tab" data-view="idees">Exprimer une idée</button>
+  <p class="navsec" data-sec="vocabulaire">Vocabulaire</p>
+  <button class="tab" data-view="vocabulaire">Mots par thème</button>
+  <p class="navsec" data-sec="revision">Révision A1-A2</p>
+  <button class="tab" data-view="revision">Grammaire de base</button>
+  <p class="navsec" data-sec="ecrit">Expression écrite</p>
   <button class="tab" data-view="escribir">Écrire</button>
-  <p class="navsec">Évaluation</p>
+  <p class="navsec" data-sec="eval">Évaluation</p>
   <button class="tab" data-view="examen">Examen</button>
   <button class="tab" data-view="progreso">Progression</button>
 </nav>
@@ -700,6 +722,23 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   </section>
 
 
+  <!-- Vocabulaire -->
+  <section class="view" id="v-vocabulaire" hidden>
+    <p class="intro">Le vocabulaire des thèmes vus en cours, avec la traduction en espagnol. Choisis un thème, révise la liste, puis entraîne-toi : choisir la traduction ou écrire le mot en français (avec l’article).</p>
+    <div class="g-topics" id="vo-themes"></div>
+    <div id="vo-main" class="g-main" hidden>
+      <div class="card card-pad row between"><div class="chips" id="vo-modes"></div><span class="stats-line" id="vo-stats"></span></div>
+      <div class="card card-pad" id="vo-list"></div>
+      <div class="card" id="vo-practice">
+        <div class="sheet"><div class="flash" id="vo-card"></div></div>
+        <div class="card-pad" style="display:grid;gap:12px;border-top:1px solid var(--line)">
+          <div class="accents" data-accents></div>
+          <div class="actions"><button class="btn primary" id="vo-go" type="button">Vérifier</button><button class="btn ghost" id="vo-skip" type="button">Passer</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Grammaire (pronoms, connecteurs…) -->
   <section class="view" id="v-grammaire" hidden>
     <p class="intro" id="g-intro"></p>
@@ -791,7 +830,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 
   /* ---------- Progreso (cuenta → db; navegador como respaldo) ---------- */
   const LS = 'atelier-conj-v1';
-  const blank = () => ({ v: 1, updated: 0, forms: {}, uso: {}, trap: { ok: 0, n: 0 }, tr: { ok: 0, n: 0 }, hip: { ok: 0, n: 0 }, dict: { ok: 0, n: 0 }, wr: { n: 0 }, srs: {}, seen: {}, days: {}, err: {}, errEx: {}, conf: {}, text: {}, gen: [], exam: '', goal: 40, gram: {}, gseen: {} });
+  const blank = () => ({ v: 1, updated: 0, forms: {}, uso: {}, trap: { ok: 0, n: 0 }, tr: { ok: 0, n: 0 }, hip: { ok: 0, n: 0 }, dict: { ok: 0, n: 0 }, wr: { n: 0 }, srs: {}, seen: {}, days: {}, err: {}, errEx: {}, conf: {}, text: {}, gen: [], exam: '', goal: 40, gram: {}, gseen: {}, voc: {}, vseen: {} });
   let P = blank();
   try { const raw = localStorage.getItem(LS); if (raw) P = Object.assign(blank(), JSON.parse(raw)); } catch (e) {}
   const fixP = () => { const b = blank(); for (const k of Object.keys(b)) if (P[k] == null) P[k] = b[k]; };
@@ -1230,7 +1269,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     let n = 0, ok = 0;
     for (const o of [P.forms, P.uso]) for (const s of Object.values(o)) { n += s.n; ok += s.ok; }
     n += P.trap.n; ok += P.trap.ok;
-    for (const s of Object.values(P.gram || {})) { n += s.n; ok += s.ok; }
+    for (const s of Object.values(P.gram || {}).concat(Object.values(P.voc || {}))) { n += s.n; ok += s.ok; }
     const cards = Object.keys(P.srs).length, mastered = Object.values(P.srs).filter(s => s[0] >= 4).length;
     const worst = E.TENSES.map(t => ({ t, s: P.forms[t.id] })).filter(x => x.s && x.s.n >= 5).sort((a, b) => a.s.ok / a.s.n - b.s.ok / b.s.n)[0];
     $('#p-kpis').replaceChildren(
@@ -1246,6 +1285,8 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
       tbl.append(h('div', { class: 'prog-row prog-head' }, h('span', {}, 'Grammaire · ' + g.name), h('span', {}, 'Exercices'), h('span', {})));
       BANK3.topics.filter(t => t.g === g.id).forEach(t => tbl.append(h('div', { class: 'prog-row', style: '--tc:var(--accent)' }, h('span', {}, h('a', { href: '#' + g.id, onclick: e => { e.preventDefault(); go(g.id); gOpenTopic(t.id); } }, t.name)), bar(P.gram[t.id], 'exercices'), h('span', {}))));
     });
+    tbl.append(h('div', { class: 'prog-row prog-head' }, h('span', {}, 'Vocabulaire'), h('span', {}, 'Mots'), h('span', {})));
+    LEX.themes.forEach(t => tbl.append(h('div', { class: 'prog-row', style: '--tc:var(--accent)' }, h('span', {}, h('a', { href: '#vocabulaire', onclick: e => { e.preventDefault(); go('vocabulaire'); voOpen(t.id); } }, t.name)), bar(P.voc[t.id], 'réponses'), h('span', {}))));
     const pe = $('#p-errs'); if (pe) renderErrs(pe);
     renderSync();
   }
@@ -1850,6 +1891,112 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   $('#g-go').onclick = gGo; $('#g-skip').onclick = () => { nextG(); };
   BANK3.topics.forEach(t => { ERRCAT['g_' + t.id] = { name: t.name, tip: t.tip, go: () => { go(t.g); gOpenTopic(t.id); }, btn: 'Revoir la fiche et s’entraîner' }; });
 
+  /* ---------- Vocabulaire ---------- */
+  const VO = { theme: null, mode: 'choose', order: [], cur: null, state: 'ask', done: 0, right: 0 };
+  const VOM = { list: 'Liste', choose: 'Choisir la traduction', write: 'Écrire en français' };
+  const voWords = () => (VO.theme === 'mix' ? LEX.themes : LEX.themes.filter(t => t.id === VO.theme)).flatMap(t => t.words.map(w => ({ fr: w[0], es: w[1], g: w[2] || '', th: t.id, k: t.id + '|' + w[0] })));
+  const ART = /^(le|la|les|l['’]|un|une|des)\s*/i;
+  // Formas aceptadas para una entrada: « le / la X », « A / B », « x(e) ».
+  function voAccepts(fr) {
+    const out = new Set([fr]);
+    let alts = [fr];
+    const m = fr.match(/^(le|la|un|une) \/ (le|la|un|une) (.+)$/);
+    if (m) alts = [m[1] + ' ' + m[3], m[2] + ' ' + m[3]]; else if (fr.includes(' / ')) alts = fr.split(' / ');
+    for (const a of alts) { out.add(a); if (/\(e\)/.test(a)) { out.add(a.replace(/\(e\)/g, '')); out.add(a.replace(/\(e\)/g, 'e')); } }
+    return [...out];
+  }
+  const voStat = id => { const s = (P.voc || {})[id]; return s || { ok: 0, n: 0 }; };
+  function voRender() {
+    const btn = (id, name, stat, n, cls = '') => h('button', { type: 'button', class: 'g-topic' + cls, 'aria-pressed': String(VO.theme === id), onclick: () => voOpen(id) },
+      h('b', {}, name), h('span', { class: 'g-bar', 'aria-hidden': 'true' }, h('i', { style: `width:${stat.n ? Math.round(stat.ok / stat.n * 100) : 0}%` })),
+      h('small', {}, stat.n ? `${Math.round(stat.ok / stat.n * 100)} % de réussite · ${n} mots` : `${n} mots · pas encore commencé`));
+    const all = LEX.themes.reduce((a, t) => { const s = voStat(t.id); a.ok += s.ok; a.n += s.n; return a; }, { ok: 0, n: 0 });
+    $('#vo-themes').replaceChildren(...LEX.themes.map(t => btn(t.id, t.name, voStat(t.id), t.words.length)), btn('mix', 'Tous les thèmes mélangés', all, LEX.themes.reduce((a, t) => a + t.words.length, 0), ' mix'));
+    $('#vo-main').hidden = !VO.theme;
+  }
+  function voOpen(id) {
+    VO.theme = id; VO.order = []; VO.done = VO.right = 0;
+    if (id !== 'mix' && !voStat(id).n) VO.mode = 'list'; else if (VO.mode === 'list') VO.mode = 'choose';
+    voRender(); voMode(VO.mode);
+    $('#vo-main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function voMode(m) {
+    VO.mode = m;
+    $('#vo-modes').replaceChildren(...Object.entries(VOM).map(([k, name]) => h('button', { type: 'button', class: 'chip kind', 'aria-pressed': String(k === m), onclick: () => voMode(k) }, name)));
+    $('#vo-list').hidden = m !== 'list'; $('#vo-practice').hidden = m === 'list';
+    if (m === 'list') voList(); else { VO.order = []; voNext(); }
+  }
+  function voList() {
+    const ws = voWords();
+    $('#vo-list').replaceChildren(h('table', { class: 'vo-table' }, h('tbody', {}, ws.map(w => { const s = P.vseen[w.k]; return h('tr', {},
+      h('td', {}, w.fr, w.g ? h('span', { class: 'vo-g' }, ' (' + w.g + ')') : '', ' ', speakBtn(w.fr)), h('td', { class: 'es', lang: 'es' }, w.es), h('td', { class: 'sc' }, s ? `${s[0]}/${s[1]}` : '')); }))),
+      h('div', { class: 'actions', style: 'margin-top:14px' }, h('button', { class: 'btn primary', type: 'button', onclick: () => voMode('choose') }, 'Je m’entraîne')));
+    voStats();
+  }
+  function voStats() { $('#vo-stats').replaceChildren(h('span', {}, 'Cette séance : ', h('b', {}, `${VO.right} / ${VO.done}`)), h('span', {}, 'Mots : ', h('b', {}, voWords().length))); }
+  function voPickOrder(ws) { return shuffle(ws).sort((a, b) => { const sa = P.vseen[a.k] || [0, 0], sb = P.vseen[b.k] || [0, 0]; return (sa[1] ? sa[0] / sa[1] : -1) - (sb[1] ? sb[0] / sb[1] : -1); }); }
+  function voNext() {
+    const ws = voWords();
+    if (!VO.order.length) VO.order = voPickOrder(ws).map(w => w.k);
+    const k = VO.order.shift(); VO.cur = ws.find(w => w.k === k); VO.state = 'ask';
+    voRenderItem($('#vo-card'), VO.cur, VO.mode, voGo, i => voAnswer(i));
+    $('#vo-go').textContent = 'Vérifier'; $('#vo-go').hidden = VO.mode === 'choose'; voStats();
+  }
+  // Muestra una palabra: 'choose' = FR → elegir la traducción ; 'write' = ES → escribir en francés.
+  function voRenderItem(card, w, mode, onEnter, onPick) {
+    const th = LEX.themes.find(t => t.id === w.th);
+    const head = h('div', { class: 'row' }, h('span', { class: 'chip kind', 'aria-pressed': 'true' }, mode === 'choose' ? 'Traduis' : 'Écris en français'), h('span', { class: 'note' }, th.name));
+    if (mode === 'choose') {
+      const pool = shuffle(th.words.filter(x => x[1] !== w.es)).slice(0, 3).map(x => x[1]);
+      const opts = shuffle([w.es, ...pool]);
+      card.replaceChildren(head, h('p', { class: 'vo-word' }, w.fr, w.g ? h('span', { class: 'vo-g' }, '(' + w.g + ')') : '', speakBtn(w.fr)),
+        h('div', { class: 'opts' }, opts.map(o => h('button', { type: 'button', class: 'opt', lang: 'es', 'data-o': o, onclick: () => onPick(o) }, o))));
+    } else {
+      const inp = ansInput({ class: 'ans wide', 'aria-label': 'Le mot en français', enterkeyhint: 'done' });
+      inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); onEnter(); } });
+      card.replaceChildren(head, h('p', { class: 'vo-word vo-es', lang: 'es' }, w.es), w.g ? h('p', { class: 'note', style: 'margin:0' }, 'Nom ' + (w.g === 'f.' ? 'féminin' : 'masculin') + '.') : '', h('p', { class: 'note', style: 'margin:0' }, 'Écris le mot en français, avec l’article pour les noms.'), inp);
+      inp.focus({ preventScroll: true });
+    }
+    card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
+  }
+  function voRec(w, ok, you) {
+    bump(P.voc, w.th, ok);
+    const s = P.vseen[w.k] || (P.vseen[w.k] = [0, 0]); s[1]++; if (ok) s[0]++;
+    if (!ok && you) logErr(you, [w.fr], null, 'vocabulaire');
+    touch();
+  }
+  function voCheckWrite(card, w) {
+    const inp = card.querySelector('.ans'), acc = voAccepts(w.fr);
+    let v = judge(inp.value, acc, null, null);
+    if (v === 'empty') { inp.focus(); return null; }
+    let art = false;
+    if (v === 'bad' && ART.test(w.fr) && !ART.test(norm(inp.value))) { const v2 = judge(inp.value, acc.map(a => a.replace(ART, '')), null, null); if (v2 === 'ok' || v2 === 'acc') { v = 'acc'; art = true; } }
+    const ok = v === 'ok', cls = ok ? 'ok' : v === 'acc' ? 'acc' : 'bad';
+    inp.className = 'ans wide ' + cls; inp.readOnly = true;
+    const fb = h('div', { class: 'feedback ' + cls, role: 'status' }, h('b', {}, ok ? 'Correct.' : art ? 'Presque : n’oublie pas l’article.' : v === 'acc' ? verdictText.acc + '.' : 'Ce n’est pas correct.'), ok ? ' ' : [' → ', h('b', {}, w.fr), ' '], speakBtn(w.fr));
+    return { ok, fb, you: inp.value };
+  }
+  function voCheckPick(card, w, o) {
+    const ok = o === w.es;
+    card.querySelectorAll('.opt').forEach(b => { b.disabled = true; if (b.dataset.o === w.es) b.classList.add('right'); else if (b.dataset.o === o) b.classList.add('wrong'); });
+    const fb = h('div', { class: 'feedback ' + (ok ? 'ok' : 'bad'), role: 'status' }, h('b', {}, ok ? 'Correct.' : 'Ce n’est pas correct.'), ' ', h('span', {}, w.fr, ' = ', h('i', { lang: 'es' }, w.es)));
+    return { ok, fb, you: null };
+  }
+  function voGo() {
+    if (VO.state === 'shown') { voNext(); voRender(); return; }
+    const card = $('#vo-card'), r = voCheckWrite(card, VO.cur); if (!r) return;
+    voRec(VO.cur, r.ok, r.you); VO.done++; if (r.ok) VO.right++;
+    card.append(r.fb); VO.state = 'shown'; $('#vo-go').textContent = 'Suivant'; $('#vo-go').hidden = false; $('#vo-go').focus({ preventScroll: true }); voStats();
+  }
+  function voAnswer(o) {
+    if (VO.state === 'shown') return;
+    const card = $('#vo-card'), r = voCheckPick(card, VO.cur, o);
+    voRec(VO.cur, r.ok, null); VO.done++; if (r.ok) VO.right++;
+    card.append(r.fb); VO.state = 'shown'; $('#vo-go').textContent = 'Suivant'; $('#vo-go').hidden = false; $('#vo-go').focus({ preventScroll: true }); voStats();
+  }
+  $('#vo-go').onclick = voGo; $('#vo-skip').onclick = () => voNext();
+  ERRCAT.vocabulaire = { name: 'Vocabulaire', tip: 'Apprends les noms avec leur article (le, la, l’) : le genre en français ne correspond pas toujours à l’espagnol (le lait, la mer, l’escalier).', go: () => go('vocabulaire'), btn: 'Réviser le vocabulaire' };
+
   /* ---------- Hoy ---------- */
   function streak() {
     let n = 0; const d = new Date();
@@ -1911,16 +2058,17 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   function sessionPlanText() {
     const w = weakTenses().slice(0, 2).map(id => T[id].name).join(' et ');
     const due = Object.values(P.srs).filter(s => s[1] <= Date.now()).length;
-    return `15 exercices (environ 10 minutes) : ${due ? Math.min(due, 5) + ' cartes à réviser' : '5 cartes'}, 3 phrases centrées sur ${w}, 3 exercices de grammaire, 2 transformations, 1 hypothèse avec si et 1 piège. Correction immédiate.`;
+    return `15 exercices (environ 10 minutes) : ${due ? Math.min(due, 4) + ' cartes à réviser' : '4 cartes'}, 2 phrases centrées sur ${w}, 3 exercices de grammaire, 2 mots de vocabulaire, 2 transformations, 1 hypothèse avec si et 1 piège. Correction immédiate.`;
   }
   const S = { qs: [], i: 0, state: 'ask', res: [] };
   function buildSession() {
     const now = Date.now(), w = weakTenses(), qs = [];
     const due = Object.entries(P.srs).filter(([k, s]) => s[1] <= now).sort((a, b) => a[1][0] - b[1][0]).map(([k]) => k.split('|')).filter(([v, t]) => E.V[v] && T[t] && E.available(v, t));
     const seen = new Set();
-    for (const [v, t, p] of due) { if (qs.length >= 5) break; const k = v + t + p; if (!seen.has(k)) { seen.add(k); qs.push({ type: 'form', v, t, p: +p, g: rg(v, t) }); } }
-    while (qs.length < 5) { const t = pick(w.slice(0, 4)), v = pick(E.VERBS); if (!E.available(v, t)) continue; const p = pick(E.personsFor(t)); qs.push({ type: 'form', v, t, p, g: rg(v, t) }); }
-    const fr = shuffle(B.frases.filter(f => w.slice(0, 3).includes(f.t))).slice(0, 3); fr.forEach(it => qs.push({ type: 'frase', it, t: it.t }));
+    for (const [v, t, p] of due) { if (qs.length >= 4) break; const k = v + t + p; if (!seen.has(k)) { seen.add(k); qs.push({ type: 'form', v, t, p: +p, g: rg(v, t) }); } }
+    while (qs.length < 4) { const t = pick(w.slice(0, 4)), v = pick(E.VERBS); if (!E.available(v, t)) continue; const p = pick(E.personsFor(t)); qs.push({ type: 'form', v, t, p, g: rg(v, t) }); }
+    const fr = shuffle(B.frases.filter(f => w.slice(0, 3).includes(f.t))).slice(0, 2); fr.forEach(it => qs.push({ type: 'frase', it, t: it.t }));
+    voPickOrder(LEX.themes.flatMap(t => t.words.map(w => ({ fr: w[0], es: w[1], g: w[2] || '', th: t.id, k: t.id + '|' + w[0] })))).slice(0, 2).forEach((it, i) => qs.push({ type: 'voc', it, mode: i ? 'write' : 'choose' }));
     shuffle(B2.transform).slice(0, 2).forEach(it => qs.push({ type: 'tr', it }));
     shuffle(B2.hipotesis.filter(x => x.k < 3)).slice(0, 1).forEach(it => qs.push({ type: 'hip', it }));
     gramPicks(3).forEach(it => qs.push({ type: 'gram', it }));
@@ -1952,6 +2100,9 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
     } else if (q.type === 'tr') {
       focusEl = ansInput({ id: 'h-in', class: 'ans wide', 'aria-label': 'Phrase transformée' });
       card.replaceChildren(h('div', { class: 'row' }, h('span', { class: 'chip kind', 'aria-pressed': 'true' }, KINDS[q.it.k])), h('p', { class: 'consigna' }, q.it.i), h('p', { class: 'from' }, q.it.from), focusEl);
+    } else if (q.type === 'voc') {
+      voRenderItem(card, q.it, q.mode, () => sessionNext(), o => sessionAnswer(o));
+      focusEl = null; $('#h-next').hidden = q.mode === 'choose';
     } else if (q.type === 'gram') {
       renderGItem(card, q.it, () => sessionNext(), i => sessionAnswer(i), true);
       focusEl = null; $('#h-next').hidden = q.it.k === 'q';
@@ -1964,8 +2115,8 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
         h('div', { class: 'opts' }, shuffle(q.it.o.map((o, i) => [o, i])).map(([o, i]) => h('button', { type: 'button', class: 'opt', 'data-i': i, onclick: () => sessionAnswer(i) }, o))));
       $('#h-next').hidden = true;
     }
-    if (q.type !== 'trampa' && !(q.type === 'gram' && q.it.k === 'q')) $('#h-next').hidden = false;
-    if (q.type === 'gram') return;
+    if (q.type !== 'trampa' && !(q.type === 'gram' && q.it.k === 'q') && !(q.type === 'voc' && q.mode === 'choose')) $('#h-next').hidden = false;
+    if (q.type === 'gram' || q.type === 'voc') return;
     if (focusEl && q.type !== 'hip') focusEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sessionNext(); } });
     card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
     focusEl && focusEl.focus({ preventScroll: true });
@@ -1980,6 +2131,11 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
       const inp = $('#h-in'), v = judge(inp.value, q.it.a, null, q.t); if (v === 'empty') return inp.focus();
       ok = v === 'ok'; bump(P.forms, q.t, ok); if (!ok) logErr(inp.value, q.it.a, q.t); inp.className = 'ans ' + (ok ? 'ok' : 'bad'); inp.readOnly = true;
       fb = [h('b', {}, ok ? 'Correct.' : 'C’était : '), ok ? '' : h('b', {}, q.it.a[0]), ' ', speakBtn(fillSentence(q.it.s, q.it.a[0])), h('span', { class: 'why' }, q.it.w)];
+    } else if (q.type === 'voc') {
+      if (q.mode === 'choose' && choice == null) return;
+      const r = q.mode === 'choose' ? voCheckPick(card, q.it, choice) : voCheckWrite(card, q.it); if (!r) return;
+      voRec(q.it, r.ok, r.you); S.res.push({ q, ok: r.ok }); card.append(r.fb); $('#h-next').hidden = false;
+      S.state = 'shown'; $('#h-next').textContent = S.i === S.qs.length - 1 ? 'Voir le résultat' : 'Suivant'; $('#h-next').focus({ preventScroll: true }); return;
     } else if (q.type === 'gram') {
       if (q.it.k === 'q' && choice == null) return;
       const r = q.it.k === 'q' ? gPick(card, q.it, choice) : gCheck(card, q.it); if (!r) return;
@@ -2009,7 +2165,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   function sessionNext() { if (S.state === 'ask') return sessionAnswer(); if (S.i < S.qs.length - 1) { S.i++; sessionQ(); } else sessionEnd(); }
   function sessionEnd() {
     const ok = S.res.filter(r => r.ok).length, n = S.res.length;
-    const LBL = { form: 'Cartes', frase: 'Phrases', tr: 'Transformations', hip: 'Hypothèses', trampa: 'Piège', gram: 'Grammaire' };
+    const LBL = { form: 'Cartes', frase: 'Phrases', tr: 'Transformations', hip: 'Hypothèses', trampa: 'Piège', gram: 'Grammaire', voc: 'Vocabulaire' };
     const by = {}; S.res.forEach(r => { const b = by[r.q.type] || (by[r.q.type] = [0, 0]); b[1]++; if (r.ok) b[0]++; });
     $('#h-run').hidden = true; const d = $('#h-done'); d.hidden = false;
     d.replaceChildren(h('h2', { class: 'h2' }, 'Séance terminée'), h('p', { class: 'big-score' }, `${ok}/${n}`),
@@ -2025,7 +2181,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
 
 
   /* ---------- Navegación ---------- */
-  const VIEWS = ['hoy', 'conjugar', 'tarjetas', 'irregulares', 'dictado', 'frases', 'tiempo', 'textos', 'transformar', 'hipotesis', 'trampas', 'pronoms', 'connecteurs', 'phrase', 'escribir', 'examen', 'progreso'];
+  const VIEWS = ['hoy', 'conjugar', 'tarjetas', 'irregulares', 'dictado', 'frases', 'tiempo', 'textos', 'transformar', 'hipotesis', 'trampas', 'pronoms', 'connecteurs', 'phrase', 'idees', 'vocabulaire', 'revision', 'escribir', 'examen', 'progreso'];
   const SEC = v => BANK3.groups.some(g => g.id === v) ? 'grammaire' : v;
   const SECS = [...new Set(VIEWS.map(SEC))];
   const inited = {};
@@ -2041,6 +2197,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
     if (push && location.hash !== '#' + v) history.replaceState(null, '', '#' + v);
     if (v === 'tarjetas') nextCard();
     else if (SEC(v) === 'grammaire') gOpenGroup(v);
+    else if (v === 'vocabulaire') voRender();
     else if (!inited[v]) { inited[v] = true; ({ hoy: () => {}, dictado: nextDict, textos: () => { renderTxList(); renderText(); }, transformar: nextTr, hipotesis: nextHip, escribir: newConsigna, conjugar: renderConj, irregulares: () => { renderIrrList(); renderIrr(); }, frases: nextFrase, tiempo: nextTiempo, trampas: nextTrampa, examen: () => {}, progreso: () => {} })[v](); }
     if (v === 'progreso') renderProg();
     if (v === 'hoy') renderHoy();
@@ -2048,6 +2205,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
     window.scrollTo({ top: 0 });
   }
   function refreshCurrent() { if (current === 'hoy') renderHoy(); if (current === 'progreso') renderProg(); if (current === 'tarjetas' && K.state === 'ask') kStats(); }
+  { let sec = null; document.querySelectorAll('.sidenav > *').forEach(el => { if (el.classList.contains('navsec')) sec = el.dataset.sec; else if (el.classList.contains('tab') && sec) el.dataset.sec = sec; }); }
   document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => go(b.dataset.view)));
   window.addEventListener('hashchange', () => go(location.hash.slice(1), false));
   go(location.hash.slice(1) || 'hoy', false);

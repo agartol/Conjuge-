@@ -7,7 +7,9 @@ const BANK3 = {
   groups: [
     { id: 'pronoms', name: 'Pronoms', intro: 'Choisis un thème : lis la fiche, puis entraîne-toi. Les exercices que tu rates reviennent plus souvent.' },
     { id: 'connecteurs', name: 'Connecteurs logiques', intro: 'Cause, conséquence, opposition, concession et temps : les mots qui relient les idées, indispensables pour la production écrite du DELF B1.' },
-    { id: 'phrase', name: 'La phrase', intro: 'Poser une question, dire non, la voix passive, comparer, les adverbes et la place des adjectifs.' }
+    { id: 'phrase', name: 'La phrase', intro: 'Poser une question, dire non, la voix passive, comparer, les adverbes et la place des adjectifs.' },
+    { id: 'idees', name: 'Exprimer une idée', intro: 'Conseiller, souhaiter, obliger ou interdire : des structures qu’on utilise tout le temps à l’oral et dans la production écrite.' },
+    { id: 'revision', name: 'Révision A1-A2', intro: 'Les bases à ne plus rater : articles, féminin et pluriel des noms et des adjectifs, nombres.' }
   ],
   topics: [
     /* ======================= PRONOMS ======================= */
@@ -568,6 +570,224 @@ const BANK3 = {
         { k: 't', i: 'Ajoute l’adjectif à la bonne place.', f: 'Ils ont acheté une maison. (grand)', a: ['Ils ont acheté une grande maison.'], w: 'Grand se place avant le nom ; accord au féminin.' },
         { k: 't', i: 'Ajoute les deux adjectifs à la bonne place.', f: 'J’ai vu un film. (beau, italien)', a: ['J’ai vu un beau film italien.'], w: 'Beau avant le nom, la nationalité après.' },
         { k: 't', i: 'Ajoute les deux adjectifs à la bonne place.', f: 'Elle porte une robe. (joli, bleu)', a: ['Elle porte une jolie robe bleue.'], w: 'Joli avant, la couleur après ; accord au féminin.' }
+      ]
+    }
+    ,
+    /* ======================= EXPRIMER UNE IDÉE ======================= */
+    {
+      id: 'conseil', g: 'idees', name: 'Donner un conseil',
+      tip: 'Tu devrais / tu pourrais / il faudrait + infinitif ; à ta place, si j’étais toi + conditionnel ; il vaut mieux, c’est préférable de, je te conseille de + infinitif ; l’impératif.',
+      fiche: [
+        ['Le conditionnel', 'devoir, pouvoir, falloir au conditionnel + infinitif : c’est le conseil le plus poli.', ['Tu devrais te reposer.', 'Tu pourrais demander de l’aide.', 'Il faudrait dormir davantage.']],
+        ['À ta place / si j’étais toi', '+ conditionnel.', ['À ta place, je prendrais le train.', 'Si j’étais toi, j’accepterais ce poste.']],
+        ['Expressions + infinitif', 'il vaut mieux, c’est préférable de, je te conseille de, je te recommande de.', ['Il vaut mieux partir tôt.', 'C’est préférable d’arriver à l’heure.', 'Je te conseille de réserver.']],
+        ['L’impératif', 'Plus direct.', ['Repose-toi cinq minutes !', 'Ne travaille pas trop tard.']]
+      ],
+      note: 'Dans une lettre ou à l’examen, préfère le conditionnel : c’est plus poli que l’impératif.',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Tu as l’air fatigué : tu ___ (devoir, conditionnel) te reposer.', a: ['devrais'], w: 'Devoir au conditionnel : tu devrais.' },
+        { k: 'g', s: 'À ta place, je ___ (prendre, conditionnel) le train, c’est plus rapide.', a: ['prendrais'], w: 'À ta place + conditionnel.' },
+        { k: 'g', s: 'Si j’étais toi, j’___ (accepter) ce poste.', a: ['accepterais'], w: 'Si j’étais toi + conditionnel.' },
+        { k: 'g', s: 'Il ___ (valoir, présent) mieux partir tôt pour éviter les bouchons.', a: ['vaut'], w: 'Il vaut mieux + infinitif.' },
+        { k: 'g', s: 'Je te conseille ___ réserver ta place à l’avance.', a: ['de'], w: 'Conseiller de + infinitif.' },
+        { k: 'g', s: 'Vous ___ (pouvoir, conditionnel) demander de l’aide à votre professeure.', a: ['pourriez'], w: 'Pouvoir au conditionnel : vous pourriez.' },
+        { k: 'g', s: 'Il ___ (falloir, conditionnel) que tu dormes un peu plus.', a: ['faudrait'], w: 'Falloir au conditionnel : il faudrait.' },
+        { k: 'q', s: 'Il vaut mieux ___ un pull : il fait froid ce soir.', o: ['prendre', 'que tu prends', 'prends'], c: 0, w: 'Il vaut mieux + infinitif.' },
+        { k: 'q', s: 'C’est préférable ___ arriver à l’heure à l’examen.', o: ['d’', 'que', 'à'], c: 0, w: 'C’est préférable de (d’) + infinitif.' },
+        { k: 'q', s: 'Quel conseil est le plus poli ?', o: ['Tu pourrais fermer la fenêtre ?', 'Ferme la fenêtre !', 'Tu fermes la fenêtre.'], c: 0, w: 'Le conditionnel est plus poli que l’impératif.' },
+        { k: 't', i: 'Donne le même conseil avec « tu devrais ».', f: 'Repose-toi un peu !', a: ['Tu devrais te reposer un peu.'], w: 'Tu devrais + infinitif ; le pronom se place devant l’infinitif.' },
+        { k: 't', i: 'Donne le même conseil avec « à ta place ».', f: 'Tu devrais aller chez le médecin.', a: ['À ta place, j’irais chez le médecin.'], w: 'À ta place + je + conditionnel (aller → j’irais).' },
+        { k: 't', i: 'Donne le même conseil avec « il vaut mieux ».', f: 'Tu ne devrais pas conduire la nuit.', a: ['Il vaut mieux ne pas conduire la nuit.'], w: 'Il vaut mieux + ne pas + infinitif.' }
+      ]
+    },
+    {
+      id: 'souhait', g: 'idees', name: 'Exprimer un souhait',
+      tip: 'Un seul sujet : j’aimerais / je voudrais / je souhaite + infinitif. Deux sujets : vouloir que, souhaiter que, aimer que + subjonctif. Espérer que + indicatif.',
+      fiche: [
+        ['Un seul sujet', 'aimer et vouloir au conditionnel, souhaiter, espérer + infinitif.', ['J’aimerais partir en vacances.', 'Je souhaite réussir mon examen.', 'J’espère venir demain.']],
+        ['Deux sujets', 'vouloir que, souhaiter que, aimer que + subjonctif.', ['Je voudrais que tu viennes.', 'Nous souhaitons que vous soyez heureux.']],
+        ['Espérer que', '+ indicatif (souvent au futur), jamais de subjonctif.', ['J’espère qu’il fera beau.']],
+        ['Si seulement', '+ imparfait (souhait difficile à réaliser).', ['Si seulement j’avais plus de temps !']]
+      ],
+      note: 'Même sujet → infinitif : on dit « Je veux partir », jamais « Je veux que je parte ».',
+      links: [],
+      ex: [
+        { k: 'g', s: 'J’___ (aimer, conditionnel) partir au Japon l’été prochain.', a: ['aimerais'], w: 'Aimer au conditionnel + infinitif.' },
+        { k: 'g', s: 'Je veux que tu ___ (venir) à ma fête samedi.', a: ['viennes'], w: 'Vouloir que + subjonctif : que tu viennes.' },
+        { k: 'g', s: 'Nous souhaitons que vous ___ (être) très heureux.', a: ['soyez'], w: 'Souhaiter que + subjonctif : que vous soyez.' },
+        { k: 'g', s: 'J’espère que tu ___ (aller, présent) mieux.', a: ['vas'], w: 'Espérer que + indicatif.' },
+        { k: 'g', s: 'Elle voudrait que nous ___ (faire) moins de bruit.', a: ['fassions'], w: 'Vouloir que + subjonctif : que nous fassions.' },
+        { k: 'g', s: 'Je ___ (vouloir, conditionnel) un café, s’il vous plaît.', a: ['voudrais'], w: 'Demande polie : je voudrais.' },
+        { k: 'q', s: 'Je souhaite ___ ce concours.', o: ['réussir', 'que je réussisse', 'que je réussis'], c: 0, w: 'Un seul sujet → infinitif.' },
+        { k: 'q', s: 'J’espère qu’il ___ beau demain.', o: ['fera', 'fasse', 'faire'], c: 0, w: 'Espérer que + indicatif (futur).' },
+        { k: 'q', s: 'Mes parents aimeraient que je ___ des études de médecine.', o: ['fasse', 'fais', 'faire'], c: 0, w: 'Deux sujets : aimer que + subjonctif.' },
+        { k: 'q', s: 'Si seulement j’___ plus de temps libre !', o: ['avais', 'ai', 'aurai'], c: 0, w: 'Si seulement + imparfait.' },
+        { k: 't', i: 'Exprime le souhait avec « je voudrais que ».', f: 'Tu m’aides.', a: ['Je voudrais que tu m’aides.'], w: 'Je voudrais que + subjonctif (aides = même forme qu’au présent).' },
+        { k: 't', i: 'Exprime le souhait avec « j’aimerais ».', f: 'Je veux apprendre le japonais.', a: ['J’aimerais apprendre le japonais.'], w: 'J’aimerais + infinitif.' }
+      ]
+    },
+    {
+      id: 'obligation', g: 'idees', name: 'Exprimer l’obligation et l’interdiction',
+      tip: 'Il faut + infinitif (en général) ; il faut que + subjonctif (une personne précise) ; devoir + infinitif ; être obligé de + infinitif. Interdiction : il est interdit de, il ne faut pas.',
+      fiche: [
+        ['Il faut + infinitif', 'Obligation générale.', ['Il faut boire beaucoup d’eau.']],
+        ['Il faut que + subjonctif', 'Obligation pour une personne précise.', ['Il faut que tu finisses ce travail.', 'Il faut que nous partions.']],
+        ['devoir, être obligé de', '+ infinitif.', ['Nous devons rendre la rédaction jeudi.', 'Je suis obligé de travailler samedi.']],
+        ['Il est nécessaire / indispensable', 'de + infinitif, ou que + subjonctif.', ['Il est indispensable d’avoir son passeport.', 'Il est nécessaire que vous soyez à l’heure.']],
+        ['L’interdiction', 'il est interdit de, il ne faut pas, défense de (panneaux), ne pas + infinitif.', ['Il est interdit de fumer.', 'Il ne faut pas toucher.']]
+      ],
+      note: '« Il ne faut pas » = c’est interdit. Pour dire que ce n’est pas obligatoire : « ce n’est pas la peine de », « tu n’es pas obligé de ».',
+      links: [['Il faut que + subjonctif (eoiestepona.org)', 'https://www.eoiestepona.org/html/juan/exercices/3FRANCES/subjonctif/ilfaut_subjonctif1.htm']],
+      ex: [
+        { k: 'g', s: 'Il faut que tu ___ (finir) ce travail avant ce soir.', a: ['finisses'], w: 'Il faut que + subjonctif : que tu finisses.' },
+        { k: 'g', s: 'Il faut que nous ___ (partir) tout de suite.', a: ['partions'], w: 'Subjonctif de partir : que nous partions.' },
+        { k: 'g', s: 'Il est indispensable que vous ___ (avoir) votre passeport.', a: ['ayez'], w: 'Subjonctif d’avoir : que vous ayez.' },
+        { k: 'g', s: 'Nous ___ (devoir, présent) rendre la rédaction jeudi.', a: ['devons'], w: 'Devoir + infinitif : nous devons.' },
+        { k: 'g', s: 'Je suis obligé ___ travailler samedi.', a: ['de'], w: 'Être obligé de + infinitif.' },
+        { k: 'g', s: 'Il ___ (falloir, présent) boire beaucoup d’eau quand il fait chaud.', a: ['faut'], w: 'Obligation générale : il faut + infinitif.' },
+        { k: 'q', s: 'En général, il faut ___ ses devoirs tous les jours.', o: ['faire', 'que fait', 'fais'], c: 0, w: 'Obligation générale → il faut + infinitif.' },
+        { k: 'q', s: 'Il faut que j’___ à la banque cet après-midi.', o: ['aille', 'vais', 'aller'], c: 0, w: 'Il faut que + subjonctif : que j’aille.' },
+        { k: 'q', s: 'Dans ce musée, il est interdit ___ photos.', o: ['de prendre des', 'prendre des', 'que prendre des'], c: 0, w: 'Il est interdit de + infinitif.' },
+        { k: 'q', s: '« Il ne faut pas fumer ici » veut dire :', o: ['c’est interdit de fumer ici', 'ce n’est pas nécessaire de fumer ici'], c: 0, w: 'Il ne faut pas = interdiction.' },
+        { k: 't', i: 'Exprime la même obligation avec « il faut que ».', f: 'Tu dois être patient.', a: ['Il faut que tu sois patient.'], w: 'Il faut que + subjonctif : que tu sois.' },
+        { k: 't', i: 'Exprime la même obligation avec « devoir ».', f: 'Il faut que nous prenions le métro.', a: ['Nous devons prendre le métro.'], w: 'Nous devons + infinitif.' }
+      ]
+    },
+
+    /* ======================= RÉVISION A1-A2 ======================= */
+    {
+      id: 'articles', g: 'revision', name: 'Les articles : définis, indéfinis, partitifs',
+      tip: 'le, la, l’, les : une chose connue ou en général (après aimer, adorer, détester). un, une, des : une chose qu’on peut compter. du, de la, de l’ : une quantité qu’on ne compte pas. Après une négation ou une quantité → de.',
+      fiche: [
+        ['Définis', 'le, la, l’, les : chose connue, unique ou générale ; après aimer, adorer, préférer, détester.', ['Le soleil brille.', 'J’adore le chocolat.']],
+        ['Indéfinis', 'un, une, des : une chose qu’on compte, pas encore identifiée.', ['Il y a une voiture devant la maison.']],
+        ['Partitifs', 'du, de la, de l’ (des) : une quantité qu’on ne compte pas.', ['Je mange du pain.', 'Tu veux de l’eau ?']],
+        ['de (d’)', 'Après une négation (sauf être) et après une quantité : beaucoup de, un peu de, un kilo de, assez de.', ['Je n’ai pas d’argent.', 'Un kilo de tomates.']],
+        ['Contractions', 'à + le = au, à + les = aux ; de + le = du, de + les = des.', ['Je vais au cinéma.', 'Je reviens du marché.']]
+      ],
+      note: '',
+      links: [],
+      ex: [
+        { k: 'g', s: 'J’adore ___ chocolat noir.', a: ['le'], w: 'Après adorer → article défini.' },
+        { k: 'g', s: 'Je mange ___ chocolat tous les jours.', a: ['du'], w: 'Une quantité non comptable → partitif du.' },
+        { k: 'g', s: 'Il y a ___ voiture rouge devant la maison.', a: ['une'], w: 'Une chose qu’on compte, non identifiée → une.' },
+        { k: 'g', s: 'Tu veux ___ eau ?', a: ['de l’'], w: 'Partitif devant une voyelle → de l’.' },
+        { k: 'g', s: 'Je n’ai pas ___ argent sur moi.', a: ['d’'], w: 'Après une négation → de (d’).' },
+        { k: 'g', s: 'Elle a acheté beaucoup ___ fruits au marché.', a: ['de'], w: 'Après une quantité → de.' },
+        { k: 'g', s: 'Ce soir, nous allons ___ cinéma.', a: ['au'], w: 'À + le → au.' },
+        { k: 'g', s: 'Je reviens ___ marché avec des légumes.', a: ['du'], w: 'De + le → du.' },
+        { k: 'q', s: 'Le matin, je bois ___ café.', o: ['du', 'le', 'un de'], c: 0, w: 'Une quantité non comptable → du.' },
+        { k: 'q', s: '___ soleil est une étoile.', o: ['Le', 'Un', 'Du'], c: 0, w: 'Une chose unique → le.' },
+        { k: 'q', s: 'Je voudrais un kilo ___ tomates.', o: ['de', 'des', 'du'], c: 0, w: 'Après une quantité → de.' },
+        { k: 'q', s: 'Ce n’est pas ___ bonne idée.', o: ['une', 'de', 'la'], c: 0, w: 'Avec être, l’article ne change pas après la négation.' }
+      ]
+    },
+    {
+      id: 'femnoms', g: 'revision', name: 'Le féminin des noms',
+      tip: 'En général + e (un ami → une amie). -er → -ère, -ien → -ienne, -on → -onne, -eur → -euse, -teur → -trice. Certains noms ne changent pas (un / une journaliste).',
+      fiche: [
+        ['+ e', '', ['un étudiant → une étudiante', 'un ami → une amie']],
+        ['Terminaisons', '-er → -ère ; -ien → -ienne ; -on → -onne ; -eur → -euse ; -teur → -trice.', ['un boulanger → une boulangère', 'un musicien → une musicienne', 'un vendeur → une vendeuse', 'un acteur → une actrice']],
+        ['Invariables', 'Les noms en -e et beaucoup de professions : seul l’article change.', ['un / une journaliste, un / une architecte, un / une élève']],
+        ['Mots différents', '', ['un homme → une femme, un père → une mère, un roi → une reine, un neveu → une nièce']]
+      ],
+      note: 'Aujourd’hui, on dit aussi une professeure, une ingénieure, une auteure (ou autrice).',
+      links: [],
+      ex: [
+        { k: 'g', s: 'un acteur → une ___', a: ['actrice'], w: '-teur → -trice.' },
+        { k: 'g', s: 'un boulanger → une ___', a: ['boulangère'], w: '-er → -ère.' },
+        { k: 'g', s: 'un musicien → une ___', a: ['musicienne'], w: '-ien → -ienne.' },
+        { k: 'g', s: 'un vendeur → une ___', a: ['vendeuse'], w: '-eur → -euse.' },
+        { k: 'g', s: 'un lion → une ___', a: ['lionne'], w: '-on → -onne.' },
+        { k: 'g', s: 'un journaliste → une ___', a: ['journaliste'], w: 'Nom en -e : il ne change pas.' },
+        { k: 'g', s: 'un directeur → une ___', a: ['directrice'], w: '-teur → -trice.' },
+        { k: 'g', s: 'un infirmier → une ___', a: ['infirmière'], w: '-ier → -ière.' },
+        { k: 'g', s: 'un coiffeur → une ___', a: ['coiffeuse'], w: '-eur → -euse.' },
+        { k: 'g', s: 'un roi → une ___', a: ['reine'], w: 'Mot différent.' },
+        { k: 'q', s: 'Ma sœur est ___.', o: ['architecte', 'architectesse', 'architecteuse'], c: 0, w: 'Architecte est invariable.' },
+        { k: 'q', s: 'Édith Piaf était une grande ___.', o: ['chanteuse', 'chanteure', 'chantrice'], c: 0, w: 'Chanteur → chanteuse.' }
+      ]
+    },
+    {
+      id: 'femadj', g: 'revision', name: 'Le féminin des adjectifs',
+      tip: 'En général + e. -e ne change pas. -eux → -euse, -if → -ive, -er → -ère, -el → -elle, -en → -enne, -on → -onne, -et → -ette. Irréguliers : belle, nouvelle, vieille, blanche, longue, douce, gentille.',
+      fiche: [
+        ['Règle générale', '+ e ; les adjectifs en -e ne changent pas.', ['grand → grande', 'rouge → rouge']],
+        ['Terminaisons', '-eux → -euse ; -if → -ive ; -er → -ère ; -el → -elle ; -en → -enne ; -on → -onne ; -et → -ette.', ['heureux → heureuse', 'sportif → sportive', 'cher → chère', 'italien → italienne']],
+        ['Irréguliers', '', ['beau → belle ; nouveau → nouvelle ; vieux → vieille', 'blanc → blanche ; long → longue ; doux → douce ; gentil → gentille ; frais → fraîche']]
+      ],
+      note: '',
+      links: [],
+      ex: [
+        { k: 'g', s: 'Il est sportif, elle est ___.', a: ['sportive'], w: '-if → -ive.' },
+        { k: 'g', s: 'Il est heureux, elle est ___.', a: ['heureuse'], w: '-eux → -euse.' },
+        { k: 'g', s: 'un pull blanc, une chemise ___', a: ['blanche'], w: 'Irrégulier : blanc → blanche.' },
+        { k: 'g', s: 'un vieux livre, une ___ maison', a: ['vieille'], w: 'Irrégulier : vieux → vieille.' },
+        { k: 'g', s: 'un exercice difficile, une question ___', a: ['difficile'], w: 'Adjectif en -e : il ne change pas.' },
+        { k: 'g', s: 'un garçon gentil, une fille ___', a: ['gentille'], w: 'Gentil → gentille.' },
+        { k: 'g', s: 'un repas cher, une voiture ___', a: ['chère'], w: '-er → -ère.' },
+        { k: 'g', s: 'un manteau long, une robe ___', a: ['longue'], w: 'Irrégulier : long → longue.' },
+        { k: 'g', s: 'un ami italien, une amie ___', a: ['italienne'], w: '-en → -enne.' },
+        { k: 'g', s: 'un beau jardin, une ___ fleur', a: ['belle'], w: 'Irrégulier : beau → belle.' },
+        { k: 'q', s: 'Elle porte une chemise ___.', o: ['neuve', 'neufe', 'neuf'], c: 0, w: '-f → -ve : neuf → neuve.' },
+        { k: 'q', s: 'C’est une femme très ___.', o: ['créative', 'créatife', 'créatif'], c: 0, w: '-if → -ive.' }
+      ]
+    },
+    {
+      id: 'pluriel', g: 'revision', name: 'Le pluriel des noms et des adjectifs',
+      tip: 'En général + s. -s, -x, -z ne changent pas. -eau, -au, -eu → + x. -al → -aux. Exceptions : bleus, pneus, festivals, travaux, bijoux… et œil → yeux.',
+      fiche: [
+        ['Règle générale', '+ s ; -s, -x, -z ne changent pas.', ['un livre → des livres', 'un prix → des prix']],
+        ['-eau, -au, -eu → + x', 'Sauf pneu, bleu → pneus, bleus.', ['un gâteau → des gâteaux', 'un jeu → des jeux']],
+        ['-al → -aux', 'Sauf bal, festival, carnaval, banal, final → -als.', ['un journal → des journaux', 'national → nationaux']],
+        ['-ou, -ail', '-ou → -ous, sauf bijou, caillou, chou, genou, hibou, joujou, pou → -oux. -ail → -ails, sauf travail → travaux.', ['un trou → des trous ; un bijou → des bijoux']],
+        ['Irréguliers', '', ['un œil → des yeux ; monsieur → messieurs ; madame → mesdames']]
+      ],
+      note: 'Devant un adjectif pluriel placé avant le nom, des devient de (registre soigné) : de beaux livres.',
+      links: [],
+      ex: [
+        { k: 'g', s: 'un gâteau → des ___', a: ['gâteaux'], w: '-eau → -eaux.' },
+        { k: 'g', s: 'un journal → des ___', a: ['journaux'], w: '-al → -aux.' },
+        { k: 'g', s: 'un bijou → des ___', a: ['bijoux'], w: 'Exception en -ou → -oux.' },
+        { k: 'g', s: 'un festival → des ___', a: ['festivals'], w: 'Exception en -al → -als.' },
+        { k: 'g', s: 'un œil → des ___', a: ['yeux'], w: 'Pluriel irrégulier.' },
+        { k: 'g', s: 'un travail → des ___', a: ['travaux'], w: 'Exception en -ail → -aux.' },
+        { k: 'g', s: 'un prix → des ___', a: ['prix'], w: 'Les noms en -x ne changent pas.' },
+        { k: 'g', s: 'un jeu → des ___', a: ['jeux'], w: '-eu → -eux.' },
+        { k: 'g', s: 'un trou → des ___', a: ['trous'], w: '-ou → -ous (règle générale).' },
+        { k: 'g', s: 'un pneu → des ___', a: ['pneus'], w: 'Exception en -eu → -eus.' },
+        { k: 'g', s: 'un problème national → des problèmes ___', a: ['nationaux'], w: 'Adjectif en -al → -aux.' },
+        { k: 'q', s: 'J’ai vu des ___ dans le champ.', o: ['chevaux', 'chevals', 'chevaus'], c: 0, w: 'Cheval → chevaux.' },
+        { k: 'q', s: 'Elle a les yeux ___.', o: ['bleus', 'bleux', 'bleu'], c: 0, w: 'Exception : bleu → bleus.' }
+      ]
+    },
+    {
+      id: 'nombres', g: 'revision', name: 'Les nombres',
+      tip: '70 = soixante-dix, 80 = quatre-vingts, 90 = quatre-vingt-dix. Et dans 21, 31… 71 (vingt et un, soixante et onze). Vingt et cent prennent un -s quand ils sont multipliés et à la fin du nombre. Mille ne prend jamais de -s.',
+      fiche: [
+        ['70 à 99', '', ['70 soixante-dix, 71 soixante et onze, 77 soixante-dix-sept', '80 quatre-vingts, 81 quatre-vingt-un, 90 quatre-vingt-dix, 99 quatre-vingt-dix-neuf']],
+        ['et', 'Dans 21, 31, 41, 51, 61 et 71 (pas dans 81 ni 91).', ['vingt et un, soixante et onze, quatre-vingt-un']],
+        ['Cent, vingt, mille', 'quatre-vingts, deux cents (avec -s), mais quatre-vingt-trois, deux cent un (sans -s). Mille est invariable.', ['300 trois cents, 450 quatre cent cinquante, 2000 deux mille']],
+        ['Traits d’union', 'Depuis la réforme de 1990, on peut mettre des traits d’union partout : deux-cent-trois. Les deux écritures sont acceptées.', []],
+        ['Ordinaux', '+ -ième ; 1er = premier / première.', ['deuxième, cinquième, neuvième, vingt et unième']]
+      ],
+      note: 'En Belgique et en Suisse, on dit septante (70) et nonante (90) ; en Suisse, parfois huitante (80).',
+      links: [],
+      ex: [
+        { k: 'g', s: '71 → ___', a: ['soixante et onze', 'soixante-et-onze'], w: 'Soixante et onze (avec et).' },
+        { k: 'g', s: '80 → ___', a: ['quatre-vingts'], w: 'Quatre-vingts prend un -s à la fin du nombre.' },
+        { k: 'g', s: '85 → ___', a: ['quatre-vingt-cinq'], w: 'Pas de -s à vingt quand un autre nombre suit.' },
+        { k: 'g', s: '92 → ___', a: ['quatre-vingt-douze'], w: '80 + 12.' },
+        { k: 'g', s: '21 → ___', a: ['vingt et un', 'vingt-et-un'], w: 'Vingt et un (avec et).' },
+        { k: 'g', s: '300 → ___', a: ['trois cents', 'trois-cents'], w: 'Cent multiplié, à la fin du nombre → cents.' },
+        { k: 'g', s: '450 → ___', a: ['quatre cent cinquante', 'quatre-cent-cinquante'], w: 'Cent suivi d’un autre nombre → pas de -s.' },
+        { k: 'g', s: '1966 → ___', a: ['mille neuf cent soixante-six', 'mille-neuf-cent-soixante-six', 'dix-neuf cent soixante-six'], w: 'Mille neuf cent soixante-six (mille ne prend jamais de -s).' },
+        { k: 'g', s: '2026 → ___', a: ['deux mille vingt-six', 'deux-mille-vingt-six'], w: 'Mille est invariable : deux mille.' },
+        { k: 'g', s: 'le 9e étage → le ___ étage', a: ['neuvième'], w: 'Neuf → neuvième (f → v).' },
+        { k: 'g', s: 'la 5e rue → la ___ rue', a: ['cinquième'], w: 'Cinq → cinquième (on ajoute u).' },
+        { k: 'q', s: 'Mon grand-père a ___ ans.', o: ['quatre-vingts', 'quatre-vingt', 'quatre-vingts-un'], c: 0, w: 'À la fin du nombre, quatre-vingts prend un -s.' },
+        { k: 'q', s: 'Ce vélo coûte ___ euros.', o: ['deux mille', 'deux milles', 'deux mils'], c: 0, w: 'Mille est invariable.' }
       ]
     }
   ]

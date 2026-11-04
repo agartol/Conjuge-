@@ -29,5 +29,5 @@ Décrire une personne · les professions · le bénévolat · les droits des fem
 Projet: podcast avec l'IA sur les 60 ans de l'ETSA (fin novembre).
 
 ## Estado en la web (4/11/2026)
-- Hecho: todos los tiempos verbales, incluidos passé récent y présent continu; Grammaire → Pronoms (relatifs, mise en relief, COD/COI, EN/Y, toniques, ON, démonstratifs, possessifs), Connecteurs (cause, conséquence, opposition, concession, marqueurs temporels) y La phrase (interrogation, négation, voix passive, comparatif/superlatif, adverbes en -ment y su lugar, place des adjectifs).
-- Pendiente: Exprimer une idée (conseil, souhait, obligation); Révision A1-A2 (articles, possessifs/démonstratifs adjetivos, féminin y pluriel de noms y adjetivos, chiffres); Vocabulaire con traducción; Programme por fechas.
+- Hecho: todos los tiempos verbales (incluidos passé récent y présent continu); Grammaire → Pronoms, Connecteurs, La phrase, Exprimer une idée (conseil, souhait, obligation); Révision A1-A2 (articles, féminin des noms, féminin des adjectifs, pluriel, nombres); Vocabulaire (10 temas, 177 palabras con traducción).
+- Pendiente: Programme por fechas (el usuario pidió dejarlo para más adelante). Cuando la profesora publique clases nuevas, añadir sus temas aquí y en bank3.js / lexique.js.
