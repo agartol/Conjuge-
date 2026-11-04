@@ -30,7 +30,7 @@ Projet: podcast avec l'IA sur les 60 ans de l'ETSA (fin novembre).
 
 ## Estado en la web (4/11/2026)
 - Verbos: todos los tiempos (incluidos passé récent y présent continu).
-- Grammaire: Pronoms (10 temas, con doubles pronoms y relatifs composés), Connecteurs (7, con but y chronologie), La phrase (7, con accord du participe passé; négation con ne… que; passive ampliada), Exprimer une idée (4, con subjonctif ou indicatif).
+- Grammaire (1200 ejercicios, mínimo 30 por tema): Pronoms (10 temas, con doubles pronoms y relatifs composés), Connecteurs (7, con but y chronologie), La phrase (7, con accord du participe passé; négation con ne… que; passive ampliada), Exprimer une idée (4, con subjonctif ou indicatif).
 - B1 pendiente (propuesto al usuario): discours indirect (ficha), nominalisation, indéfinis certains / quelques-uns / chacun, « Et si… ? », argumenter / donner son opinion, lettre et courriel formel / informel.
 - Révision A1-A2 (12 temas), revisada con el inventario DELF A1/A2 (digischool) y el de la Maison des Langues de Ginebra: articles, féminin des noms y des adjectifs, pluriel, nombres, c’est / il est / il y a, prépositions de lieu, heure-date-fréquence, quantité et intensité, indéfinis (tout, chaque…), verbes + prépositions, exclamation.
 - Vocabulaire: 19 temas, 344 palabras con traducción y un texto con huecos por tema.

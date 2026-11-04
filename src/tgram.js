@@ -12,7 +12,9 @@ const { chromium } = require('playwright'); const B3 = require('./bank3.js');
       await page.click(`.g-topic:has-text("${t.name.slice(0, 25).replace(/"/g, '\\"')}")`);
       for (let k = 0; k < t.ex.length; k++) {
         const txt = await page.textContent('#g-card');
-        const it = t.ex.find(x => x.k === 't' ? (txt.includes(x.i) && txt.includes(x.f)) : x.s.split('___').map(p => p.trim()).filter(Boolean).every(p => txt.includes(p)));
+        const kind = (await page.$('#g-card .opt')) ? 'q' : (await page.$('#g-card .g-blank')) ? 'g' : 't';
+        const cands = t.ex.filter(x => x.k === kind && (x.k === 't' ? (txt.includes(x.i) && txt.includes(x.f)) : x.s.split('___').map(p => p.trim()).filter(Boolean).every(p => txt.includes(p))));
+        const it = cands.sort((a, b) => (b.s || b.f).length - (a.s || a.f).length)[0];
         if (!it) { console.log('NOT FOUND', t.id, txt.slice(0, 80)); fails++; await page.click('#g-skip'); continue; }
         n++;
         if (it.k === 'q') await page.click(`#g-card .opt[data-i="${it.c}"]`);
