@@ -9,7 +9,7 @@
 <title>Conjugue !</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Young+Serif&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Mountains+of+Christmas:wght@700&family=Young+Serif&display=swap">
 <style>
 /* Layout: menú lateral fijo + columna de trabajo; cada ejercicio es una tarjeta con una franja suave del color de su tiempo */
 :root {
@@ -442,11 +442,83 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   .pop { animation: pop .18s ease-out; }
   @keyframes pop { from { transform: scale(.98); opacity: .6; } to { transform: none; opacity: 1; } }
 }
+/* ===================== Thème de Noël =====================
+   html.noel-jour : 7 h – 21 h, « Sapin et houx » (clair) ; html.noel-nuit : 21 h – 7 h, « Nuit enneigée » (sombre).
+   La classe et data-theme sont posés par le script noël (début du body). De la neige tombe dans les deux. */
+:root.noel-jour {
+  --paper: #F6EFE3; --panel: #FFFCF6; --ink: #2B1D14; --muted: #6E5F52; --line: #E8DCCB;
+  --accent: #B0232A; --accent-ink: #FFFFFF; --accent-soft: #F7E1DD;
+  --shadow-btn: 0 6px 16px -8px rgba(176, 35, 42, .7);
+  --pine: #1E4A33; --gold: #E9C46A; --flocon: rgba(110, 145, 195, .75);
+}
+:root.noel-nuit {
+  --paper: #0D1A2D; --panel: #14243C; --ink: #EAF2FF; --muted: #A3B4CF; --line: #23395C;
+  --accent: #F4D27A; --accent-ink: #14243C; --accent-soft: #1E3354;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 14px 34px -18px rgba(0, 0, 0, .8);
+  --shadow-btn: 0 6px 18px -8px rgba(244, 210, 122, .6);
+  --flocon: rgba(255, 255, 255, .85);
+}
+/* Jour : menu vert sapin, titres dorés, guirlande */
+.noel-jour .sidenav { background: var(--pine); border-right: 0; }
+.noel-jour .sidenav [data-sec] { --sec: var(--gold); }
+.noel-jour .sidenav .tab { color: #F4EBDD; }
+.noel-jour .sidenav .tab:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+.noel-jour .sidenav .tab[aria-selected="true"] { background: rgba(233, 196, 106, .18); color: var(--gold); }
+.noel-jour .navsec { color: var(--gold); background: rgba(233, 196, 106, .1); border-left-color: var(--gold); }
+.noel-jour .brand h1 { font-family: "Mountains of Christmas", var(--f-display); font-weight: 700; font-size: 36px; color: #FFF6E6; }
+.noel-jour .brand h1 em { color: #FF6B6B; }
+.noel-jour .brand h1::after { content: ''; display: inline-block; width: 28px; height: 28px; margin-left: 6px; vertical-align: -4px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 22c-6-1-12 2-15 7 2-5 0-9-3-11 6 0 11-2 14-6-1 4 1 8 4 10z' fill='%234CAF6A'/%3E%3Cpath d='M20 22c6-1 12 2 15 7-2-5 0-9 3-11-6 0-11-2-14-6 1 4-1 8-4 10z' fill='%2337934F'/%3E%3Ccircle cx='17' cy='21' r='3.6' fill='%23E0313A'/%3E%3Ccircle cx='23' cy='20' r='3.6' fill='%23C8232C'/%3E%3Ccircle cx='20' cy='25' r='3.6' fill='%23F0424A'/%3E%3C/svg%3E") center / contain no-repeat; }
+.noel-jour main::before { content: ''; height: 34px; margin: -26px -28px -6px; background:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='34'%3E%3Cpath d='M0 6 Q30 22 60 6 T120 6' fill='none' stroke='%231E4A33' stroke-width='2'/%3E%3Cg%3E%3Crect x='13' y='12' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='15.5' cy='22' rx='5' ry='7' fill='%23E0313A'/%3E%3Crect x='43' y='16' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='45.5' cy='26' rx='5' ry='7' fill='%23F2B632'/%3E%3Crect x='73' y='12' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='75.5' cy='22' rx='5' ry='7' fill='%232E9E5B'/%3E%3Crect x='103' y='8' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='105.5' cy='18' rx='5' ry='7' fill='%233A7BD5'/%3E%3C/g%3E%3C/svg%3E") repeat-x left top; }
+.noel-jour .card { border-color: #E8D8C2; }
+/* Nuit : ciel bleu nuit, étoile dorée, collines enneigées */
+.noel-nuit body { background: radial-gradient(ellipse at 70% -10%, #23406B 0, transparent 55%) fixed, var(--paper); }
+.noel-nuit .sidenav { background: linear-gradient(180deg, #102038, #0D1A2D); }
+.noel-nuit .sidenav [data-sec] { --sec: #9CCBFF; }
+.noel-nuit .brand h1 { color: #FFFFFF; }
+.noel-nuit .brand h1 em { color: #F4D27A; }
+.noel-nuit .brand h1::before { content: '✦'; color: #F4D27A; margin-right: 8px; font-size: 22px; vertical-align: 4px; text-shadow: 0 0 10px rgba(244, 210, 122, .8); }
+.noel-nuit .sidenav::after { content: ''; margin-top: auto; min-height: 70px; flex-shrink: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 236 70'%3E%3Cpath d='M0 40 Q60 10 120 38 T236 30 V70 H0Z' fill='%23E8F1FF' opacity='.9'/%3E%3Cpath d='M150 34 l8 -22 l8 22z' fill='%231E5B3E'/%3E%3Cpath d='M30 44 l7 -18 l7 18z' fill='%23276B49'/%3E%3C/svg%3E") bottom / 100% auto no-repeat; }
+/* Ordinateur : la bande du menu suit la couleur du menu */
+@media (min-width: 901px) {
+  .noel-jour .app { background: linear-gradient(to right, var(--pine) 236px, transparent 236px); }
+  .noel-nuit .app { background: linear-gradient(to right, #0F1E34 235px, var(--line) 235px, var(--line) 236px, transparent 236px); }
+}
+@media (max-width: 900px) {
+  .noel-jour main::before { margin: -26px -16px -6px; }
+  .noel-nuit .sidenav::after { display: none; }
+}
+/* Neige (derrière les cartes) */
+.noel-jour body::after, .noel-nuit body::after { content: ''; position: fixed; inset: -220px 0 0; pointer-events: none; z-index: -1;
+  background-image:
+    radial-gradient(2.5px 2.5px at 20px 30px, var(--flocon) 50%, transparent 51%), radial-gradient(2px 2px at 90px 120px, var(--flocon) 50%, transparent 51%),
+    radial-gradient(3px 3px at 160px 60px, var(--flocon) 50%, transparent 51%), radial-gradient(1.6px 1.6px at 210px 170px, var(--flocon) 50%, transparent 51%),
+    radial-gradient(2.2px 2.2px at 60px 190px, var(--flocon) 50%, transparent 51%), radial-gradient(1.8px 1.8px at 130px 10px, var(--flocon) 50%, transparent 51%);
+  background-size: 240px 220px; animation: neige 18s linear infinite; }
+@keyframes neige { to { transform: translateY(220px); } }
+@media (prefers-reduced-motion: reduce) { .noel-jour body::after, .noel-nuit body::after { animation: none; } }
 </style>
 </head>
 <body>
 
 
+<script>
+/* Thème de Noël (du 1er novembre au 6 janvier) : clair de 7 h à 21 h, sombre de 21 h à 7 h. */
+(function () {
+  const root = document.documentElement;
+  function noel() {
+    const d = new Date(), m = d.getMonth(), j = d.getDate(), h = d.getHours();
+    const saison = m === 10 || m === 11 || (m === 0 && j <= 6);
+    root.classList.remove('noel-jour', 'noel-nuit');
+    if (!saison) { root.removeAttribute('data-theme'); return; }
+    const nuit = h >= 21 || h < 7;
+    root.classList.add(nuit ? 'noel-nuit' : 'noel-jour');
+    root.setAttribute('data-theme', nuit ? 'dark' : 'light');
+  }
+  noel(); setInterval(noel, 60000);
+})();
+</script>
 <div class="app">
 <nav class="sidenav" aria-label="Exercices">
   <div class="brand"><h1>Conjugue <em>!</em></h1></div>
