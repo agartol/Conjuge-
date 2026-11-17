@@ -468,8 +468,18 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 .noel-jour .brand h1 em { color: #FF6B6B; }
 .noel-jour .brand h1::after { content: ''; display: inline-block; width: 28px; height: 28px; margin-left: 6px; vertical-align: -4px;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 22c-6-1-12 2-15 7 2-5 0-9-3-11 6 0 11-2 14-6-1 4 1 8 4 10z' fill='%234CAF6A'/%3E%3Cpath d='M20 22c6-1 12 2 15 7-2-5 0-9 3-11-6 0-11-2-14-6 1 4-1 8-4 10z' fill='%2337934F'/%3E%3Ccircle cx='17' cy='21' r='3.6' fill='%23E0313A'/%3E%3Ccircle cx='23' cy='20' r='3.6' fill='%23C8232C'/%3E%3Ccircle cx='20' cy='25' r='3.6' fill='%23F0424A'/%3E%3C/svg%3E") center / contain no-repeat; }
-.noel-jour main::before { content: ''; height: 34px; margin: -26px -28px -6px; background:
+.noel-jour main::before, .noel-nuit main::before { content: ''; height: 34px; margin: -26px -28px -6px; background:
   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='34'%3E%3Cpath d='M0 6 Q30 22 60 6 T120 6' fill='none' stroke='%231E4A33' stroke-width='2'/%3E%3Cg%3E%3Crect x='13' y='12' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='15.5' cy='22' rx='5' ry='7' fill='%23E0313A'/%3E%3Crect x='43' y='16' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='45.5' cy='26' rx='5' ry='7' fill='%23F2B632'/%3E%3Crect x='73' y='12' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='75.5' cy='22' rx='5' ry='7' fill='%232E9E5B'/%3E%3Crect x='103' y='8' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='105.5' cy='18' rx='5' ry='7' fill='%233A7BD5'/%3E%3C/g%3E%3C/svg%3E") repeat-x left top; }
+/* La guirlande reste en haut de l’écran quand on fait défiler la page, pour qu’on la voie clignoter */
+.noel-jour main::before, .noel-nuit main::before { position: sticky; top: 0; z-index: 4; pointer-events: none; }
+@media (max-width: 900px) { .noel-jour main::before, .noel-nuit main::before { top: 55px; } }
+/* Guirlande : clignote quand on répond correctement (une ampoule sur deux, en alternance) */
+.guirlande-on main::before { animation: guirlande .36s steps(1, end) 7; }
+@keyframes guirlande {
+  0% { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='34'%3E%3Cpath d='M0 6 Q30 22 60 6 T120 6' fill='none' stroke='%231E4A33' stroke-width='2'/%3E%3Ccircle cx='15.5' cy='22' r='11' fill='%23E0313A' opacity='.35'/%3E%3Crect x='13' y='12' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='15.5' cy='22' rx='5' ry='7' fill='%23E0313A'/%3E%3Crect x='43' y='16' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='45.5' cy='26' rx='5' ry='7' fill='%237D6020'/%3E%3Ccircle cx='75.5' cy='22' r='11' fill='%232E9E5B' opacity='.35'/%3E%3Crect x='73' y='12' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='75.5' cy='22' rx='5' ry='7' fill='%232E9E5B'/%3E%3Crect x='103' y='8' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='105.5' cy='18' rx='5' ry='7' fill='%2324477A'/%3E%3C/svg%3E"); filter: brightness(1.25) saturate(1.4) drop-shadow(0 0 5px rgba(255, 214, 102, .9)); }
+  50% { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='34'%3E%3Cpath d='M0 6 Q30 22 60 6 T120 6' fill='none' stroke='%231E4A33' stroke-width='2'/%3E%3Crect x='13' y='12' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='15.5' cy='22' rx='5' ry='7' fill='%237A1F24'/%3E%3Ccircle cx='45.5' cy='26' r='11' fill='%23F2B632' opacity='.35'/%3E%3Crect x='43' y='16' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='45.5' cy='26' rx='5' ry='7' fill='%23F2B632'/%3E%3Crect x='73' y='12' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='75.5' cy='22' rx='5' ry='7' fill='%231D5A37'/%3E%3Ccircle cx='105.5' cy='18' r='11' fill='%233A7BD5' opacity='.35'/%3E%3Crect x='103' y='8' width='5' height='4' fill='%23555'/%3E%3Cellipse cx='105.5' cy='18' rx='5' ry='7' fill='%233A7BD5'/%3E%3C/svg%3E"); filter: brightness(1.25) saturate(1.4) drop-shadow(0 0 5px rgba(255, 214, 102, .9)); }
+}
+@media (prefers-reduced-motion: reduce) { .guirlande-on main::before { animation: none; } }
 .noel-jour .card { border-color: #E8D8C2; }
 /* Nuit : ciel bleu nuit, étoile dorée, collines enneigées */
 .noel-nuit body { background: radial-gradient(ellipse at 70% -10%, #23406B 0, transparent 55%) fixed, var(--paper); }
@@ -485,7 +495,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   .noel-nuit .app { background: linear-gradient(to right, #0F1E34 235px, var(--line) 235px, var(--line) 236px, transparent 236px); }
 }
 @media (max-width: 900px) {
-  .noel-jour main::before { margin: -26px -16px -6px; }
+  .noel-jour main::before, .noel-nuit main::before { margin: -26px -16px -6px; }
   .noel-nuit .sidenav::after { display: none; }
 }
 /* Neige : vrais flocons à six branches (blancs bordés de bleu clair le jour, blancs la nuit), derrière les cartes.
@@ -520,20 +530,39 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 @keyframes galop { from { transform: rotate(-20deg); } to { transform: rotate(20deg); } }
 @media (max-width: 900px) { .santa { width: 250px; } }
 @media (prefers-reduced-motion: reduce) { .santa { display: none; } }
-/* Bonhomme de neige grognon : sort du coin quand toutes les réponses du conjugueur sont fausses (thème de Noël). */
-.bonhomme { position: fixed; right: 24px; bottom: 0; width: 150px; z-index: 60; pointer-events: none; animation: bh-monte 4.4s ease-in-out forwards; }
-.bonhomme svg { display: block; width: 100%; height: auto; overflow: visible; }
-.bonhomme .tete { transform-box: fill-box; transform-origin: 50% 100%; animation: bh-non .45s ease-in-out .8s 4 alternate; }
-.bonhomme .bras-g, .bonhomme .bras-d { transform-box: fill-box; animation: bh-bras .3s ease-in-out .8s 6 alternate; }
-.bonhomme .bras-g { transform-origin: 100% 100%; } .bonhomme .bras-d { transform-origin: 0 100%; }
-.bonhomme .bulle { position: absolute; right: 128px; top: 4px; background: var(--panel); color: var(--ink); border: 2px solid var(--line); border-radius: 14px; padding: 6px 14px; font-family: var(--f-display); font-size: 20px; white-space: nowrap; box-shadow: var(--shadow); opacity: 0; animation: bh-bulle 4.4s forwards; }
-.bonhomme .bulle::after { content: ''; position: absolute; right: -9px; top: 16px; border: 8px solid transparent; border-left-color: var(--line); border-right: 0; }
+/* Personnages grognons : quand toutes les réponses du conjugueur sont fausses, l’un d’eux sort du coin (à tour de rôle, thème de Noël) :
+   bonhomme de neige, bonhomme en pain d’épices, Père Noël qui lance du charbon, lutin boudeur. */
+.grognon { position: fixed; right: 24px; bottom: 0; width: 150px; z-index: 60; pointer-events: none; animation: bh-monte 4.4s ease-in-out forwards; }
+.grognon svg { display: block; width: 100%; height: auto; overflow: visible; }
+.grognon .tete { transform-box: fill-box; transform-origin: 50% 100%; animation: bh-non .45s ease-in-out .8s 4 alternate; }
+.grognon .bras-g, .grognon .bras-d { transform-box: fill-box; animation: bh-bras .3s ease-in-out .8s 6 alternate; }
+.grognon .bras-g { transform-origin: 100% 100%; } .grognon .bras-d { transform-origin: 0 100%; }
+.grognon .saute { animation: bh-saute .26s ease-in-out .8s 10 alternate; }
+.grognon .pied { transform-box: fill-box; transform-origin: 0 100%; animation: bh-pied .22s ease-in-out .8s 12 alternate; }
+.grognon .lance { transform-box: view-box; transform-origin: 128px 132px; animation: bh-lance 4.4s ease-in-out forwards; }
+.grognon .charbon-main { animation: bh-main 4.4s steps(1, end) forwards; }
+.grognon .bulle { position: absolute; right: 128px; top: 4px; background: var(--panel); color: var(--ink); border: 2px solid var(--line); border-radius: 14px; padding: 6px 14px; font-family: var(--f-display); font-size: 20px; white-space: nowrap; box-shadow: var(--shadow); opacity: 0; animation: bh-bulle 4.4s forwards; }
+.grognon .bulle::after { content: ''; position: absolute; right: -9px; top: 16px; border: 8px solid transparent; border-left-color: var(--line); border-right: 0; }
+.charbon { position: fixed; right: 40px; bottom: 150px; width: 40px; z-index: 61; pointer-events: none; opacity: 0; animation: charbon 4.4s ease-in forwards; }
+.charbon svg { display: block; width: 100%; height: auto; }
 @keyframes bh-monte { 0% { transform: translateY(105%); } 16%, 82% { transform: translateY(0); } 100% { transform: translateY(105%); } }
 @keyframes bh-non { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
 @keyframes bh-bras { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+@keyframes bh-saute { from { transform: translateY(0); } to { transform: translateY(-9px); } }
+@keyframes bh-pied { from { transform: rotate(0); } to { transform: rotate(-16deg); } }
+@keyframes bh-lance { 0%, 18% { transform: rotate(0); } 25% { transform: rotate(28deg); } 30% { transform: rotate(-55deg); } 40%, 100% { transform: rotate(-20deg); } }
+@keyframes bh-main { 0% { opacity: 1; } 29% { opacity: 0; } }
+@keyframes charbon {
+  0%, 28% { opacity: 0; transform: translate(0, 0) scale(1) rotate(0); }
+  29% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0); }
+  52% { opacity: 1; transform: translate(calc(80px - 50vw), calc(170px - 50vh)) scale(4) rotate(540deg); }
+  60% { opacity: 1; transform: translate(calc(80px - 50vw), calc(170px - 50vh)) scale(4.4) rotate(560deg); }
+  80% { opacity: 0; transform: translate(calc(80px - 50vw), calc(40vh)) scale(3) rotate(620deg); }
+  100% { opacity: 0; }
+}
 @keyframes bh-bulle { 0%, 18% { opacity: 0; } 24%, 78% { opacity: 1; } 84%, 100% { opacity: 0; } }
-@media (max-width: 900px) { .bonhomme { width: 110px; right: 12px; } .bonhomme .bulle { right: 92px; font-size: 17px; } }
-@media (prefers-reduced-motion: reduce) { .bonhomme { display: none; } }
+@media (max-width: 900px) { .grognon { width: 110px; right: 12px; } .grognon .bulle { right: 92px; font-size: 17px; } .charbon { right: 20px; bottom: 110px; } }
+@media (prefers-reduced-motion: reduce) { .grognon, .charbon { display: none; } }
 </style>
 </head>
 <body>
@@ -3494,18 +3523,43 @@ BANK3.topics.forEach(t => t.ex.forEach((x, i) => { x.id = t.id + '-' + (i + 1); 
     d.innerHTML = SANTA_SVG; document.body.append(d);
     d.addEventListener('animationend', e => { if (e.target === d) { d.remove(); santaOn = false; } });
   }
-  // Bonhomme de neige grognon : apparaît quand toutes les réponses du conjugueur sont fausses (pendant le thème de Noël).
-  let bonhommeOn = false;
-  function bonhomme() {
+  // Personnages grognons (à tour de rôle) : apparaissent quand toutes les réponses du conjugueur sont fausses (pendant le thème de Noël).
+  const GROGNONS = [
+    { bulle: 'Grrr… tout est faux !', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -4 160 194"><g stroke="#B9CBE0" stroke-width="2"><circle cx="80" cy="150" r="38" fill="#FFFFFF"/><circle cx="80" cy="96" r="28" fill="#FFFFFF"/></g><g fill="#3a3a3a"><circle cx="80" cy="88" r="2.6"/><circle cx="80" cy="100" r="2.6"/><circle cx="80" cy="138" r="3"/><circle cx="80" cy="152" r="3"/></g><g stroke="#6D4321" stroke-width="3.5" stroke-linecap="round" fill="none"><path class="bras-g" d="M54 94 L26 76 M34 81 L28 70 M34 81 L22 84"/><path class="bras-d" d="M106 94 L134 76 M126 81 L132 70 M126 81 L138 84"/></g><g class="tete"><circle cx="80" cy="50" r="23" fill="#FFFFFF" stroke="#B9CBE0" stroke-width="2"/><path d="M62 66 Q80 76 98 66 L98 74 Q80 84 62 74Z" fill="#C62828"/><path d="M90 72 l6 20 l8 -2 l-6 -18z" fill="#2E7D32"/><path d="M90 74 l2 7 M93 83 l2 6" stroke="#C62828" stroke-width="2"/><rect x="58" y="20" width="44" height="6" rx="2" fill="#1d1d1d"/><rect x="64" y="0" width="32" height="22" rx="3" fill="#1d1d1d"/><rect x="64" y="14" width="32" height="5" fill="#B71C1C"/><path d="M66 39 L77 44 M94 39 L83 44" stroke="#1d1d1d" stroke-width="3" stroke-linecap="round"/><circle cx="72" cy="47" r="2.8" fill="#1d1d1d"/><circle cx="88" cy="47" r="2.8" fill="#1d1d1d"/><path d="M80 51 L98 55 L80 56Z" fill="#F57C00"/><g fill="#1d1d1d"><circle cx="70" cy="64" r="1.7"/><circle cx="75" cy="61" r="1.7"/><circle cx="80" cy="60" r="1.7"/><circle cx="85" cy="61" r="1.7"/><circle cx="90" cy="64" r="1.7"/></g></g></svg>` },
+    { bulle: 'Tout faux ? J’en suis tout émietté !', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -4 160 194"><g class="saute"><g stroke="#B0642E" stroke-linecap="round" fill="none"><path d="M60 84 Q32 92 44 118" stroke-width="20"/><path d="M100 84 Q128 92 116 118" stroke-width="20"/><path d="M68 130 L58 174" stroke-width="22"/><path d="M92 130 L102 174" stroke-width="22"/></g><rect x="52" y="64" rx="24" fill="#B0642E"/><circle cx="80" cy="40" r="30" fill="#B0642E"/><g stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M35 112 l4 5 l4 -5 l4 5 l4 -5"/><path d="M109 112 l4 5 l4 -5 l4 5 l4 -5"/><path d="M47 166 l4 5 l4 -5 l4 5 l4 -5"/><path d="M93 166 l4 5 l4 -5 l4 5 l4 -5"/><path d="M62 27 L76 34"/><path d="M98 27 L84 34"/><path d="M68 58 Q80 47 92 58"/></g><circle cx="70" cy="41" r="3.6" fill="#2B1A10"/><circle cx="90" cy="41" r="3.6" fill="#2B1A10"/><circle cx="80" cy="84" r="5" fill="#E53935"/><circle cx="80" cy="102" r="5" fill="#2E7D32"/><circle cx="80" cy="120" r="5" fill="#E53935"/><g stroke="#E53935" stroke-width="3" stroke-linecap="round"><path d="M110 8 l4 7 M122 10 l-6 6 M120 22 l-7 -3"/></g></g></svg>` },
+    { bulle: 'Tout faux ? Du charbon pour toi !', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -4 170 194"><path d="M28 192 Q28 122 85 116 Q142 122 142 192Z" fill="#D32F2F"/><rect x="80" y="117" fill="#FFFFFF"/><rect x="28" y="158" fill="#3E2723"/><rect x="74" y="155" rx="2" fill="none" stroke="#F2C94C" stroke-width="3.5"/><path d="M40 132 Q20 150 34 168" stroke="#D32F2F" stroke-width="20" stroke-linecap="round" fill="none"/><circle cx="34" cy="170" r="10" fill="#2B2B2B"/><g class="lance"><path d="M128 132 Q152 114 150 84" stroke="#D32F2F" stroke-width="20" stroke-linecap="round" fill="none"/><path d="M140 96 l20 0" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/><circle cx="150" cy="80" r="10" fill="#2B2B2B"/><path class="charbon-main" d="M142 66 L147 58 L157 57 L163 63 L163 71 L156 76 L146 75 L141 71Z" fill="#1E1E1E"/></g><circle cx="85" cy="72" r="24" fill="#F4C7A1"/><path d="M60 74 Q60 118 85 120 Q110 118 110 74 Q100 88 85 86 Q70 88 60 74Z" fill="#FFFFFF"/><path d="M68 88 Q77 81 85 88 Q93 81 102 88 Q93 93 85 90 Q77 93 68 88Z" fill="#FFFFFF" stroke="#E3E3E3" stroke-width="1"/><path d="M78 101 Q85 96 92 101" stroke="#8B2E2E" stroke-width="2.6" stroke-linecap="round" fill="none"/><circle cx="85" cy="79" r="5" fill="#E99A8A"/><circle cx="76" cy="69" r="3" fill="#1D1D1D"/><circle cx="94" cy="69" r="3" fill="#1D1D1D"/><path d="M68 61 L80 66 M102 61 L90 66" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round"/><path d="M60 56 Q64 22 92 20 Q118 22 130 48 L114 54 Q102 38 88 40 Q72 42 60 56Z" fill="#D32F2F"/><rect x="56" y="48" rx="5.5" fill="#FFFFFF"/><circle cx="131" cy="50" r="7.5" fill="#FFFFFF"/></svg>`, charbon: true },
+    { bulle: 'Tout faux… le lutin boude !', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -4 160 194"><g class="pied"><rect x="85" y="148" fill="#FFFFFF"/><rect x="85" y="154" fill="#C62828"/><rect x="85" y="164" fill="#C62828"/><path d="M84 176 H100 Q112 176 114 168 Q116 176 108 184 H84Z" fill="#6D4321"/></g><rect x="64" y="148" fill="#FFFFFF"/><rect x="64" y="154" fill="#C62828"/><rect x="64" y="164" fill="#C62828"/><path d="M76 176 H60 Q48 176 46 168 Q44 176 52 184 H76Z" fill="#6D4321"/><path d="M50 152 L58 98 Q80 90 102 98 L110 152Z" fill="#C62828"/><path d="M56 98 L64 110 L72 98 L80 110 L88 98 L96 110 L104 98 Q80 88 56 98Z" fill="#2E7D32"/><rect x="52" y="134" fill="#3E2723"/><rect x="74" y="132" rx="2" fill="none" stroke="#F2C94C" stroke-width="3"/><rect x="46" y="112" rx="8" fill="#B71C1C"/><rect x="50" y="118" fill="#9A1616"/><circle cx="49" cy="120" r="7" fill="#F6CBA4"/><circle cx="111" cy="120" r="7" fill="#F6CBA4"/><g class="tete"><path d="M58 62 L38 50 L58 74Z" fill="#F6CBA4"/><path d="M102 62 L122 50 L102 74Z" fill="#F6CBA4"/><circle cx="80" cy="66" r="24" fill="#F6CBA4"/><circle cx="66" cy="75" r="4.5" fill="#F28B82" opacity=".7"/><circle cx="94" cy="75" r="4.5" fill="#F28B82" opacity=".7"/><circle cx="72" cy="66" r="3" fill="#1D1D1D"/><circle cx="88" cy="66" r="3" fill="#1D1D1D"/><path d="M63 55 L76 61 M97 55 L84 61" stroke="#5D4037" stroke-width="3.6" stroke-linecap="round"/><path d="M72 83 Q80 77 88 83" stroke="#7B3F2B" stroke-width="2.6" stroke-linecap="round" fill="none"/><path d="M56 50 Q60 18 82 12 Q108 6 132 28 L124 36 Q108 24 96 30 Q102 38 104 50Z" fill="#2E7D32"/><rect x="54" y="45" rx="4.5" fill="#F2C94C"/><circle cx="130" cy="32" r="6" fill="#F2C94C"/></g></svg>` },
+  ];
+  const CHARBON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 34"><path d="M6 14 L12 4 L26 2 L36 10 L38 22 L28 32 L12 31 L3 24Z" fill="#1E1E1E"/><path d="M12 8 L20 6 L16 14Z" fill="#555"/><path d="M28 12 L33 16 L27 20Z" fill="#444"/><path d="M10 22 L16 20 L14 27Z" fill="#3a3a3a"/></svg>`;
+  let grognonOn = false, grognonI = Math.floor(rnd() * GROGNONS.length);
+  function grognon() {
     const r = document.documentElement;
-    if (bonhommeOn || !(r.classList.contains('noel-jour') || r.classList.contains('noel-nuit'))) return;
+    if (grognonOn || !(r.classList.contains('noel-jour') || r.classList.contains('noel-nuit'))) return;
     try { if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (e) {}
-    bonhommeOn = true;
-    const d = h('div', { class: 'bonhomme', 'aria-hidden': 'true' }, h('span', { class: 'bulle' }, 'Grrr… tout est faux !'));
-    d.insertAdjacentHTML('beforeend', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -4 160 194"><g stroke="#B9CBE0" stroke-width="2"><circle cx="80" cy="150" r="38" fill="#FFFFFF"/><circle cx="80" cy="96" r="28" fill="#FFFFFF"/></g><g fill="#3a3a3a"><circle cx="80" cy="88" r="2.6"/><circle cx="80" cy="100" r="2.6"/><circle cx="80" cy="138" r="3"/><circle cx="80" cy="152" r="3"/></g><g stroke="#6D4321" stroke-width="3.5" stroke-linecap="round" fill="none"><path class="bras-g" d="M54 94 L26 76 M34 81 L28 70 M34 81 L22 84"/><path class="bras-d" d="M106 94 L134 76 M126 81 L132 70 M126 81 L138 84"/></g><g class="tete"><circle cx="80" cy="50" r="23" fill="#FFFFFF" stroke="#B9CBE0" stroke-width="2"/><path d="M62 66 Q80 76 98 66 L98 74 Q80 84 62 74Z" fill="#C62828"/><path d="M90 72 l6 20 l8 -2 l-6 -18z" fill="#2E7D32"/><path d="M90 74 l2 7 M93 83 l2 6" stroke="#C62828" stroke-width="2"/><rect x="58" y="20" width="44" height="6" rx="2" fill="#1d1d1d"/><rect x="64" y="0" width="32" height="22" rx="3" fill="#1d1d1d"/><rect x="64" y="14" width="32" height="5" fill="#B71C1C"/><path d="M66 39 L77 44 M94 39 L83 44" stroke="#1d1d1d" stroke-width="3" stroke-linecap="round"/><circle cx="72" cy="47" r="2.8" fill="#1d1d1d"/><circle cx="88" cy="47" r="2.8" fill="#1d1d1d"/><path d="M80 51 L98 55 L80 56Z" fill="#F57C00"/><g fill="#1d1d1d"><circle cx="70" cy="64" r="1.7"/><circle cx="75" cy="61" r="1.7"/><circle cx="80" cy="60" r="1.7"/><circle cx="85" cy="61" r="1.7"/><circle cx="90" cy="64" r="1.7"/></g></g></svg>`);
-    document.body.append(d);
-    d.addEventListener('animationend', e => { if (e.target === d) { d.remove(); bonhommeOn = false; } });
+    try { const k = localStorage.getItem('conj-grognon'); if (k != null) grognonI = (+k + 1) % GROGNONS.length; localStorage.setItem('conj-grognon', grognonI); } catch (e) {}
+    const g = GROGNONS[grognonI % GROGNONS.length]; grognonOn = true;
+    const d = h('div', { class: 'grognon', 'aria-hidden': 'true' }, h('span', { class: 'bulle' }, g.bulle));
+    d.insertAdjacentHTML('beforeend', g.svg); document.body.append(d);
+    let c = null; if (g.charbon) { c = h('div', { class: 'charbon', 'aria-hidden': 'true' }); c.innerHTML = CHARBON_SVG; document.body.append(c); }
+    d.addEventListener('animationend', e => { if (e.target === d) { d.remove(); c && c.remove(); grognonOn = false; } });
+    if (!localStorageOk()) grognonI++;
   }
+  function localStorageOk() { try { localStorage.setItem('conj-t', '1'); localStorage.removeItem('conj-t'); return true; } catch (e) { return false; } }
+  // Guirlande : clignote à chaque réponse correcte (pendant le thème de Noël).
+  let guirlandeT = null;
+  function guirlande() {
+    const r = document.documentElement;
+    if (!(r.classList.contains('noel-jour') || r.classList.contains('noel-nuit'))) return;
+    r.classList.remove('guirlande-on'); void r.offsetWidth; r.classList.add('guirlande-on');
+    clearTimeout(guirlandeT); guirlandeT = setTimeout(() => r.classList.remove('guirlande-on'), 2600);
+  }
+  const OK_SEL = '.feedback.ok, .score.good';
+  new MutationObserver(ms => {
+    for (const m of ms) {
+      if (m.type === 'attributes' ? m.target.matches && m.target.matches(OK_SEL) && !(m.oldValue || '').match(/\b(ok|good)\b/)
+          : [...m.addedNodes].some(n => n.nodeType === 1 && (n.matches(OK_SEL) || n.querySelector(OK_SEL)))) { guirlande(); return; }
+    }
+  }).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'], attributeOldValue: true });
   const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
   /* ---------- Corrección ---------- */
@@ -3693,7 +3747,7 @@ BANK3.topics.forEach(t => t.ex.forEach((x, i) => { x.id = t.id + '-' + (i + 1); 
     });
     C.checked = true;
     const sc = $('#c-score'); sc.textContent = ok === n ? `${ok} / ${n} ! Tout est juste` : scoreParts(ok, minorN, n - ok - minorN); sc.className = 'score' + (ok === n ? ' good' : '');
-    touch(); if (ok === n) santa(); else if (bad === n) bonhomme();
+    touch(); if (ok === n) santa(); else if (bad === n) grognon();
   }
   function showConj() {
     $('#c-grid').querySelectorAll('.prow').forEach(row => {
