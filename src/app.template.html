@@ -940,7 +940,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 
   /* ---------- Progreso (cuenta → db; navegador como respaldo) ---------- */
   const LS = 'atelier-conj-v1';
-  const blank = () => ({ v: 1, updated: 0, forms: {}, uso: {}, trap: { ok: 0, n: 0 }, tr: { ok: 0, n: 0 }, hip: { ok: 0, n: 0 }, dict: { ok: 0, n: 0 }, wr: { n: 0 }, srs: {}, seen: {}, days: {}, err: {}, errEx: {}, conf: {}, text: {}, gen: [], exam: '', goal: 40, gram: {}, gseen: {}, voc: {}, vseen: {} });
+  const blank = () => ({ v: 1, updated: 0, forms: {}, uso: {}, trap: { ok: 0, n: 0 }, tr: { ok: 0, n: 0 }, hip: { ok: 0, n: 0 }, dict: { ok: 0, n: 0 }, wr: { n: 0 }, srs: {}, seen: {}, days: {}, err: {}, errEx: {}, conf: {}, text: {}, gen: [], exam: '', goal: 40, gram: {}, gseen: {}, voc: {}, vseen: {}, ds: {} });
   let P = blank();
   try { const raw = localStorage.getItem(LS); if (raw) P = Object.assign(blank(), JSON.parse(raw)); } catch (e) {}
   const fixP = () => { const b = blank(); for (const k of Object.keys(b)) if (P[k] == null) P[k] = b[k]; };
@@ -2215,35 +2215,69 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   }
 
   // Sesión guiada
-  function weakTenses() { return E.TENSES.map(t => ({ id: t.id, s: P.forms[t.id] })).sort((a, b) => (a.s && a.s.n ? a.s.ok / a.s.n : 0.5) - (b.s && b.s.n ? b.s.ok / b.s.n : 0.5)).map(x => x.id); }
+  // Séance du jour : des exercices nouveaux chaque jour ; ceux ratés lors d’une séance précédente reviennent jusqu’à ce qu’ils soient réussis.
+  const dnum = () => { const d = new Date(); return Math.floor((d - d.getTimezoneOffset() * 60000) / 864e5); };
+  const hsh = str => { let x = 5381; for (let i = 0; i < str.length; i++) x = ((x * 33) ^ str.charCodeAt(i)) >>> 0; return x.toString(36); };
+  function qKey(q) {
+    switch (q.type) {
+      case 'form': return 'c:' + key(q.v, q.t, q.p);
+      case 'frase': return 'f:' + hsh(q.it.s);
+      case 'tr': return 't:' + hsh(q.it.from);
+      case 'hip': return 'h:' + q.it.id;
+      case 'gram': return 'g:' + q.it.id;
+      case 'voc': return 'v:' + q.it.k;
+      default: return 'p:' + hsh(q.it.s);
+    }
+  }
+  function sres(q, ok, extra) { P.ds[qKey(q)] = [dnum(), ok ? 1 : 0]; S.res.push(Object.assign({ q, ok }, extra)); touch(); }
+  // Ordre : 1) ratés en séance (au plus maxFail), 2) jamais vus en séance (d’abord ceux jamais vus nulle part), 3) les plus anciens.
+  function freshPick(pool, mk, n, opt = {}) {
+    const st = it => P.ds[qKey(mk(it))], failed = [], rest = [];
+    for (const it of shuffle(pool)) { const s = st(it); (s && !s[1] ? failed : rest).push(it); }
+    const age = it => { const s = st(it); return s ? 1 + s[0] / 1e5 : opt.seen && opt.seen(it) ? 0.5 : 0; };
+    const fresh = rest.filter(it => !opt.prefer || opt.prefer(it)).sort((a, b) => age(a) - age(b));
+    return failed.sort((a, b) => st(a)[0] - st(b)[0]).slice(0, opt.maxFail == null ? n : opt.maxFail).concat(fresh).slice(0, n);
+  }
+  function weakTenses() {
+    const day = todayKey(), rate = x => x.s && x.s.n ? x.s.ok / x.s.n : 0.5, tie = id => parseInt(hsh(day + id), 36) / 4294967296 * 0.2;
+    return E.TENSES.map(t => ({ id: t.id, s: P.forms[t.id] })).sort((a, b) => (rate(a) + tie(a.id)) - (rate(b) + tie(b.id))).map(x => x.id);
+  }
+  const failedForms = () => Object.entries(P.srs).filter(([k, s]) => s[0] === 0).sort((a, b) => a[1][1] - b[1][1]).map(([k]) => k.split('|')).filter(([v, t]) => E.V[v] && T[t] && E.available(v, t));
   function sessionPlanText() {
     const w = weakTenses().slice(0, 2).map(id => T[id].name).join(' et ');
-    const due = Object.values(P.srs).filter(s => s[1] <= Date.now()).length;
-    return `15 exercices (environ 10 minutes) : ${due ? Math.min(due, 4) + ' cartes à réviser' : '4 cartes'}, 2 phrases centrées sur ${w}, 3 exercices de grammaire, 2 mots de vocabulaire, 2 transformations, 1 hypothèse avec si et 1 piège. Correction immédiate.`;
+    const nf = Math.min(failedForms().length, 2);
+    return `15 exercices nouveaux chaque jour (environ 10 minutes) : 4 cartes${nf ? ` (dont ${nf} ratée${nf > 1 ? 's' : ''} à revoir)` : ''}, 2 phrases centrées sur ${w}, 3 exercices de grammaire, 2 mots de vocabulaire, 2 transformations, 1 hypothèse avec si et 1 piège. Ce que tu rates revient à la séance suivante. Correction immédiate.`;
   }
   const S = { qs: [], i: 0, state: 'ask', res: [] };
   function buildSession() {
-    const now = Date.now(), w = weakTenses(), qs = [];
-    const due = Object.entries(P.srs).filter(([k, s]) => s[1] <= now).sort((a, b) => a[1][0] - b[1][0]).map(([k]) => k.split('|')).filter(([v, t]) => E.V[v] && T[t] && E.available(v, t));
+    const w = weakTenses(), qs = [], today = dnum();
+    for (const k of Object.keys(P.ds)) if (P.ds[k][1] && today - P.ds[k][0] > 180) delete P.ds[k];
+    // Cartes : au plus 2 ratées, puis des formes jamais vues (ni en séance ni dans Cartes)
     const seen = new Set();
-    for (const [v, t, p] of due) { if (qs.length >= 4) break; const k = v + t + p; if (!seen.has(k)) { seen.add(k); qs.push({ type: 'form', v, t, p: +p, g: rg(v, t) }); } }
-    while (qs.length < 4) { const t = pick(w.slice(0, 4)), v = pick(E.VERBS); if (!E.available(v, t)) continue; const p = pick(E.personsFor(t)); qs.push({ type: 'form', v, t, p, g: rg(v, t) }); }
-    const fr = shuffle(B.frases.filter(f => w.slice(0, 3).includes(f.t))).slice(0, 2); fr.forEach(it => qs.push({ type: 'frase', it, t: it.t }));
-    voPickOrder(LEX.themes.flatMap(t => t.words.map(w => ({ fr: w[0], es: w[1], g: w[2] || '', th: t.id, k: t.id + '|' + w[0] })))).slice(0, 2).forEach((it, i) => qs.push({ type: 'voc', it, mode: i ? 'write' : 'choose' }));
-    shuffle(B2.transform).slice(0, 2).forEach(it => qs.push({ type: 'tr', it }));
-    shuffle(B2.hipotesis.filter(x => x.k < 3)).slice(0, 1).forEach(it => qs.push({ type: 'hip', it }));
+    for (const [v, t, p] of failedForms()) { if (qs.length >= 2) break; const k = key(v, t, p); if (!seen.has(k)) { seen.add(k); qs.push({ type: 'form', v, t, p: +p, g: rg(v, t) }); } }
+    for (let tries = 0; qs.length < 4 && tries < 400; tries++) {
+      const t = pick(w.slice(0, 5)), v = pick(E.VERBS); if (!E.available(v, t)) continue; const p = pick(E.personsFor(t)), k = key(v, t, p);
+      if (seen.has(k) || (tries < 300 && (P.srs[k] || P.ds['c:' + k]))) continue;
+      seen.add(k); qs.push({ type: 'form', v, t, p, g: rg(v, t) });
+    }
+    const wt = w.slice(0, 3);
+    freshPick(B.frases, it => ({ type: 'frase', it }), 2, { maxFail: 1, prefer: f => wt.includes(f.t) }).forEach(it => qs.push({ type: 'frase', it, t: it.t }));
+    freshPick(LEX.themes.flatMap(t => t.words.map(x => ({ fr: x[0], es: x[1], g: x[2] || '', th: t.id, k: t.id + '|' + x[0] }))), it => ({ type: 'voc', it }), 2, { maxFail: 1, seen: it => P.vseen[it.k] })
+      .forEach((it, i) => qs.push({ type: 'voc', it, mode: i ? 'write' : 'choose' }));
+    freshPick(B2.transform, it => ({ type: 'tr', it }), 2, { maxFail: 1 }).forEach(it => qs.push({ type: 'tr', it }));
+    freshPick(B2.hipotesis, it => ({ type: 'hip', it }), 1).forEach(it => qs.push({ type: 'hip', it }));
     gramPicks(3).forEach(it => qs.push({ type: 'gram', it }));
-    qs.push({ type: 'trampa', it: pick(B.trampas) });
+    freshPick(B.trampas, it => ({ type: 'trampa', it }), 1).forEach(it => qs.push({ type: 'trampa', it }));
     // intercalar: formas repartidas
     const forms = qs.filter(q => q.type === 'form'), rest = shuffle(qs.filter(q => q.type !== 'form')), out = [];
     while (forms.length || rest.length) { if (forms.length) out.push(forms.shift()); if (rest.length) out.push(rest.shift()); }
     return out;
   }
-  // Ejercicios de gramática para la sesión: primero los fallados, luego los no vistos; temas distintos.
+  // Ejercicios de gramática para la sesión: primero (como mucho uno) los fallados en una sesión, luego los nunca vistos; temas distintos.
   function gramPicks(n) {
-    const sc = x => { const s = P.gseen[x.id]; return !s ? 1 : s[0] < s[1] ? 0 : 2 + s[0] / (s[1] + 1); };
-    const all = shuffle(BANK3.topics.flatMap(t => t.ex)).sort((a, b) => sc(a) - sc(b)), out = [], used = new Set();
-    for (const x of all) { if (out.length >= n) break; if (used.has(x.topic)) continue; used.add(x.topic); out.push(x); }
+    const all = freshPick(BANK3.topics.flatMap(t => t.ex), it => ({ type: 'gram', it }), 1e9, { seen: x => P.gseen[x.id] });
+    const failed = all.filter(x => { const s = P.ds['g:' + x.id]; return s && !s[1]; }).slice(0, 1), out = [...failed], used = new Set(failed.map(x => x.topic));
+    for (const x of all) { if (out.length >= n) break; if (out.includes(x) || used.has(x.topic)) continue; const s = P.ds['g:' + x.id]; if (s && !s[1]) continue; used.add(x.topic); out.push(x); }
     return out;
   }
   function sessionQ() {
@@ -2295,17 +2329,17 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
     } else if (q.type === 'voc') {
       if (q.mode === 'choose' && choice == null) return;
       const r = q.mode === 'choose' ? voCheckPick(card, q.it, choice) : voCheckWrite(card, q.it); if (!r) return;
-      voRec(q.it, r.ok, r.you); S.res.push({ q, ok: r.ok }); card.append(r.fb); $('#h-next').hidden = false;
+      voRec(q.it, r.ok, r.you); sres(q, r.ok); card.append(r.fb); $('#h-next').hidden = false;
       S.state = 'shown'; $('#h-next').textContent = S.i === S.qs.length - 1 ? 'Voir le résultat' : 'Suivant'; $('#h-next').focus({ preventScroll: true }); return;
     } else if (q.type === 'gram') {
       if (q.it.k === 'q' && choice == null) return;
       const r = q.it.k === 'q' ? gPick(card, q.it, choice) : gCheck(card, q.it); if (!r) return;
-      recG(q.it, r.ok, r.you); S.res.push({ q, ok: r.ok }); card.append(r.fb); $('#h-next').hidden = false;
+      recG(q.it, r.ok, r.you); sres(q, r.ok); card.append(r.fb); $('#h-next').hidden = false;
       S.state = 'shown'; $('#h-next').textContent = S.i === S.qs.length - 1 ? 'Voir le résultat' : 'Suivant'; $('#h-next').focus({ preventScroll: true }); return;
     } else if (q.type === 'tr') {
       const inp = $('#h-in'), r = gradeSentence(inp.value, q.it.a); if (r.level === 'empty') return inp.focus();
       ok = r.level === 'ok'; bump(P, 'tr', ok); logSentence(r); inp.className = 'ans wide ' + (ok ? 'ok' : r.level === 'minor' ? 'acc' : 'bad'); inp.readOnly = true;
-      touch(); S.res.push({ q, ok, minor: r.level === 'minor' });
+      sres(q, ok, { minor: r.level === 'minor' });
       card.append(gradeView(r, [ok ? null : h('p', { class: 'answer' }, 'Réponse : ', h('b', {}, r.right)), h('span', { class: 'why' }, q.it.w)]));
       S.state = 'shown'; $('#h-next').textContent = S.i === S.qs.length - 1 ? 'Voir le résultat' : 'Suivant'; $('#h-next').focus({ preventScroll: true }); return;
     } else if (q.type === 'hip') {
@@ -2319,7 +2353,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
       fb = [h('b', {}, ok ? 'Correct.' : 'Attention, c’est un piège.'), h('span', { class: 'why' }, q.it.w)];
       $('#h-next').hidden = false;
     }
-    touch(); S.res.push({ q, ok });
+    sres(q, ok);
     card.append(h('div', { class: 'feedback ' + (ok ? 'ok' : 'bad'), role: 'status' }, fb));
     S.state = 'shown'; $('#h-next').textContent = S.i === S.qs.length - 1 ? 'Voir le résultat' : 'Suivant'; $('#h-next').focus({ preventScroll: true });
   }

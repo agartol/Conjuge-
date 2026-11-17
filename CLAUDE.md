@@ -29,12 +29,14 @@ Se publica con GitHub Pages desde la rama `main`: https://agartol.github.io/Conj
    - `node tgrade.js` — pruebas del corrector de frases.
    - `node tgram.js` — responde bien a todos los ejercicios de gramática y comprueba que se aceptan.
    - `node tvoc.js` — prueba cada palabra del vocabulario (escribir y elegir) y los textos con huecos.
+   - `node tsess.js` — sesión diaria: simula tres días y comprueba que los ejercicios son nuevos cada día y que los fallados vuelven a la sesión siguiente.
    - `node tall.js` — recorre todas las vistas e interactúa con ellas en tres anchos y en modo oscuro; informa de errores de JavaScript.
 4. Commit y push a `main`: GitHub Pages publica en 1–2 minutos.
 
 ## Notas
 - Menú lateral: cada apartado tiene su color (`data-sec` en `.navsec`: verbes, grammaire, vocabulaire, revision, ecrit, eval).
 - Fuera de Claude no existe `window.claude`: el progreso se guarda en `localStorage` (clave `atelier-conj-v1`) y las funciones con Claude (Écrire, Corriger une rédaction, frases nuevas) se desactivan solas.
+- Sesión diaria (Aujourd’hui): ejercicios nuevos cada día; lo fallado en una sesión vuelve en la siguiente hasta acertarlo (como mucho la mitad de cada tipo, para que siempre haya algo nuevo). El historial se guarda en `P.ds` (`clave → [día, acierto]`).
 - Corrección: los espacios no cuentan; mayúsculas, acentos y punto final sí (errores leves). Error de tiempo, forma o sujeto = error grave.
 - Verbos pronominales: hay que escribir el pronombre reflexivo. En tiempos compuestos con être se pide un género concreto (etiqueta m. / f.; « vous » = plural).
 
