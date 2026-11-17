@@ -527,8 +527,12 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     const nuit = h >= 21 || h < 7;
     root.classList.add(nuit ? 'noel-nuit' : 'noel-jour');
     root.setAttribute('data-theme', nuit ? 'dark' : 'light');
+    // Carte de vœux : « Joyeux Noël ! » ; seulement le 31 décembre et le 1er janvier, « Bonne année ! »
+    const v = document.querySelector('.noel-voeux h2');
+    if (v) v.textContent = (m === 11 && j === 31) || (m === 0 && j === 1) ? `Bonne année ${m === 11 ? d.getFullYear() + 1 : d.getFullYear()} !` : 'Joyeux Noël !';
   }
   noel(); setInterval(noel, 60000);
+  document.addEventListener('DOMContentLoaded', noel);
 })();
 </script>
 <div class="app">
@@ -715,7 +719,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   <section class="view" id="v-hoy" hidden>
     <div class="noel-voeux" role="note">
       <span class="nv-ging" aria-hidden="true"></span>
-      <h2>Joyeux Noël et bonne année !</h2>
+      <h2>Joyeux Noël !</h2>
       <span class="nv-cane" aria-hidden="true"></span>
     </div>
     <div class="hoy-top">
