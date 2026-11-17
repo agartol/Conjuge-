@@ -501,6 +501,18 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
 .noel-voeux h2 { margin: 0; font-family: "Great Vibes", var(--f-display); font-weight: 400; font-size: 48px; line-height: 1.2; color: var(--accent); }
 @media (max-width: 560px) { .noel-voeux .nv-cane { display: none; } .noel-voeux h2 { font-size: 34px; } .noel-jour .noel-voeux, .noel-nuit .noel-voeux { gap: 12px; padding: 12px 14px; } .noel-voeux .nv-ging { width: 48px; height: 56px; } }
 @media (prefers-reduced-motion: reduce) { .noel-jour body::after, .noel-nuit body::after, .noel-jour .app::after, .noel-nuit .app::after { animation: none; } }
+/* Père Noël : traverse le fond quand un exercice complet est réussi (seulement pendant le thème de Noël).
+   Il passe derrière les cartes, à une hauteur où l’écran est libre ; s’il n’y en a pas, il passe devant, en haut. */
+.santa { position: fixed; left: 0; width: 300px; z-index: -1; pointer-events: none; animation: santa-x 7s linear forwards; }
+.santa.devant { z-index: 60; }
+.santa svg { display: block; width: 100%; height: auto; overflow: visible; animation: santa-y 1.75s ease-in-out infinite alternate; }
+.santa .lg { transform-box: fill-box; transform-origin: 50% 0; animation: galop .32s ease-in-out infinite alternate; }
+.santa .lg.b { animation-direction: alternate-reverse; }
+@keyframes santa-x { from { transform: translateX(-320px); } to { transform: translateX(calc(100vw + 20px)); } }
+@keyframes santa-y { from { transform: translateY(8px) rotate(-2deg); } to { transform: translateY(-10px) rotate(-5deg); } }
+@keyframes galop { from { transform: rotate(-20deg); } to { transform: rotate(20deg); } }
+@media (max-width: 900px) { .santa { width: 220px; } }
+@media (prefers-reduced-motion: reduce) { .santa { display: none; } }
 </style>
 
 <script>
@@ -895,6 +907,25 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
   const chip = id => h('span', { class: 'chip tense', style: tvars(id) }, T[id].name);
   const rnd = () => { try { const u = new Uint32Array(1); crypto.getRandomValues(u); return u[0] / 4294967296; } catch (e) { return Math.random(); } };
   const pick = a => a[Math.floor(rnd() * a.length)];
+  // Père Noël en traîneau : passe quand un exercice complet est entièrement juste (pendant le thème de Noël).
+  const SANTA_SVG = (() => {
+    const rn = `<path d="M-24 2 Q-26 -12 -12 -12 L10 -12 Q22 -12 22 0 Q20 8 10 9 L-14 9 Q-24 9 -24 2Z" fill="#8B5A2B"/><path d="M-27 -4 l-6 -2 l2 5z" fill="#6D4321"/><g stroke="#6D4321" stroke-width="3.2" stroke-linecap="round" fill="none"><path class="lg a" d="M-17 7 l-7 13"/><path class="lg b" d="M-11 7 l-2 14"/><path class="lg b" d="M8 7 l9 12"/><path class="lg a" d="M14 6 l3 14"/></g><path d="M14 -9 Q20 -18 24 -26 L32 -24 Q30 -16 22 -6Z" fill="#8B5A2B"/><ellipse cx="31" cy="-26" rx="8" ry="5.5" fill="#8B5A2B" transform="rotate(-12 31 -26)"/><ellipse cx="22" cy="-30" rx="3" ry="1.6" fill="#6D4321" transform="rotate(-40 22 -30)"/><circle cx="31" cy="-28" r="1.3" fill="#1b1b1b"/><g stroke="#C9A36A" stroke-width="2" stroke-linecap="round" fill="none"><path d="M27 -31 Q24 -40 18 -44 M23 -38 L28 -44 M20 -42 L16 -48"/><path d="M31 -31 Q32 -41 37 -46 M33 -39 L39 -40"/></g><path d="M8 -12 Q14 -6 22 -9" stroke="#C0392B" stroke-width="3" fill="none"/><circle cx="16" cy="-8" r="1.8" fill="#F2C94C"/>`;
+    const deer = (x, y, nose) => `<g transform="translate(${x} ${y})">${rn}${nose ? '<circle cx="39" cy="-27" r="7" fill="#FF3B30" opacity=".25"/><circle cx="39" cy="-27" r="3.6" fill="#FF3B30"/>' : ''}</g>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 120"><path d="M104 50 Q170 40 236 46 L300 46" stroke="#5B3A1E" stroke-width="1.4" fill="none"/>${deer(180, 62)}${deer(246, 56)}${deer(312, 50, 1)}<path d="M22 62 Q14 36 34 30 Q52 26 54 46 L50 62Z" fill="#8D6E63"/><path d="M30 31 Q34 24 40 29" stroke="#5D4037" stroke-width="2.5" fill="none"/><rect x="36" y="22" width="9" height="9" rx="1.5" fill="#2E9E5B"/><rect x="39.5" y="22" width="2" height="9" fill="#F2C94C"/><ellipse cx="84" cy="52" rx="15" ry="15" fill="#D32F2F"/><rect x="70" y="52" width="29" height="4" fill="#3E2723"/><rect x="82" y="51.5" width="5" height="5" fill="#F2C94C"/><circle cx="89" cy="32" r="8.5" fill="#F4C7A1"/><path d="M80 34 Q81 48 91 47 Q99 45 98 34 Q94 38 89 37 Q84 38 80 34Z" fill="#FFFFFF"/><path d="M80 30 Q82 18 94 18 Q102 20 106 28 L98 28 Q92 26 80 30Z" fill="#D32F2F"/><path d="M79 31 Q90 25 99 28" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="107" cy="29" r="3.4" fill="#FFFFFF"/><circle cx="93" cy="31" r="1.1" fill="#1b1b1b"/><path d="M94 50 Q100 48 104 50" stroke="#D32F2F" stroke-width="5" stroke-linecap="round" fill="none"/><circle cx="105" cy="50" r="2.6" fill="#2b2b2b"/><path d="M12 58 H108 Q120 58 122 46 Q128 46 128 52 Q126 70 112 80 Q104 86 92 86 H36 Q16 86 12 70Z" fill="#B71C1C"/><path d="M12 58 H108 Q120 58 122 46" stroke="#F2C94C" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M40 70 q10 -8 20 0 q10 8 20 0" stroke="#F2C94C" stroke-width="2" fill="none"/><g stroke="#E0B040" stroke-width="3" fill="none" stroke-linecap="round"><path d="M38 86 V96 M96 86 V96"/><path d="M6 92 Q8 98 18 98 H120 Q132 98 134 88"/></g></svg>`;
+  })();
+  let santaOn = false;
+  function santa() {
+    const r = document.documentElement;
+    if (santaOn || !(r.classList.contains('noel-jour') || r.classList.contains('noel-nuit'))) return;
+    try { if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (e) {}
+    const W = innerWidth, H = innerHeight, hg = W > 900 ? 120 : 90, xs = [.2, .4, .6, .8, .95].map(f => f * W);
+    const busy = y => { for (let yy = y; yy <= y + hg; yy += hg / 4) for (const x of xs) { const el = document.elementFromPoint(x, yy); if (el && el.closest('.card, .sidenav, .noel-voeux, button, input, select')) return true; } return false; };
+    let top = null; for (let y = 40; y + hg < H; y += 20) if (!busy(y)) { top = y; break; }
+    santaOn = true;
+    const d = h('div', { class: 'santa' + (top == null ? ' devant' : ''), 'aria-hidden': 'true', style: `top:${top == null ? 56 : top}px` });
+    d.innerHTML = SANTA_SVG; document.body.append(d);
+    d.addEventListener('animationend', e => { if (e.target === d) { d.remove(); santaOn = false; } });
+  }
   const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
   /* ---------- Corrección ---------- */
@@ -1081,7 +1112,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
     });
     C.checked = true;
     const sc = $('#c-score'); sc.textContent = ok === n ? `${ok} / ${n} ! Tout est juste` : scoreParts(ok, minorN, n - ok - minorN); sc.className = 'score' + (ok === n ? ' good' : '');
-    touch();
+    touch(); if (ok === n) santa();
   }
   function showConj() {
     $('#c-grid').querySelectorAll('.prow').forEach(row => {
@@ -1355,7 +1386,7 @@ button.chip.kind[aria-pressed="true"] { border-color: var(--accent); }
       return { q, prompt, v, good, right: accept[0] };
     });
     touch();
-    const pct = Math.round(ok / X.qs.length * 100);
+    const pct = Math.round(ok / X.qs.length * 100); if (ok === X.qs.length) santa();
     const wrong = rows.filter(r => !r.good);
     const done = $('#e-done');
     done.replaceChildren(
@@ -1803,6 +1834,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
     const best = P.text[XT.cur]; if (!best || ok > best[0]) P.text[XT.cur] = [ok, bl.length];
     touch(); renderTxList();
     const sc = $('#x-score'); sc.textContent = ok === bl.length ? `${ok} / ${bl.length} ! Tout est juste` : scoreParts(ok, minorT, bl.length - ok - minorT); sc.className = 'score' + (ok === bl.length ? ' good' : '');
+    if (ok === bl.length) santa();
   }
   function xShow() {
     const bl = blanks(), tx = B2.textos.find(t => t.id === XT.cur);
@@ -2150,6 +2182,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
     voTChecked = true; touch();
     $('#vo-tscore').textContent = ok === ins.length ? `${ok} / ${ins.length} ! Tout est juste` : scoreParts(ok, mi, ins.length - ok - mi);
     $('#vo-tscore').className = 'score' + (ok === ins.length ? ' good' : '');
+    if (ok === ins.length) santa();
   }
   $('#vo-tcheck').onclick = voTCheck;
   $('#vo-tshow').onclick = () => {
@@ -2367,7 +2400,7 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
       h('div', { class: 'chips' }, Object.entries(by).map(([k, [a, m]]) => h('span', { class: 'chip', style: 'background:var(--accent-soft);color:var(--accent)' }, `${LBL[k]} ${a}/${m}`))),
       h('p', { class: 'note', style: 'margin:0' }, (P.days[todayKey()] || 0) >= P.goal ? 'Objectif quotidien atteint !' : `Il te manque ${P.goal - (P.days[todayKey()] || 0)} réponses pour l’objectif du jour.`),
       h('div', { class: 'actions' }, h('button', { class: 'btn primary', type: 'button', onclick: startSession }, 'Autre séance'), h('button', { class: 'btn', type: 'button', onclick: () => { d.hidden = true; $('#h-start').hidden = false; renderHoy(); } }, 'Retour')));
-    renderHoy();
+    renderHoy(); if (n && ok === n) santa();
   }
   function startSession() { S.qs = buildSession(); S.i = 0; S.res = []; $('#h-start').hidden = true; $('#h-done').hidden = true; $('#h-run').hidden = false; sessionQ(); }
   $('#h-go').onclick = startSession;
