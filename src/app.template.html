@@ -298,6 +298,10 @@ select { background: var(--panel); border: 1px solid var(--line); border-radius:
 .wdot.met svg { width: 16px; height: 20px; }
 .wdot.today { border: 2px dashed var(--fl-2); }
 .wdot.future { opacity: .5; }
+/* Deuxième chance : un jour manqué entre deux jours réussis ne casse pas la série */
+.wdot.sauve { background: color-mix(in srgb, #4FA3E0 18%, var(--panel)); border: 2px solid #4FA3E0; color: #2F7FC1; font-weight: 800; font-size: 15px; }
+.wdot.risque { border: 2px dashed var(--warn); color: var(--warn); font-weight: 800; }
+.streak-msg.warn { color: var(--warn); }
 .streak-msg { margin: 0; color: var(--muted); font-weight: 700; }
 .streak-msg.ok { color: var(--ok); }
 @media (prefers-reduced-motion: no-preference) { .flame.on svg { transform-origin: 50% 100%; animation: flick 2.4s ease-in-out infinite; } @keyframes flick { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(.97, 1.04); } } }
@@ -2274,11 +2278,22 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
   ERRCAT.vocabulaire = { name: 'Vocabulaire', tip: 'Apprends les noms avec leur article (le, la, l’) : le genre en français ne correspond pas toujours à l’espagnol (le lait, la mer, l’escalier).', go: () => go('vocabulaire'), btn: 'Réviser le vocabulaire' };
 
   /* ---------- Hoy ---------- */
+  // Série avec deuxième chance : un seul jour manqué ne casse pas la série si le jour suivant est réussi.
+  // Deux jours manqués de suite la cassent. Les jours « sauvés » ne comptent pas dans le nombre de jours.
+  // Renvoie { n, sauves (jours sauvés), risque (hier manqué : il faut réussir aujourd’hui pour garder la série) }.
   function streak() {
-    let n = 0; const d = new Date();
-    if ((P.days[todayKey(d)] || 0) < P.goal) d.setDate(d.getDate() - 1);
-    while ((P.days[todayKey(d)] || 0) >= P.goal) { n++; d.setDate(d.getDate() - 1); }
-    return n;
+    const met = d => (P.days[todayKey(d)] || 0) >= P.goal, prev = d => { const x = new Date(d); x.setDate(x.getDate() - 1); return x; };
+    let n = 0, d = new Date(), risque = null; const sauves = new Set();
+    if (!met(d)) {
+      d = prev(d);
+      if (!met(d)) { if (!met(prev(d))) return { n: 0, sauves, risque: null }; risque = todayKey(d); d = prev(d); }
+    }
+    while (true) {
+      if (met(d)) { n++; d = prev(d); continue; }
+      const p = prev(d); if (met(p)) { sauves.add(todayKey(d)); d = p; continue; }
+      break;
+    }
+    return { n, sauves, risque };
   }
   function renderHoy() {
     const tk = todayKey(), done = P.days[tk] || 0;
@@ -2292,21 +2307,25 @@ Réponds UNIQUEMENT avec un tableau JSON : [{"s": "phrase avec [infinitif]", "t"
       const di = h('input', { type: 'date', id: 'h-date', class: 'ans', min: tk, 'aria-label': 'Date de l’examen' });
       ex.append(h('span', { class: 'stat-l' }, 'Ton examen'), h('span', { class: 'note' }, 'C’est quand ? Indique la date et je t’affiche le compte à rebours.'), h('div', { class: 'row' }, di, h('button', { class: 'btn', type: 'button', onclick: () => { if (di.value) { P.exam = di.value; touch(); renderHoy(); } } }, 'Enregistrer')));
     }
-    const st = streak(), metToday = done >= P.goal;
+    const S = streak(), st = S.n, metToday = done >= P.goal;
+    const hier = new Date(); hier.setDate(hier.getDate() - 1); const sauveHier = metToday && S.sauves.has(todayKey(hier));
     const FLAME = '<svg viewBox="0 0 64 80" aria-hidden="true"><defs><linearGradient id="fl-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--fl-1)"/><stop offset="1" stop-color="var(--fl-2)"/></linearGradient></defs><path fill="url(#fl-a)" d="M33 2c3 14 19 22 23 38 5 19-8 38-24 38S3 64 6 46c2-11 10-17 13-26 2 7 1 12 5 16C25 22 30 12 33 2z"/><path fill="var(--fl-3)" d="M32 40c2 8 11 12 12 21 1 9-5 15-12 15s-13-6-12-14c1-6 5-9 6-14 2 4 2 6 4 8 0-6 1-11 2-16z"/></svg>';
     const flame = h('div', { class: 'flame' + (st || metToday ? ' on' : '') }); flame.innerHTML = FLAME;
     // semana actual (lunes → domingo)
     const mon = new Date(); mon.setHours(0, 0, 0, 0); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7));
     const week = h('div', { class: 'week', role: 'list', 'aria-label': 'Cette semaine' }, ['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((l, i) => {
       const d = new Date(mon); d.setDate(mon.getDate() + i); const k = todayKey(d), n = P.days[k] || 0;
-      const state = n >= P.goal ? 'met' : k === tk ? 'today' : d > new Date() ? 'future' : 'miss';
-      const dot = h('span', { class: 'wdot ' + state }); if (state === 'met') dot.innerHTML = '<svg viewBox="0 0 64 80" aria-hidden="true"><path fill="currentColor" d="M33 2c3 14 19 22 23 38 5 19-8 38-24 38S3 64 6 46c2-11 10-17 13-26 2 7 1 12 5 16C25 22 30 12 33 2z"/></svg>';
-      return h('div', { class: 'wday' + (k === tk ? ' is-today' : ''), role: 'listitem', title: `${d.toLocaleDateString('fr-FR', { weekday: 'long' })}: ${n} réponses` }, h('span', { class: 'wl' }, l), dot);
+      const state = n >= P.goal ? 'met' : k === tk ? 'today' : d > new Date() ? 'future' : S.sauves.has(k) ? 'sauve' : S.risque === k ? 'risque' : 'miss';
+      const dot = h('span', { class: 'wdot ' + state }, state === 'sauve' ? '2' : state === 'risque' ? '!' : ''); if (state === 'met') dot.innerHTML = '<svg viewBox="0 0 64 80" aria-hidden="true"><path fill="currentColor" d="M33 2c3 14 19 22 23 38 5 19-8 38-24 38S3 64 6 46c2-11 10-17 13-26 2 7 1 12 5 16C25 22 30 12 33 2z"/></svg>';
+      return h('div', { class: 'wday' + (k === tk ? ' is-today' : ''), role: 'listitem', title: `${d.toLocaleDateString('fr-FR', { weekday: 'long' })}: ${n} réponses${state === 'sauve' ? ' (sauvé par la deuxième chance)' : state === 'risque' ? ' (manqué : réussis aujourd’hui pour sauver ta série)' : ''}` }, h('span', { class: 'wl' }, l), dot);
     }));
     $('#h-streak').replaceChildren(
       h('div', { class: 'streak-main' }, flame, h('div', {}, h('b', { class: 'streak-n' }, st), h('span', { class: 'streak-l' }, st === 1 ? 'jour de série' : 'jours de série'))),
       week,
-      h('p', { class: 'streak-msg' + (metToday ? ' ok' : '') }, metToday ? 'Objectif du jour atteint ! Ta série est sauvée.' : st ? `Atteins ${P.goal} réponses aujourd’hui pour garder ta série.` : `Atteins ${P.goal} réponses aujourd’hui pour allumer ta série.`));
+      h('p', { class: 'streak-msg' + (metToday ? ' ok' : S.risque ? ' warn' : '') }, metToday ? (sauveHier ? 'Objectif atteint ! Grâce à ta deuxième chance, la journée d’hier est sauvée et ta série continue.' : 'Objectif du jour atteint ! Ta série est sauvée.')
+        : S.risque ? `Tu n’as pas atteint ton objectif hier. Deuxième chance : atteins ${P.goal} réponses aujourd’hui et ta série continue.`
+        : st ? `Atteins ${P.goal} réponses aujourd’hui pour garder ta série.` : `Atteins ${P.goal} réponses aujourd’hui pour allumer ta série.`),
+      h('p', { class: 'note', style: 'margin:0' }, 'Deuxième chance : si tu manques un jour, ta série tient bon à condition de réussir ton objectif le lendemain. Deux jours manqués de suite l’éteignent.'));
     const sel = h('select', { id: 'h-goal-sel', 'aria-label': 'Objectif quotidien', onchange: e => { P.goal = +e.target.value; touch(); renderHoy(); } }, [20, 40, 60, 100].map(n => h('option', { value: n, selected: n === P.goal ? true : null }, n + ' réponses')));
     $('#h-goal').replaceChildren(h('span', { class: 'stat-l' }, 'Objectif du jour'), h('b', { class: 'stat-n' }, `${done} / ${P.goal}`), h('div', { class: 'pbar' }, h('div', { style: `width:${Math.min(100, done / P.goal * 100)}%` })), h('label', { class: 'note row', style: 'gap:6px' }, 'Objectif quotidien :', sel));
     $('#h-plan').textContent = sessionPlanText();
